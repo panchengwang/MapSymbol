@@ -1,0 +1,22 @@
+{
+    "offset": {
+        "x": 0.0,
+        "y": 0.1
+    },
+    "xscale": 100.0,
+    "yscale": 100.0,
+    "shapes": [
+        {
+            "type": "SYSTEMFILL",
+            "fill": {
+                "type": "SOLID",
+                "color": {
+                    "alpha": 127,
+                    "red": 255,
+                    "green": 0,
+                    "blue": 255
+                }
+            }
+        }
+    ]
+}

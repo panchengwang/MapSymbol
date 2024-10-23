@@ -1,0 +1,50 @@
+{
+    "offset": {
+        "x": 0.0,
+        "y": 0.1
+    },
+    "xscale": 100.0,
+    "yscale": 100.0,
+    "shapes": [
+        {
+            "type": "SYSTEMLINE",
+            "stroke": {
+                "color": {
+                    "alpha": 255,
+                    "red": 0,
+                    "green": 0,
+                    "blue": 0
+                },
+                "width": 2.0,
+                "dashes": [
+                    10.0,
+                    5
+                ],
+                "dashoffset": 0.0,
+                "cap": "butt",
+                "join": "bevel",
+                "miter": 1.0
+            }
+        },
+        {
+            "type": "SYSTEMLINE",
+            "stroke": {
+                "color": {
+                    "alpha": 255,
+                    "red": 255,
+                    "green": 0,
+                    "blue": 0
+                },
+                "width": 1.0,
+                "dashes": [
+                    8.0,
+                    7
+                ],
+                "dashoffset": -1.0,
+                "cap": "butt",
+                "join": "bevel",
+                "miter": 1.0
+            }
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+{
+    "offset": {
+        "x": 0.0,
+        "y": 0.1
+    },
+    "xscale": 100.0,
+    "yscale": 100.0,
+    "shapes": [
+        {
+            "type": "REGULARPOLYGON",
+            "stroke": {
+                "color": {
+                    "alpha": 100,
+                    "red": 255,
+                    "green": 100,
+                    "blue": 255
+                },
+                "width": 1.0,
+                "dashes": [
+                    10.0,
+                    0.0
+                ],
+                "dashoffset": 0.0,
+                "cap": "butt",
+                "join": "bevel",
+                "miter": 1.0
+            },
+            "fill": {
+                "type": "SOLID",
+                "color": {
+                    "alpha": 127,
+                    "red": 255,
+                    "green": 0,
+                    "blue": 0
+                }
+            },
+            "rotate": 45,
+            "center": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "radius": 1.0,
+            "numedges": 5
+        }
+    ]
+}

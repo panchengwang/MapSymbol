@@ -1,0 +1,44 @@
+{
+    "offset": {
+        "x": 0.0,
+        "y": 0.1
+    },
+    "xscale": 100.0,
+    "yscale": 100.0,
+    "shapes": [
+        {
+            "type": "CIRCLE",
+            "stroke": {
+                "color": {
+                    "alpha": 200,
+                    "red": 255,
+                    "green": 0,
+                    "blue": 0
+                },
+                "width": 10,
+                "dashes": [
+                    10.0,
+                    0.0
+                ],
+                "dashoffset": 0.0,
+                "cap": "butt",
+                "join": "bevel",
+                "miter": 1.0
+            },
+            "fill": {
+                "type": "SOLID",
+                "color": {
+                    "alpha": 100,
+                    "red": 255,
+                    "green": 255,
+                    "blue": 0
+                }
+            },
+            "center": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "radius": 1
+        }
+    ]
+}
