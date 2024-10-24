@@ -15,6 +15,22 @@ list(APPEND HEADERS
 
 list(APPEND SOURCES 
   symbol.c
+  shape.c
+  arc.c 
+  chord.c 
+  pie.c 
+  ellipse.c 
+  circle.c 
+  linestring.c 
+  polygon.c 
+  regularpolygon.c 
+  star.c 
+  color.c 
+  stroke.c 
+  point.c 
+  systemline.c 
+  systemfill.c 
+  fill.c
 )
 
 add_library(mapsymbol SHARED

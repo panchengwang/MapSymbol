@@ -65,13 +65,23 @@
     }
 
 #define JSON_GET_FILL(parent, key, val,errmsg)                              \
-    {                                                                       \                                                                \
+    {                                                                       \
+        if(val){                                                            \
+            sym_fill_destroy(val);                                          \
+            free(val);                                                      \
+        }                                                                   \
         json_object* fillobj ;                                              \
         JSON_GET_OBJ(parent,key,fillobj,errmsg);                            \
         const char* typestr;                                                \
         JSON_GET_STRING(fillobj,"type", typestr, errmsg);                   \
+        uint8_t ret = FALSE;                                                \
         if(STRING_EQUAL(typestr,"solid")){                                  \
-            JSON_GET_FILL_SOLID(parent, key, val ,errmsg);                  \
+            sym_fill_solid_t* fill = sym_fill_solid_create();               \
+            ret = sym_fill_solid_from_json_object(fill, fillobj, errmsg);   \
+            val = (sym_fill_t*)fill;                                        \
+        }                                                                   \
+        if(!ret){                                                           \
+            return FALSE;                                                   \
         }                                                                   \
     }
 
@@ -120,16 +130,27 @@
         JSON_ADD_OBJECT(parent, key, ptobj);                                \
     }
 
-// #define JSON_ADD_FILL(parent, key, val)                                     \
-//     {                                                                       \
-//         if(val->type == FILL_SOLID){                                        \
+#define JSON_ADD_COLOR(parent,key,val)                                      \
+    {                                                                       \
+        json_object* clobj = json_object_new_object();                      \
+        JSON_ADD_INT(clobj,"alpha",val.alpha);                              \
+        JSON_ADD_INT(clobj,"red",val.red);                                  \
+        JSON_ADD_INT(clobj,"green",val.green);                              \
+        JSON_ADD_INT(clobj,"blue",val.blue);                                \
+        JSON_ADD_OBJECT(parent,key,clobj);                                  \
+    }
 
-//         }
-//     }
+
 
 #define STRING_EQUAL(str1, str2)                                            \
     strcasecmp(str1,str2) == 0
 
+#define SERIALIZE_TO_BUF(p,val)                                             \
+    memcpy(p, &(val), sizeof(val));                                         \
+    p += sizeof(val);
 
+#define DESERIALIZE_FROM_BUF(p,val)                                         \
+    memcpy(&(val), p, sizeof(val));                                         \
+    p += sizeof(val);
 
 #endif
