@@ -1,9 +1,10 @@
 #include "symbol.h"
 #include "helper.h"
-
+#include <stdio.h>
+#include "color.h"
 
 sym_color_t* sym_color_init(sym_color_t* color) {
-    color->alpha = 255;
+    color->alpha = 128;
     color->red = 0;
     color->blue = 0;
     color->green = 0;
@@ -37,4 +38,29 @@ size_t sym_color_memory_size(sym_color_t* color) {
         sizeof(color->red) +
         sizeof(color->green) +
         sizeof(color->blue);
+}
+
+
+
+char* sym_color_serialize(const char* buf, sym_color_t* color) {
+    char* p = (char*)buf;
+
+    SERIALIZE_TO_BUF(p, color->alpha);
+    SERIALIZE_TO_BUF(p, color->red);
+    SERIALIZE_TO_BUF(p, color->green);
+    SERIALIZE_TO_BUF(p, color->blue);
+    return p;
+}
+
+
+char* sym_color_deserialize(const char* buf, sym_color_t* color) {
+    char* p = (char*)buf;
+
+    DESERIALIZE_FROM_BUF(p, color->alpha);
+    DESERIALIZE_FROM_BUF(p, color->red);
+    DESERIALIZE_FROM_BUF(p, color->green);
+    DESERIALIZE_FROM_BUF(p, color->blue);
+
+
+    return p;
 }

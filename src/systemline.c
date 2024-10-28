@@ -1,10 +1,12 @@
-#include "symbol.h"
-#include "helper.h"
+#include <stdio.h>
+#include "allheaders.h"
+
 
 sym_system_line_t* sym_system_line_create() {
     sym_system_line_t* shp = (sym_system_line_t*)malloc(sizeof(sym_system_line_t));
     shp->type = SYM_SHAPE_SYSTEM_LINE;
     shp->stroke = NULL;
+    return shp;
 }
 
 
@@ -34,4 +36,34 @@ size_t sym_system_line_memory_size(sym_system_line_t* shp) {
     len += sizeof(shp->type);
     len += sym_stroke_memory_size(shp->stroke);
     return len;
+}
+
+
+char* sym_system_line_serialize(const char* buf, sym_system_line_t* shp) {
+    char* p = (char*)buf;
+    SERIALIZE_TO_BUF(p, shp->type);
+    p = sym_stroke_serialize(p, shp->stroke);
+    return p;
+}
+
+
+char* sym_system_line_deserialize(const char* buf, sym_system_line_t** shp) {
+    char* p = (char*)buf;
+    *shp = sym_system_line_create();
+    DESERIALIZE_FROM_BUF(p, (*shp)->type);
+    p = sym_stroke_deserialize(p, &((*shp)->stroke));
+    return p;
+}
+
+
+
+sym_rect_t sym_system_line_get_mbr(sym_system_line_t* shp) {
+    sym_rect_t rect;
+
+    return rect;
+}
+
+
+double sym_system_line_get_stroke_width(sym_system_line_t* shp) {
+    return shp->stroke->width;
 }

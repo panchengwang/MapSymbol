@@ -1,5 +1,9 @@
 #include "symbol.h"
 #include "helper.h"
+#include <stdio.h>
+#include "fill.h"
+
+
 
 sym_fill_solid_t* sym_fill_solid_create() {
     sym_fill_solid_t* solid = (sym_fill_solid_t*)malloc(sizeof(sym_fill_solid_t));
@@ -21,7 +25,8 @@ json_object* sym_fill_to_json_object(sym_fill_t* fill) {
 
 
 uint8_t sym_fill_from_json_object(sym_fill_t* fill, json_object* obj, char** errmsg) {
-
+    errmsg = g_strdup("Do not use function: sym_fill_from_json_object");
+    return FALSE;
 }
 
 
@@ -86,8 +91,9 @@ char* sym_fill_deserialize(const char* buf, sym_fill_t** fill) {
 
     uint8_t filltype;
     memcpy(&filltype, p, sizeof(filltype));
+
     if (filltype == FILL_SOLID) {
-        p = sym_fill_solid_deserialize(p, (sym_fill_t**)fill);
+        p = sym_fill_solid_deserialize(p, (sym_fill_solid_t**)fill);
     }
 
     return p;
@@ -96,8 +102,10 @@ char* sym_fill_deserialize(const char* buf, sym_fill_t** fill) {
 
 char* sym_fill_solid_serialize(const char* buf, sym_fill_solid_t* fill) {
     char* p = (char*)buf;
+
     SERIALIZE_TO_BUF(p, fill->type);
     p = sym_color_serialize(p, &(fill->color));
+    sym_color_t* color = &(fill->color);
     return p;
 }
 
@@ -106,8 +114,9 @@ char* sym_fill_solid_deserialize(const char* buf, sym_fill_solid_t** fill) {
     char* p = (char*)buf;
     *fill = sym_fill_solid_create();
 
-    p = DESERIALIZE_FROM_BUF(p, (*fill)->type);
+    DESERIALIZE_FROM_BUF(p, ((*fill)->type));
     p = sym_color_deserialize(p, &((*fill)->color));
+    sym_color_t* color = &((*fill)->color);
     return p;
 }
 

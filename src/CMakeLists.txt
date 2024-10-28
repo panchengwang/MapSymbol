@@ -4,13 +4,36 @@ project(mapsymbol LANGUAGES C)
 
 # set(CMAKE_CXX_STANDARD 17)
 # set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_compile_options(-Wno-incompatible-pointer-types -Wextra -Wpedantic -Wno-unused-result)
+
+
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(JSON_C REQUIRED json-c)
 pkg_check_modules(CAIRO REQUIRED cairo)
 pkg_check_modules(GLIB2 REQUIRED glib-2.0)
 
 list(APPEND HEADERS 
+  helper.h
   symbol.h
+  shape.h
+  arc.h 
+  chord.h 
+  pie.h 
+  ellipse.h 
+  circle.h 
+  linestring.h 
+  polygon.h 
+  regularpolygon.h 
+  star.h 
+  color.h 
+  stroke.h 
+  point.h 
+  systemline.h 
+  systemfill.h 
+  fill.h
+  canvas.h
+  rect.h 
 )
 
 list(APPEND SOURCES 
@@ -31,6 +54,8 @@ list(APPEND SOURCES
   systemline.c 
   systemfill.c 
   fill.c
+  canvas.c
+  rect.c 
 )
 
 add_library(mapsymbol SHARED

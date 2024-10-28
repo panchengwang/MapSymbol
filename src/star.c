@@ -1,5 +1,7 @@
-#include "symbol.h"
-#include "helper.h"
+#include <stdio.h>
+#include "allheaders.h"
+
+
 
 sym_star_t* sym_star_create() {
     sym_star_t* shp = (sym_star_t*)malloc(sizeof(sym_star_t));
@@ -48,7 +50,7 @@ uint8_t sym_star_from_json_object(sym_star_t* shp, json_object* obj, char** errm
     JSON_GET_FILL(obj, "fill", shp->fill, errmsg);
     JSON_GET_POINT(obj, "center", shp->center, errmsg);
     JSON_GET_DOUBLE(obj, "radius", shp->radius, errmsg);
-    JSON_GET_DOUBLE(obj, "radius2", shp->radius, errmsg);
+    JSON_GET_DOUBLE(obj, "radius2", shp->radius2, errmsg);
     JSON_GET_DOUBLE(obj, "rotate", shp->rotate, errmsg);
     JSON_GET_INT(obj, "numedges", shp->nedges, errmsg);
 
@@ -67,4 +69,45 @@ size_t sym_star_memory_size(sym_star_t* shp) {
     len += sizeof(shp->rotate);
     len += sizeof(shp->nedges);
     return len;
+}
+
+
+char* sym_star_serialize(const char* buf, sym_star_t* shp) {
+    char* p = (char*)buf;
+    SERIALIZE_TO_BUF(p, shp->type);
+    p = sym_stroke_serialize(p, shp->stroke);
+    p = sym_fill_serialize(p, shp->fill);
+    p = sym_point_serialize(p, &(shp->center));
+    SERIALIZE_TO_BUF(p, shp->radius);
+    SERIALIZE_TO_BUF(p, shp->radius2);
+    SERIALIZE_TO_BUF(p, shp->rotate);
+    SERIALIZE_TO_BUF(p, shp->nedges);
+    return p;
+}
+
+
+char* sym_star_deserialize(const char* buf, sym_star_t** shp) {
+    char* p = (char*)buf;
+    *shp = sym_star_create();
+    DESERIALIZE_FROM_BUF(p, (*shp)->type);
+    p = sym_stroke_deserialize(p, &((*shp)->stroke));
+    p = sym_fill_deserialize(p, &((*shp)->fill));
+    p = sym_point_deserialize(p, &((*shp)->center));
+    DESERIALIZE_FROM_BUF(p, (*shp)->radius);
+    DESERIALIZE_FROM_BUF(p, (*shp)->radius2);
+    DESERIALIZE_FROM_BUF(p, (*shp)->rotate);
+    DESERIALIZE_FROM_BUF(p, (*shp)->nedges);
+    return p;
+}
+
+
+sym_rect_t sym_star_get_mbr(sym_star_t* shp) {
+    sym_rect_t rect;
+
+    return rect;
+}
+
+
+double sym_star_get_stroke_width(sym_star_t* shp) {
+    return shp->stroke->width;
 }

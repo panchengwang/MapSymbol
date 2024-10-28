@@ -1,9 +1,10 @@
-#include "symbol.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <glib.h>
-#include "helper.h"
+#include "allheaders.h"
+
 
 symbol_t* sym_create() {
     symbol_t* sym = (symbol_t*)malloc(sizeof(symbol_t));
@@ -207,7 +208,7 @@ size_t sym_memory_size(symbol_t* sym) {
     len += sizeof(sym->xscale);
     len += sizeof(sym->yscale);
     len += sizeof(sym->nshapes);
-    for (size_t i; i < sym->nshapes; i++) {
+    for (size_t i = 0; i < sym->nshapes; i++) {
         len += sym_shape_memory_size(sym->shapes[i]);
     }
     return len;
@@ -243,47 +244,57 @@ symbol_t* sym_deserialize(const char* buf) {
     DESERIALIZE_FROM_BUF(p, sym->xscale);
     DESERIALIZE_FROM_BUF(p, sym->yscale);
     DESERIALIZE_FROM_BUF(p, sym->nshapes);
+    sym->shapes = (sym_shape_t*)malloc(sym->nshapes * sizeof(sym_shape_t*));
     for (size_t i = 0; i < sym->nshapes; i++) {
-        sym_shape_t* shp;
-        uint8_t shptype;
-        memcpy(&shptype, p, sizeof(shptype));
-        if (shp->type == SYM_SHAPE_ARC) {
-            shp = (sym_shape_t*)sym_arc_create();
-        }
-        else if (shp->type == SYM_SHAPE_CHORD) {
-            shp = (sym_shape_t*)sym_chord_create();
-        }
-        else if (shp->type == SYM_SHAPE_PIE) {
-            shp = (sym_shape_t*)sym_pie_create();
-        }
-        else if (shp->type == SYM_SHAPE_CIRCLE) {
-            shp = (sym_shape_t*)sym_circle_create();
-        }
-        else if (shp->type == SYM_SHAPE_ELLIPSE) {
-            shp = (sym_shape_t*)sym_ellipse_create();
-        }
-        else if (shp->type == SYM_SHAPE_SYSTEM_LINE) {
-            shp = (sym_shape_t*)sym_system_line_create();
-        }
-        else if (shp->type == SYM_SHAPE_SYSTEM_FILL) {
-            shp = (sym_shape_t*)sym_system_fill_create();
-        }
-        else if (shp->type == SYM_SHAPE_LINESTRING) {
-            shp = (sym_shape_t*)sym_linestring_create();
-        }
-        else if (shp->type == SYM_SHAPE_POLYGON) {
-            shp = (sym_shape_t*)sym_polygon_create();
-        }
-        else if (shp->type == SYM_SHAPE_REGULAR_POLYGON) {
-            shp = (sym_shape_t*)sym_regular_polygon_create();
-        }
-        else if (shp->type == SYM_SHAPE_STAR) {
-            shp = (sym_shape_t*)sym_star_create();
-        }
-        p = sym_shape_deserialize(p, shp);
-        sym->shapes[i] = shp;
+        p = sym_shape_deserialize(p, &(sym->shapes[i]));
     }
     return sym;
 }
 
 
+sym_rect_t sym_get_mbr(symbol_t* sym) {
+    sym_rect_t rect;
+    if (sym->nshapes == 0) {
+        return rect;
+    }
+    uint8_t onlysystemline = TRUE;
+    for (size_t i = 0; i < sym->nshapes; i++) {
+        sym_rect_t shprect = sym_shape_get_mbr(sym->shapes[i]);
+        sym_rect_extend(&rect, &shprect);
+        if (sym->shapes[i]->type == SYM_SHAPE_SYSTEM_LINE) {
+            onlysystemline = FALSE;
+        }
+    }
+
+
+    if (!onlysystemline) {
+        sym_rect_t other = { -1,-1,1,1 };
+        sym_rect_extend(&rect, &other);
+    }
+
+    sym_rect_scale(&rect, sym->xscale, sym->yscale);
+
+    return rect;
+}
+
+unsigned char* sym_to_image(symbol_t* sym, const char* format, double dotsPerMM, size_t* len) {
+    sym_rect_t rect = sym_get_mbr(sym);
+    double maxstrokewidth = 0.0f;
+    for (size_t i = 0; i < sym->nshapes; i++) {
+        maxstrokewidth = MAX(maxstrokewidth, sym_shape_get_stroke_width(sym->shapes[i]));
+    }
+    sym_rect_expand(&rect, 2.0 * maxstrokewidth / dotsPerMM);
+    sym_rect_ensure_symmetry(&rect);
+
+    canvas_t* canvas = sym_canvas_create(rect.maxx - rect.minx, rect.maxy - rect.miny, format);
+    sym_canvas_set_dots_per_mm(canvas, dotsPerMM);
+    sym_canvas_set_scale(canvas, sym->xscale, sym->yscale);
+
+    unsigned char* buf;
+    // size_t len;
+    sym_canvas_begin(canvas);
+    sym_canvas_draw(canvas, sym);
+    sym_canvas_end(canvas);
+    buf = sym_canvas_save_to_stream(canvas, len);
+    return buf;
+}

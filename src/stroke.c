@@ -1,6 +1,7 @@
 #include "symbol.h"
 #include "helper.h"
-
+#include <stdio.h>
+#include "stroke.h"
 
 sym_stroke_t* sym_stroke_create() {
     sym_stroke_t* stroke = (sym_stroke_t*)malloc(sizeof(sym_stroke_t));
@@ -136,3 +137,40 @@ size_t sym_stroke_memory_size(sym_stroke_t* stroke) {
     }
     return len;
 }
+
+
+char* sym_stroke_serialize(const char* buf, sym_stroke_t* stroke) {
+    char* p = (char*)buf;
+    SERIALIZE_TO_BUF(p, stroke->cap);
+    SERIALIZE_TO_BUF(p, stroke->join);
+    SERIALIZE_TO_BUF(p, stroke->miter);
+    SERIALIZE_TO_BUF(p, stroke->width);
+    p = sym_color_serialize(p, &(stroke->color));
+    SERIALIZE_TO_BUF(p, stroke->dash_offset);
+    SERIALIZE_TO_BUF(p, stroke->ndashes);
+    for (size_t i = 0; i < stroke->ndashes; i++) {
+        SERIALIZE_TO_BUF(p, stroke->dashes[i]);
+    }
+    return p;
+}
+
+
+char* sym_stroke_deserialize(const char* buf, sym_stroke_t** stroke) {
+    char* p = (char*)buf;
+
+    *stroke = sym_stroke_create();
+    DESERIALIZE_FROM_BUF(p, (*stroke)->cap);
+    DESERIALIZE_FROM_BUF(p, (*stroke)->join);
+    DESERIALIZE_FROM_BUF(p, (*stroke)->miter);
+    DESERIALIZE_FROM_BUF(p, (*stroke)->width);
+    p = sym_color_deserialize(p, &((*stroke)->color));
+    DESERIALIZE_FROM_BUF(p, (*stroke)->dash_offset);
+    DESERIALIZE_FROM_BUF(p, (*stroke)->ndashes);
+    (*stroke)->dashes = (double*)malloc((*stroke)->ndashes * sizeof(double));
+    for (size_t i = 0; i < (*stroke)->ndashes; i++) {
+        DESERIALIZE_FROM_BUF(p, (*stroke)->dashes[i]);
+    }
+    return p;
+}
+
+

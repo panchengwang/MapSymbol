@@ -1,5 +1,5 @@
-#include "symbol.h"
-#include "helper.h"
+#include <stdio.h>
+#include "allheaders.h"
 
 
 sym_ellipse_t* sym_ellipse_create() {
@@ -60,4 +60,46 @@ size_t sym_ellipse_memory_size(sym_ellipse_t* shp) {
     len += sizeof(shp->yradius);
     len += sizeof(shp->rotate);
     return len;
+}
+
+
+char* sym_ellipse_serialize(const char* buf, sym_ellipse_t* shp) {
+    char* p = (char*)buf;
+    SERIALIZE_TO_BUF(p, shp->type);
+    p = sym_stroke_serialize(p, shp->stroke);
+    p = sym_fill_serialize(p, shp->fill);
+    p = sym_point_serialize(p, &(shp->center));
+    SERIALIZE_TO_BUF(p, shp->xradius);
+    SERIALIZE_TO_BUF(p, shp->yradius);
+    SERIALIZE_TO_BUF(p, shp->rotate);
+
+    return p;
+}
+
+
+char* sym_ellipse_deserialize(const char* buf, sym_ellipse_t** shp) {
+    char* p = (char*)buf;
+    *shp = sym_ellipse_create();
+    DESERIALIZE_FROM_BUF(p, (*shp)->type);
+    p = sym_stroke_deserialize(p, &((*shp)->stroke));
+    p = sym_fill_deserialize(p, &((*shp)->fill));
+    p = sym_point_deserialize(p, &((*shp)->center));
+    DESERIALIZE_FROM_BUF(p, (*shp)->xradius);
+    DESERIALIZE_FROM_BUF(p, (*shp)->yradius);
+    DESERIALIZE_FROM_BUF(p, (*shp)->rotate);
+
+    return p;
+}
+
+
+sym_rect_t sym_ellipse_get_mbr(sym_ellipse_t* shp) {
+    sym_rect_t rect;
+
+    return rect;
+}
+
+
+double sym_ellipse_get_stroke_width(sym_ellipse_t* shp) {
+
+    return shp->stroke->width;
 }

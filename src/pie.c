@@ -1,5 +1,7 @@
-#include "symbol.h"
-#include "helper.h"
+#include <stdio.h>
+#include "allheaders.h"
+
+
 
 sym_pie_t* sym_pie_create() {
     sym_pie_t* shp = (sym_pie_t*)malloc(sizeof(sym_pie_t));
@@ -68,4 +70,49 @@ size_t sym_pie_memory_size(sym_pie_t* shp) {
     len += sizeof(shp->startangle);
     len += sizeof(shp->endangle);
     return len;
+}
+
+
+char* sym_pie_serialize(const char* buf, sym_pie_t* shp) {
+    char* p = (char*)buf;
+    SERIALIZE_TO_BUF(p, shp->type);
+    p = sym_stroke_serialize(p, shp->stroke);
+    p = sym_fill_serialize(p, shp->fill);
+    p = sym_point_serialize(p, &(shp->center));
+    SERIALIZE_TO_BUF(p, shp->xradius);
+    SERIALIZE_TO_BUF(p, shp->yradius);
+    SERIALIZE_TO_BUF(p, shp->rotate);
+    SERIALIZE_TO_BUF(p, shp->startangle);
+    SERIALIZE_TO_BUF(p, shp->endangle);
+
+    return p;
+}
+
+
+char* sym_pie_deserialize(const char* buf, sym_pie_t** shp) {
+    char* p = (char*)buf;
+    *shp = sym_pie_create();
+    DESERIALIZE_FROM_BUF(p, (*shp)->type);
+    p = sym_stroke_deserialize(p, &((*shp)->stroke));
+    p = sym_fill_deserialize(p, &((*shp)->fill));
+    p = sym_point_deserialize(p, &((*shp)->center));
+    DESERIALIZE_FROM_BUF(p, (*shp)->xradius);
+    DESERIALIZE_FROM_BUF(p, (*shp)->yradius);
+    DESERIALIZE_FROM_BUF(p, (*shp)->rotate);
+    DESERIALIZE_FROM_BUF(p, (*shp)->startangle);
+    DESERIALIZE_FROM_BUF(p, (*shp)->endangle);
+
+    return p;
+}
+
+
+sym_rect_t sym_pie_get_mbr(sym_pie_t* shp) {
+    sym_rect_t rect;
+
+    return rect;
+}
+
+
+double sym_pie_get_stroke_width(sym_pie_t* shp) {
+    return shp->stroke->width;
 }

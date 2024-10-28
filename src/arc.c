@@ -1,5 +1,7 @@
-#include "symbol.h"
-#include "helper.h"
+
+#include <stdio.h>
+#include "allheaders.h"
+
 
 sym_arc_t* sym_arc_create() {
     sym_arc_t* shp = (sym_arc_t*)malloc(sizeof(sym_arc_t));
@@ -80,17 +82,28 @@ char* sym_arc_serialize(const char* buf, sym_arc_t* shp) {
 }
 
 
-char* sym_arc_deserialize(const char* buf, sym_arc_t* shp) {
+char* sym_arc_deserialize(const char* buf, sym_arc_t** shp) {
     char* p = (char*)buf;
-    DESERIALIZE_FROM_BUF(p, shp->type);
-    p = sym_stroke_deserialize(p, shp->stroke);
-    p = sym_point_deserialize(p, &(shp->center));
-    DESERIALIZE_FROM_BUF(p, shp->xradius);
-    DESERIALIZE_FROM_BUF(p, shp->yradius);
-    DESERIALIZE_FROM_BUF(p, shp->rotate);
-    DESERIALIZE_FROM_BUF(p, shp->startangle);
-    DESERIALIZE_FROM_BUF(p, shp->endangle);
+    *shp = sym_arc_create();
+
+    DESERIALIZE_FROM_BUF(p, (*shp)->type);
+    p = sym_stroke_deserialize(p, &((*shp)->stroke));
+    p = sym_point_deserialize(p, &((*shp)->center));
+    DESERIALIZE_FROM_BUF(p, (*shp)->xradius);
+    DESERIALIZE_FROM_BUF(p, (*shp)->yradius);
+    DESERIALIZE_FROM_BUF(p, (*shp)->rotate);
+    DESERIALIZE_FROM_BUF(p, (*shp)->startangle);
+    DESERIALIZE_FROM_BUF(p, (*shp)->endangle);
 
     return p;
 }
 
+sym_rect_t sym_arc_get_mbr(sym_arc_t* shp) {
+    sym_rect_t rect;
+
+    return rect;
+}
+
+double sym_arc_get_stroke_width(sym_arc_t* shp) {
+    return shp->stroke->width;
+}

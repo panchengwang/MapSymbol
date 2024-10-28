@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/src"
+                "${workspaceFolder}/src",
+                "D:/msys64/ucrt64/include/cairo"
             ],
             "defines": [
                 "_DEBUG",

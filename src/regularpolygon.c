@@ -1,5 +1,6 @@
-#include "symbol.h"
-#include "helper.h"
+#include <stdio.h>
+#include "allheaders.h"
+
 
 sym_regular_polygon_t* sym_regular_polygon_create() {
     sym_regular_polygon_t* shp = (sym_regular_polygon_t*)malloc(sizeof(sym_regular_polygon_t));
@@ -61,4 +62,45 @@ size_t sym_regular_polygon_memory_size(sym_regular_polygon_t* shp) {
     len += sizeof(shp->rotate);
     len += sizeof(shp->nedges);
     return len;
+}
+
+
+
+char* sym_regular_polygon_serialize(const char* buf, sym_regular_polygon_t* shp) {
+    char* p = (char*)buf;
+    SERIALIZE_TO_BUF(p, shp->type);
+    p = sym_stroke_serialize(p, shp->stroke);
+    p = sym_fill_serialize(p, shp->fill);
+    p = sym_point_serialize(p, &(shp->center));
+    SERIALIZE_TO_BUF(p, shp->radius);
+    SERIALIZE_TO_BUF(p, shp->rotate);
+    SERIALIZE_TO_BUF(p, shp->nedges);
+    return p;
+}
+
+
+char* sym_regular_polygon_deserialize(const char* buf, sym_regular_polygon_t** shp) {
+    char* p = (char*)buf;
+    *shp = sym_regular_polygon_create();
+    DESERIALIZE_FROM_BUF(p, (*shp)->type);
+    p = sym_stroke_deserialize(p, &((*shp)->stroke));
+    p = sym_fill_deserialize(p, &((*shp)->fill));
+    p = sym_point_deserialize(p, &((*shp)->center));
+    DESERIALIZE_FROM_BUF(p, (*shp)->radius);
+    DESERIALIZE_FROM_BUF(p, (*shp)->rotate);
+    DESERIALIZE_FROM_BUF(p, (*shp)->nedges);
+    return p;
+}
+
+sym_rect_t sym_regular_polygon_get_mbr(sym_regular_polygon_t* shp) {
+    sym_rect_t rect;
+
+    return rect;
+}
+
+
+
+double sym_regular_polygon_get_stroke_width(sym_regular_polygon_t* shp) {
+
+    return shp->stroke->width;
 }

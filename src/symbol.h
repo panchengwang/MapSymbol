@@ -55,6 +55,13 @@
 #define FALSE   0
 #endif
 
+#ifndef MAX
+#define MAX(x,y)    (x) > (y) ? (x) : (y)
+#endif
+
+#ifndef MIN
+#define MIN(x,y)    (x) < (y) ? (x) : (y)
+#endif
 
 typedef struct {
     double x, y;
@@ -63,6 +70,7 @@ typedef struct {
 typedef struct {
     double minx, miny, maxx, maxy;
 }sym_rect_t;
+
 
 typedef struct {
     uint8_t alpha, red, green, blue;
@@ -213,167 +221,9 @@ DLL_EXPORT char* sym_to_json_string(symbol_t* sym);
 DLL_EXPORT size_t sym_memory_size(symbol_t* sym);
 DLL_EXPORT char* sym_serialize(symbol_t* sym, size_t* len);
 DLL_EXPORT symbol_t* sym_deserialize(const char* buf);
+DLL_EXPORT unsigned char* sym_to_image(symbol_t* sym, const char* format, double dotsPerMM, size_t* len);
 
-
-
-
-DLL_EXPORT void sym_shape_destroy(sym_shape_t* shp);
-DLL_EXPORT void sym_shape_with_stroke_destroy(sym_shape_with_stroke_t* shp);
-DLL_EXPORT void sym_shape_with_stroke_and_fill_destroy(sym_shape_with_stroke_and_fill_t* shp);
-DLL_EXPORT json_object* sym_shape_to_json_object(sym_shape_t* shp);
-DLL_EXPORT size_t sym_shape_memory_size(sym_shape_t* shp);
-DLL_EXPORT char* sym_shape_serialize(const char* buf, sym_shape_t* shp);
-DLL_EXPORT char* sym_shape_deserialize(const char* buf, sym_shape_t* shp);
-
-
-
-
-DLL_EXPORT sym_fill_solid_t* sym_fill_solid_create();
-DLL_EXPORT json_object* sym_fill_to_json_object(sym_fill_t* fill);
-DLL_EXPORT uint8_t sym_fill_from_json_object(sym_fill_t* fill, json_object* obj, char** errmsg);
-DLL_EXPORT uint8_t sym_fill_solid_from_json_object(sym_fill_solid_t* fill, json_object* obj, char** errmsg);
-DLL_EXPORT json_object* sym_fill_solid_to_json_object(sym_fill_solid_t* fill);
-DLL_EXPORT void sym_fill_destroy(sym_fill_t* fill);
-DLL_EXPORT void sym_fill_solid_destroy(sym_fill_solid_t* fill);
-DLL_EXPORT size_t sym_fill_memory_size(sym_fill_t* fill);
-DLL_EXPORT size_t sym_fill_solid_memory_size(sym_fill_solid_t* fill);
-DLL_EXPORT char* sym_fill_serialize(const char* buf, sym_fill_t* fill);
-DLL_EXPORT char* sym_fill_deserialize(const char* buf, sym_fill_t* fill);
-DLL_EXPORT char* sym_fill_solid_serialize(const char* buf, sym_fill_solid_t* fill);
-DLL_EXPORT char* sym_fill_solid_deserialize(const char* buf, sym_fill_solid_t* fill);
-
-DLL_EXPORT sym_stroke_t* sym_stroke_create();
-DLL_EXPORT void sym_stroke_destroy(sym_stroke_t* stroke);
-DLL_EXPORT sym_stroke_t* sym_stroke_init(sym_stroke_t* stroke);
-DLL_EXPORT uint8_t sym_stroke_from_json_object(sym_stroke_t* stroke, json_object* obj, char** errmsg);
-DLL_EXPORT json_object* sym_stroke_to_json_object(sym_stroke_t* stroke);
-DLL_EXPORT size_t sym_stroke_memory_size(sym_stroke_t* stroke);
-DLL_EXPORT char* sym_stroke_serialize(const char* buf, sym_stroke_t* stroke);
-DLL_EXPORT char* sym_stroke_deserialize(const char* buf, sym_stroke_t* stroke);
-
-DLL_EXPORT sym_color_t* sym_color_init(sym_color_t* color);
-DLL_EXPORT uint8_t sym_color_from_json_object(sym_color_t* color, json_object* obj, char** errmsg);
-DLL_EXPORT json_object* sym_color_to_json_object(sym_color_t* color);
-DLL_EXPORT size_t sym_color_memory_size(sym_color_t* color);
-DLL_EXPORT char* sym_color_serialize(const char* buf, sym_color_t* color);
-DLL_EXPORT char* sym_color_deserialize(const char* buf, sym_color_t* color);
-
-
-
-DLL_EXPORT sym_point_t* sym_point_init(sym_point_t* pt);
-DLL_EXPORT size_t sym_point_memory_size(sym_point_t* pt);
-DLL_EXPORT char* sym_point_serialize(const char* buf, sym_point_t* pt);
-DLL_EXPORT char* sym_point_deserialize(const char* buf, sym_point_t* pt);
-
-
-
-DLL_EXPORT sym_system_line_t* sym_system_line_create();
-DLL_EXPORT void sym_system_line_destroy(sym_system_line_t* systemline);
-DLL_EXPORT json_object* sym_system_line_to_json_object(sym_system_line_t* shp);
-DLL_EXPORT uint8_t sym_system_line_from_json_object(sym_system_line_t* shp, json_object* obj, char** errmsg);
-DLL_EXPORT size_t sym_system_line_memory_size(sym_system_line_t* shp);
-DLL_EXPORT char* sym_system_line_serialize(const char* buf, sym_system_line_t* shp);
-DLL_EXPORT char* sym_system_line_deserialize(const char* buf, sym_system_line_t* shp);
-
-
-
-
-DLL_EXPORT sym_system_fill_t* sym_system_fill_create();
-DLL_EXPORT void sym_system_fill_destroy(sym_system_fill_t* systemfill);
-DLL_EXPORT json_object* sym_system_fill_to_json_object(sym_system_fill_t* shp);
-DLL_EXPORT uint8_t sym_system_fill_from_json_object(sym_system_fill_t* shp, json_object* obj, char** errmsg);
-DLL_EXPORT size_t sym_system_fill_memory_size(sym_system_fill_t* shp);
-DLL_EXPORT char* sym_system_fill_serialize(const char* buf, sym_system_fill_t* shp);
-DLL_EXPORT char* sym_system_fill_deserialize(const char* buf, sym_system_fill_t* shp);
-
-
-
-
-DLL_EXPORT sym_arc_t* sym_arc_create();
-DLL_EXPORT void sym_arc_destroy(sym_arc_t* arc);
-DLL_EXPORT json_object* sym_arc_to_json_object(sym_arc_t* shp);
-DLL_EXPORT uint8_t sym_arc_from_json_object(sym_arc_t* shp, json_object* obj, char** errmsg);
-DLL_EXPORT size_t sym_arc_memory_size(sym_arc_t* shp);
-DLL_EXPORT char* sym_arc_serialize(const char* buf, sym_arc_t* shp);
-DLL_EXPORT char* sym_arc_deserialize(const char* buf, sym_arc_t* shp);
-
-
-DLL_EXPORT sym_circle_t* sym_circle_create();
-DLL_EXPORT void sym_circle_destroy(sym_circle_t* circle);
-DLL_EXPORT json_object* sym_circle_to_json_object(sym_circle_t* shp);
-DLL_EXPORT uint8_t sym_circle_from_json_object(sym_circle_t* shp, json_object* obj, char** errmsg);
-DLL_EXPORT size_t sym_circle_memory_size(sym_circle_t* shp);
-DLL_EXPORT char* sym_circle_serialize(const char* buf, sym_circle_t* shp);
-DLL_EXPORT char* sym_circle_deserialize(const char* buf, sym_circle_t* shp);
-
-
-DLL_EXPORT sym_ellipse_t* sym_ellipse_create();
-DLL_EXPORT void sym_ellipse_destroy(sym_ellipse_t* ellipse);
-DLL_EXPORT json_object* sym_ellipse_to_json_object(sym_ellipse_t* shp);
-DLL_EXPORT uint8_t sym_ellipse_from_json_object(sym_ellipse_t* shp, json_object* obj, char** errmsg);
-DLL_EXPORT size_t sym_ellipse_memory_size(sym_ellipse_t* shp);
-DLL_EXPORT char* sym_ellipse_serialize(const char* buf, sym_ellipse_t* shp);
-DLL_EXPORT char* sym_ellipse_deserialize(const char* buf, sym_ellipse_t* shp);
-
-
-DLL_EXPORT sym_pie_t* sym_pie_create();
-DLL_EXPORT void sym_pie_destroy(sym_pie_t* pie);
-DLL_EXPORT json_object* sym_pie_to_json_object(sym_pie_t* shp);
-DLL_EXPORT uint8_t sym_pie_from_json_object(sym_pie_t* shp, json_object* obj, char** errmsg);
-DLL_EXPORT size_t sym_pie_memory_size(sym_pie_t* shp);
-DLL_EXPORT char* sym_pie_serialize(const char* buf, sym_pie_t* shp);
-DLL_EXPORT char* sym_pie_deserialize(const char* buf, sym_pie_t* shp);
-
-
-
-DLL_EXPORT sym_chord_t* sym_chord_create();
-DLL_EXPORT void sym_chord_destroy(sym_chord_t* chord);
-DLL_EXPORT json_object* sym_chord_to_json_object(sym_chord_t* shp);
-DLL_EXPORT uint8_t sym_chord_from_json_object(sym_chord_t* shp, json_object* obj, char** errmsg);
-DLL_EXPORT size_t sym_chord_memory_size(sym_chord_t* shp);
-DLL_EXPORT char* sym_chord_serialize(const char* buf, sym_chord_t* shp);
-DLL_EXPORT char* sym_chord_deserialize(const char* buf, sym_chord_t* shp);
-
-
-
-DLL_EXPORT sym_linestring_t* sym_linestring_create();
-DLL_EXPORT void sym_linestring_destroy(sym_linestring_t* linestring);
-DLL_EXPORT json_object* sym_linestring_to_json_object(sym_linestring_t* shp);
-DLL_EXPORT uint8_t sym_linestring_from_json_object(sym_linestring_t* shp, json_object* obj, char** errmsg);
-DLL_EXPORT size_t sym_linestring_memory_size(sym_linestring_t* shp);
-DLL_EXPORT char* sym_linestring_serialize(const char* buf, sym_linestring_t* shp);
-DLL_EXPORT char* sym_linestring_deserialize(const char* buf, sym_linestring_t* shp);
-
-
-
-DLL_EXPORT sym_polygon_t* sym_polygon_create();
-DLL_EXPORT void sym_polygon_destroy(sym_polygon_t* polygon);
-DLL_EXPORT json_object* sym_polygon_to_json_object(sym_polygon_t* shp);
-DLL_EXPORT uint8_t sym_polygon_from_json_object(sym_polygon_t* shp, json_object* obj, char** errmsg);
-DLL_EXPORT size_t sym_polygon_memory_size(sym_polygon_t* shp);
-DLL_EXPORT char* sym_polygon_serialize(const char* buf, sym_polygon_t* shp);
-DLL_EXPORT char* sym_polygon_deserialize(const char* buf, sym_polygon_t* shp);
-
-
-DLL_EXPORT sym_regular_polygon_t* sym_regular_polygon_create();
-DLL_EXPORT void sym_regular_polygon_destroy(sym_regular_polygon_t* regularpolygon);
-DLL_EXPORT json_object* sym_regular_polygon_to_json_object(sym_regular_polygon_t* shp);
-DLL_EXPORT uint8_t sym_regular_polygon_from_json_object(sym_regular_polygon_t* shp, json_object* obj, char** errmsg);
-DLL_EXPORT size_t sym_regular_polygon_memory_size(sym_regular_polygon_t* shp);
-DLL_EXPORT char* sym_regular_polygon_serialize(const char* buf, sym_regular_polygon_t* shp);
-DLL_EXPORT char* sym_regular_polygon_deserialize(const char* buf, sym_regular_polygon_t* shp);
-
-
-
-DLL_EXPORT sym_star_t* sym_star_create();
-DLL_EXPORT void sym_star_destroy(sym_star_t* star);
-DLL_EXPORT json_object* sym_star_to_json_object(sym_star_t* shp);
-DLL_EXPORT uint8_t sym_star_from_json_object(sym_star_t* shp, json_object* obj, char** errmsg);
-DLL_EXPORT size_t sym_star_memory_size(sym_star_t* shp);
-DLL_EXPORT char* sym_star_serialize(const char* buf, sym_star_t* shp);
-DLL_EXPORT char* sym_star_deserialize(const char* buf, sym_star_t* shp);
-
-
+sym_rect_t sym_get_mbr(symbol_t* sym);
 
 
 

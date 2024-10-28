@@ -1,5 +1,9 @@
-#include "symbol.h"
-#include "helper.h"
+#include <stdio.h>
+#include "allheaders.h"
+
+
+
+
 
 
 sym_polygon_t* sym_polygon_create() {
@@ -71,4 +75,44 @@ size_t sym_polygon_memory_size(sym_polygon_t* shp) {
         len += sym_point_memory_size(&(shp->points[i]));
     }
     return len;
+}
+
+
+char* sym_polygon_serialize(const char* buf, sym_polygon_t* shp) {
+    char* p = (char*)buf;
+    SERIALIZE_TO_BUF(p, shp->type);
+    p = sym_stroke_serialize(p, shp->stroke);
+    p = sym_fill_serialize(p, shp->fill);
+    SERIALIZE_TO_BUF(p, shp->npoints);
+    for (size_t i = 0; i < shp->npoints; i++) {
+        p = sym_point_serialize(p, &(shp->points[i]));
+    }
+
+    return p;
+}
+
+
+char* sym_polygon_deserialize(const char* buf, sym_polygon_t** shp) {
+    char* p = (char*)buf;
+    *shp = sym_polygon_create();
+    DESERIALIZE_FROM_BUF(p, (*shp)->type);
+    p = sym_stroke_deserialize(p, &((*shp)->stroke));
+    p = sym_fill_deserialize(p, &((*shp)->fill));
+    DESERIALIZE_FROM_BUF(p, (*shp)->npoints);
+    (*shp)->points = (sym_point_t*)malloc((*shp)->npoints * sizeof(sym_point_t));
+    for (size_t i = 0; i < (*shp)->npoints; i++) {
+        p = sym_point_deserialize(p, &((*shp)->points[i]));
+    }
+    return p;
+}
+
+sym_rect_t sym_polygon_get_mbr(sym_polygon_t* shp) {
+    sym_rect_t rect;
+
+    return rect;
+}
+
+
+double sym_polygon_get_stroke_width(sym_polygon_t* shp) {
+    return shp->stroke->width;
 }

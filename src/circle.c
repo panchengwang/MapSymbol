@@ -1,5 +1,6 @@
-#include "symbol.h"
-#include "helper.h"
+#include <stdio.h>
+#include "allheaders.h"
+
 
 
 sym_circle_t* sym_circle_create() {
@@ -66,9 +67,24 @@ char* sym_circle_serialize(const char* buf, sym_circle_t* shp) {
 }
 
 
-char* sym_circle_deserialize(const char* buf, sym_circle_t* shp) {
+char* sym_circle_deserialize(const char* buf, sym_circle_t** shp) {
     char* p = (char*)buf;
-
+    *shp = sym_circle_create();
+    DESERIALIZE_FROM_BUF(p, (*shp)->type);
+    p = sym_stroke_deserialize(p, &((*shp)->stroke));
+    p = sym_fill_deserialize(p, &((*shp)->fill));
+    p = sym_point_deserialize(p, &((*shp)->center));
+    DESERIALIZE_FROM_BUF(p, (*shp)->radius);
     return p;
 }
 
+sym_rect_t sym_circle_get_mbr(sym_circle_t* shp) {
+    sym_rect_t rect;
+
+    return rect;
+}
+
+
+double sym_circle_get_stroke_width(sym_circle_t* shp) {
+    return shp->stroke->width;
+}
