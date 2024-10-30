@@ -45,3 +45,9 @@ sym_rect_t* sym_rect_ensure_symmetry(sym_rect_t* rect) {
 }
 
 
+sym_rect_t* sym_rect_translate(sym_rect_t* rect, double x, double y) {
+    rect->minx += x;
+    rect->maxx += x;
+    rect->miny += y;
+    rect->maxy += y;
+}

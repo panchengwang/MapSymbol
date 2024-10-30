@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "allheaders.h"
-
+#include <math.h>
 
 sym_ellipse_t* sym_ellipse_create() {
     sym_ellipse_t* shp = (sym_ellipse_t*)malloc(sizeof(sym_ellipse_t));
@@ -94,7 +94,10 @@ char* sym_ellipse_deserialize(const char* buf, sym_ellipse_t** shp) {
 
 sym_rect_t sym_ellipse_get_mbr(sym_ellipse_t* shp) {
     sym_rect_t rect;
-
+    double r = MAX(shp->xradius, shp->yradius);
+    rect.minx = rect.miny = -r;
+    rect.maxx = rect.maxy = r;
+    sym_rect_translate(&rect, shp->center.x, shp->center.y);
     return rect;
 }
 
@@ -103,3 +106,25 @@ double sym_ellipse_get_stroke_width(sym_ellipse_t* shp) {
 
     return shp->stroke->width;
 }
+
+
+
+
+void sym_ellipse_draw(canvas_t* canvas, sym_ellipse_t* shp) {
+    cairo_save(canvas->cairo);
+    cairo_translate(canvas->cairo, shp->center.x, shp->center.y);
+    cairo_rotate(canvas->cairo, shp->rotate / 180.0 * M_PI);
+    cairo_scale(canvas->cairo, 1, shp->yradius / shp->xradius);
+
+    cairo_arc(canvas->cairo, 0, 0, shp->xradius,
+        0, 2.0 * M_PI);
+    cairo_close_path(canvas->cairo);
+
+    cairo_restore(canvas->cairo);
+    sym_canvas_set_fill(canvas, shp->fill);
+    cairo_fill_preserve(canvas->cairo);
+
+    sym_canvas_set_stroke(canvas, shp->stroke);
+    cairo_stroke(canvas->cairo);
+}
+

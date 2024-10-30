@@ -220,6 +220,7 @@ char* sym_serialize(symbol_t* sym, size_t* len) {
     char* buf;
     char* p;
     *len = sym_memory_size(sym);
+
     buf = (char*)malloc(*len);
     memset(buf, 0, *len);
 
@@ -230,6 +231,7 @@ char* sym_serialize(symbol_t* sym, size_t* len) {
     SERIALIZE_TO_BUF(p, sym->yscale);
     SERIALIZE_TO_BUF(p, sym->nshapes);
     for (size_t i = 0; i < sym->nshapes; i++) {
+
         p = sym_shape_serialize(p, sym->shapes[i]);
     }
     return buf;
@@ -251,39 +253,59 @@ symbol_t* sym_deserialize(const char* buf) {
     return sym;
 }
 
+uint8_t sym_only_has_system_line(symbol_t* sym) {
+    uint8_t onlysystemline = TRUE;
+    for (size_t i = 0; i < sym->nshapes; i++) {
+        if (sym->shapes[i]->type != SYM_SHAPE_SYSTEM_LINE) {
+            onlysystemline = FALSE;
+            break;
+        }
+    }
+    return onlysystemline;
+}
 
 sym_rect_t sym_get_mbr(symbol_t* sym) {
     sym_rect_t rect;
     if (sym->nshapes == 0) {
         return rect;
     }
-    uint8_t onlysystemline = TRUE;
-    for (size_t i = 0; i < sym->nshapes; i++) {
-        sym_rect_t shprect = sym_shape_get_mbr(sym->shapes[i]);
-        sym_rect_extend(&rect, &shprect);
-        if (sym->shapes[i]->type == SYM_SHAPE_SYSTEM_LINE) {
-            onlysystemline = FALSE;
-        }
+
+    if (sym_only_has_system_line(sym)) {
+        rect.minx = -1.0f;
+        rect.maxx = 1.0f;
+        rect.miny = 0.0f;
+        rect.maxy = 0.0f;
     }
-
-
-    if (!onlysystemline) {
+    else {
+        rect = sym_shape_get_mbr(sym->shapes[0]);
+        for (size_t i = 0; i < sym->nshapes; i++) {
+            sym_rect_t shprect = sym_shape_get_mbr(sym->shapes[i]);
+            sym_rect_extend(&rect, &shprect);
+        }
         sym_rect_t other = { -1,-1,1,1 };
         sym_rect_extend(&rect, &other);
     }
-
     sym_rect_scale(&rect, sym->xscale, sym->yscale);
 
     return rect;
 }
 
 unsigned char* sym_to_image(symbol_t* sym, const char* format, double dotsPerMM, size_t* len) {
+
     sym_rect_t rect = sym_get_mbr(sym);
+
     double maxstrokewidth = 0.0f;
     for (size_t i = 0; i < sym->nshapes; i++) {
         maxstrokewidth = MAX(maxstrokewidth, sym_shape_get_stroke_width(sym->shapes[i]));
     }
-    sym_rect_expand(&rect, 2.0 * maxstrokewidth / dotsPerMM);
+    if (!sym_only_has_system_line(sym)) {
+        sym_rect_expand(&rect, maxstrokewidth * 0.5);
+    }
+    else {
+        rect.miny -= maxstrokewidth * 0.5;
+        rect.maxy += maxstrokewidth * 0.5;
+    }
+
     sym_rect_ensure_symmetry(&rect);
 
     canvas_t* canvas = sym_canvas_create(rect.maxx - rect.minx, rect.maxy - rect.miny, format);
@@ -296,5 +318,22 @@ unsigned char* sym_to_image(symbol_t* sym, const char* format, double dotsPerMM,
     sym_canvas_draw(canvas, sym);
     sym_canvas_end(canvas);
     buf = sym_canvas_save_to_stream(canvas, len);
+    sym_canvas_destroy(canvas);
     return buf;
+}
+
+
+void sym_save_to_image_file(symbol_t* sym, const char* format, double dotsPerMM, const char* filename) {
+    size_t len = 0;
+    unsigned char* data = NULL;
+    FILE* fd = fopen(filename, "wb");
+    if (!fd) {
+        return;
+    }
+
+    data = sym_to_image(sym, format, dotsPerMM, &len);
+
+    fwrite(data, 1, len, fd);
+    fclose(fd);
+    free(data);
 }

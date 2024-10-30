@@ -1,21 +1,21 @@
 {
     "offset": {
         "x": 0.0,
-        "y": 0.1
+        "y": 0.0
     },
-    "xscale": 10.0,
-    "yscale": 10.0,
+    "xscale": 100.0,
+    "yscale": 100.0,
     "shapes": [
         {
-            "type": "CIRCLE",
+            "type": "REGULARPOLYGON",
             "stroke": {
                 "color": {
-                    "alpha": 200,
+                    "alpha": 100,
                     "red": 255,
-                    "green": 0,
-                    "blue": 0
+                    "green": 100,
+                    "blue": 255
                 },
-                "width": 0.3,
+                "width": 0.5,
                 "dashes": [
                     10.0,
                     0.0
@@ -28,17 +28,19 @@
             "fill": {
                 "type": "SOLID",
                 "color": {
-                    "alpha": 100,
+                    "alpha": 127,
                     "red": 255,
-                    "green": 255,
+                    "green": 0,
                     "blue": 0
                 }
             },
+            "rotate": 75,
             "center": {
                 "x": 0.0,
                 "y": 0.0
             },
-            "radius": 0.9
+            "radius": 0.9,
+            "numedges": 4
         }
     ]
 }

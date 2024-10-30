@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "allheaders.h"
-
+#include <math.h>
 
 
 sym_star_t* sym_star_create() {
@@ -103,7 +103,10 @@ char* sym_star_deserialize(const char* buf, sym_star_t** shp) {
 
 sym_rect_t sym_star_get_mbr(sym_star_t* shp) {
     sym_rect_t rect;
-
+    double r = shp->radius;
+    rect.minx = rect.miny = -r;
+    rect.maxx = rect.maxy = r;
+    sym_rect_translate(&rect, shp->center.x, shp->center.y);
     return rect;
 }
 
@@ -111,3 +114,39 @@ sym_rect_t sym_star_get_mbr(sym_star_t* shp) {
 double sym_star_get_stroke_width(sym_star_t* shp) {
     return shp->stroke->width;
 }
+
+
+
+void sym_star_draw(canvas_t* canvas, sym_star_t* shp) {
+    cairo_t* cairo = canvas->cairo;
+
+    cairo_save(cairo);
+    cairo_translate(cairo, shp->center.x, shp->center.y);
+    cairo_rotate(cairo, shp->rotate / 180.0 * M_PI);
+    double rotateangle = 0.0;
+    if (shp->nedges % 2 == 1) {
+        rotateangle = M_PI_2;
+    }
+    else if (shp->nedges % 4 == 0) {
+        rotateangle = M_PI / shp->nedges;
+    }
+    cairo_rotate(cairo, rotateangle);
+    double step = M_PI / shp->nedges;
+
+    cairo_new_path(cairo);
+    cairo_move_to(cairo, shp->radius, 0);
+    for (size_t i = 0; i < shp->nedges; i++) {
+        cairo_line_to(cairo, shp->radius * cos(2 * i * step), shp->radius * sin(2 * i * step));
+        cairo_line_to(cairo, shp->radius2 * cos(2 * i * step + step), shp->radius2 * sin(2 * i * step + step));
+    }
+    cairo_close_path(cairo);
+
+    cairo_restore(cairo);
+
+    sym_canvas_set_fill(canvas, shp->fill);
+    cairo_fill_preserve(cairo);
+
+    sym_canvas_set_stroke(canvas, shp->stroke);
+    cairo_stroke(cairo);
+}
+

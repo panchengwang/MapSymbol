@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "allheaders.h"
-
+#include <math.h>
 
 sym_regular_polygon_t* sym_regular_polygon_create() {
     sym_regular_polygon_t* shp = (sym_regular_polygon_t*)malloc(sizeof(sym_regular_polygon_t));
@@ -94,7 +94,10 @@ char* sym_regular_polygon_deserialize(const char* buf, sym_regular_polygon_t** s
 
 sym_rect_t sym_regular_polygon_get_mbr(sym_regular_polygon_t* shp) {
     sym_rect_t rect;
-
+    double r = shp->radius;
+    rect.minx = rect.miny = -r;
+    rect.maxx = rect.maxy = r;
+    sym_rect_translate(&rect, shp->center.x, shp->center.y);
     return rect;
 }
 
@@ -104,3 +107,38 @@ double sym_regular_polygon_get_stroke_width(sym_regular_polygon_t* shp) {
 
     return shp->stroke->width;
 }
+
+
+
+
+void sym_regular_polygon_draw(canvas_t* canvas, sym_regular_polygon_t* shp) {
+    cairo_t* cairo = canvas->cairo;
+    cairo_save(cairo);
+    cairo_translate(cairo, shp->center.x, shp->center.y);
+    cairo_rotate(cairo, shp->rotate / 180.0 * M_PI);
+    double rotateangle = 0.0;
+    if (shp->nedges % 2 == 1) {
+        rotateangle = M_PI_2;
+    }
+    else if (shp->nedges % 4 == 0) {
+        rotateangle = M_PI / shp->nedges;
+    }
+    cairo_rotate(cairo, rotateangle);
+    double step = 2 * M_PI / shp->nedges;
+
+    cairo_new_path(cairo);
+    cairo_move_to(cairo, shp->radius, 0);
+    for (size_t i = 0; i < shp->nedges; i++) {
+        cairo_line_to(cairo, shp->radius * cos(i * step), shp->radius * sin(i * step));
+    }
+    cairo_close_path(cairo);
+
+    cairo_restore(cairo);
+
+    sym_canvas_set_fill(canvas, shp->fill);
+    cairo_fill_preserve(cairo);
+
+    sym_canvas_set_stroke(canvas, shp->stroke);
+    cairo_stroke(cairo);
+}
+

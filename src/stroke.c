@@ -2,6 +2,8 @@
 #include "helper.h"
 #include <stdio.h>
 #include "stroke.h"
+#include "color.h"
+
 
 sym_stroke_t* sym_stroke_create() {
     sym_stroke_t* stroke = (sym_stroke_t*)malloc(sizeof(sym_stroke_t));
@@ -30,6 +32,9 @@ sym_stroke_t* sym_stroke_init(sym_stroke_t* stroke) {
 
 
 uint8_t sym_stroke_from_json_object(sym_stroke_t* stroke, json_object* obj, char** errmsg) {
+
+    JSON_GET_DOUBLE(obj, "width", stroke->width, errmsg);
+
     const char* capstr;
     uint8_t ret;
     JSON_GET_STRING(obj, "cap", capstr, errmsg);
@@ -62,6 +67,7 @@ uint8_t sym_stroke_from_json_object(sym_stroke_t* stroke, json_object* obj, char
         *errmsg = g_strdup_printf("Unknow line join: %s", joinstr);
         return FALSE;
     }
+    JSON_GET_DOUBLE(obj, "miter", stroke->miter, errmsg);
 
     json_object* colorobj;
     JSON_GET_OBJ(obj, "color", colorobj, errmsg);
@@ -112,6 +118,7 @@ json_object* sym_stroke_to_json_object(sym_stroke_t* stroke) {
     JSON_ADD_DOUBLE(obj, "width", stroke->width);
     JSON_ADD_COLOR(obj, "color", stroke->color);
     JSON_ADD_DOUBLE(obj, "dashoffset", stroke->dash_offset);
+    JSON_ADD_DOUBLE(obj, "miter", stroke->miter);
 
     json_object* dasharr = json_object_new_array();
     for (size_t i = 0; i < stroke->ndashes; i++) {
@@ -141,6 +148,7 @@ size_t sym_stroke_memory_size(sym_stroke_t* stroke) {
 
 char* sym_stroke_serialize(const char* buf, sym_stroke_t* stroke) {
     char* p = (char*)buf;
+
     SERIALIZE_TO_BUF(p, stroke->cap);
     SERIALIZE_TO_BUF(p, stroke->join);
     SERIALIZE_TO_BUF(p, stroke->miter);

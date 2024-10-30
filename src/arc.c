@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <math.h>
 #include "allheaders.h"
 
 
@@ -69,6 +70,7 @@ size_t sym_arc_memory_size(sym_arc_t* shp) {
 
 char* sym_arc_serialize(const char* buf, sym_arc_t* shp) {
     char* p = (char*)buf;
+
     SERIALIZE_TO_BUF(p, shp->type);
     p = sym_stroke_serialize(p, shp->stroke);
     p = sym_point_serialize(p, &(shp->center));
@@ -100,10 +102,29 @@ char* sym_arc_deserialize(const char* buf, sym_arc_t** shp) {
 
 sym_rect_t sym_arc_get_mbr(sym_arc_t* shp) {
     sym_rect_t rect;
-
+    double r = MAX(shp->xradius, shp->yradius);
+    rect.minx = rect.miny = -r;
+    rect.maxx = rect.maxy = r;
+    sym_rect_translate(&rect, shp->center.x, shp->center.y);
     return rect;
 }
 
 double sym_arc_get_stroke_width(sym_arc_t* shp) {
     return shp->stroke->width;
+}
+
+
+void sym_arc_draw(canvas_t* canvas, sym_arc_t* shp) {
+
+    cairo_save(canvas->cairo);
+    cairo_translate(canvas->cairo, shp->center.x, shp->center.y);
+    cairo_rotate(canvas->cairo, shp->rotate / 180.0 * M_PI);
+    cairo_scale(canvas->cairo, 1, shp->yradius / shp->xradius);
+
+    cairo_arc(canvas->cairo, 0, 0, shp->xradius,
+        shp->startangle / 180.0 * M_PI, shp->endangle / 180.0 * M_PI);
+    cairo_restore(canvas->cairo);
+
+    sym_canvas_set_stroke(canvas, shp->stroke);
+    cairo_stroke(canvas->cairo);
 }

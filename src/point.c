@@ -38,6 +38,7 @@ char* sym_point_deserialize(const char* buf, sym_point_t* pt) {
 
 sym_rect_t sym_point_get_mbr(sym_point_t* pt) {
     sym_rect_t rect;
-
+    rect.minx = rect.maxx = pt->x;
+    rect.miny = rect.maxy = pt->y;
     return rect;
 }

@@ -1,16 +1,16 @@
 {
     "offset": {
         "x": 0.0,
-        "y": 0.1
+        "y": 0.0
     },
     "xscale": 10.0,
     "yscale": 10.0,
     "shapes": [
         {
-            "type": "CIRCLE",
+            "type": "PIE",
             "stroke": {
                 "color": {
-                    "alpha": 200,
+                    "alpha": 255,
                     "red": 255,
                     "green": 0,
                     "blue": 0
@@ -22,23 +22,27 @@
                 ],
                 "dashoffset": 0.0,
                 "cap": "butt",
-                "join": "bevel",
+                "join": "round",
                 "miter": 1.0
             },
             "fill": {
                 "type": "SOLID",
                 "color": {
-                    "alpha": 100,
+                    "alpha": 127,
                     "red": 255,
                     "green": 255,
                     "blue": 0
                 }
             },
             "center": {
-                "x": 0.0,
-                "y": 0.0
+                "x": 0,
+                "y": 0
             },
-            "radius": 0.9
+            "rotate": 0,
+            "xradius": 1,
+            "yradius": 1,
+            "startangle": 0.0,
+            "endangle": 180.0
         }
     ]
 }

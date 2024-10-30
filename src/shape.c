@@ -137,38 +137,39 @@ size_t sym_shape_memory_size(sym_shape_t* shp) {
 
 char* sym_shape_serialize(const char* buf, sym_shape_t* shp) {
     char* p = (char*)buf;
+
     if (shp->type == SYM_SHAPE_ARC) {
-        return sym_arc_serialize(p, (sym_arc_t*)shp);
+        p = sym_arc_serialize(p, (sym_arc_t*)shp);
     }
     else if (shp->type == SYM_SHAPE_CHORD) {
-        return sym_chord_serialize(p, (sym_chord_t*)shp);
+        p = sym_chord_serialize(p, (sym_chord_t*)shp);
     }
     else if (shp->type == SYM_SHAPE_PIE) {
-        return sym_pie_serialize(p, (sym_pie_t*)shp);
+        p = sym_pie_serialize(p, (sym_pie_t*)shp);
     }
     else if (shp->type == SYM_SHAPE_CIRCLE) {
-        return sym_circle_serialize(p, (sym_circle_t*)shp);
+        p = sym_circle_serialize(p, (sym_circle_t*)shp);
     }
     else if (shp->type == SYM_SHAPE_ELLIPSE) {
-        return sym_ellipse_serialize(p, (sym_ellipse_t*)shp);
+        p = sym_ellipse_serialize(p, (sym_ellipse_t*)shp);
     }
     else if (shp->type == SYM_SHAPE_SYSTEM_LINE) {
-        return sym_system_line_serialize(p, (sym_system_line_t*)shp);
+        p = sym_system_line_serialize(p, (sym_system_line_t*)shp);
     }
     else if (shp->type == SYM_SHAPE_SYSTEM_FILL) {
-        return sym_system_fill_serialize(p, (sym_system_fill_t*)shp);
+        p = sym_system_fill_serialize(p, (sym_system_fill_t*)shp);
     }
     else if (shp->type == SYM_SHAPE_LINESTRING) {
-        return sym_linestring_serialize(p, (sym_linestring_t*)shp);
+        p = sym_linestring_serialize(p, (sym_linestring_t*)shp);
     }
     else if (shp->type == SYM_SHAPE_POLYGON) {
-        return sym_polygon_serialize(p, (sym_polygon_t*)shp);
+        p = sym_polygon_serialize(p, (sym_polygon_t*)shp);
     }
     else if (shp->type == SYM_SHAPE_REGULAR_POLYGON) {
-        return sym_regular_polygon_serialize(p, (sym_regular_polygon_t*)shp);
+        p = sym_regular_polygon_serialize(p, (sym_regular_polygon_t*)shp);
     }
     else if (shp->type == SYM_SHAPE_STAR) {
-        return sym_star_serialize(p, (sym_star_t*)shp);
+        p = sym_star_serialize(p, (sym_star_t*)shp);
     }
     return p;
 }
@@ -179,37 +180,37 @@ char* sym_shape_deserialize(const char* buf, sym_shape_t** shp) {
     uint8_t shptype;
     memcpy(&shptype, p, sizeof(shptype));
     if (shptype == SYM_SHAPE_ARC) {
-        return sym_arc_deserialize(p, (sym_arc_t**)shp);
+        p = sym_arc_deserialize(p, (sym_arc_t**)shp);
     }
     else if (shptype == SYM_SHAPE_CHORD) {
-        return sym_chord_deserialize(p, (sym_chord_t**)shp);
+        p = sym_chord_deserialize(p, (sym_chord_t**)shp);
     }
     else if (shptype == SYM_SHAPE_PIE) {
-        return sym_pie_deserialize(p, (sym_pie_t**)shp);
+        p = sym_pie_deserialize(p, (sym_pie_t**)shp);
     }
     else if (shptype == SYM_SHAPE_CIRCLE) {
-        return sym_circle_deserialize(p, (sym_circle_t**)shp);
+        p = sym_circle_deserialize(p, (sym_circle_t**)shp);
     }
     else if (shptype == SYM_SHAPE_ELLIPSE) {
-        return sym_ellipse_deserialize(p, (sym_ellipse_t**)shp);
+        p = sym_ellipse_deserialize(p, (sym_ellipse_t**)shp);
     }
     else if (shptype == SYM_SHAPE_SYSTEM_LINE) {
-        return sym_system_line_deserialize(p, (sym_system_line_t**)shp);
+        p = sym_system_line_deserialize(p, (sym_system_line_t**)shp);
     }
     else if (shptype == SYM_SHAPE_SYSTEM_FILL) {
-        return sym_system_fill_deserialize(p, (sym_system_fill_t**)shp);
+        p = sym_system_fill_deserialize(p, (sym_system_fill_t**)shp);
     }
     else if (shptype == SYM_SHAPE_LINESTRING) {
-        return sym_linestring_deserialize(p, (sym_linestring_t**)shp);
+        p = sym_linestring_deserialize(p, (sym_linestring_t**)shp);
     }
     else if (shptype == SYM_SHAPE_POLYGON) {
-        return sym_polygon_deserialize(p, (sym_polygon_t**)shp);
+        p = sym_polygon_deserialize(p, (sym_polygon_t**)shp);
     }
     else if (shptype == SYM_SHAPE_REGULAR_POLYGON) {
-        return sym_regular_polygon_deserialize(p, (sym_regular_polygon_t**)shp);
+        p = sym_regular_polygon_deserialize(p, (sym_regular_polygon_t**)shp);
     }
     else if (shptype == SYM_SHAPE_STAR) {
-        return sym_star_deserialize(p, (sym_star_t**)shp);
+        p = sym_star_deserialize(p, (sym_star_t**)shp);
     }
     return p;
 }
@@ -223,34 +224,34 @@ sym_rect_t sym_shape_get_mbr(sym_shape_t* shp) {
         rect = sym_arc_get_mbr((sym_arc_t*)shp);
     }
     else if (shptype == SYM_SHAPE_CHORD) {
-        return sym_chord_get_mbr((sym_chord_t*)shp);
+        rect = sym_chord_get_mbr((sym_chord_t*)shp);
     }
     else if (shptype == SYM_SHAPE_PIE) {
-        return sym_pie_get_mbr((sym_pie_t*)shp);
+        rect = sym_pie_get_mbr((sym_pie_t*)shp);
     }
     else if (shptype == SYM_SHAPE_CIRCLE) {
-        return sym_circle_get_mbr((sym_circle_t*)shp);
+        rect = sym_circle_get_mbr((sym_circle_t*)shp);
     }
     else if (shptype == SYM_SHAPE_ELLIPSE) {
-        return sym_ellipse_get_mbr((sym_ellipse_t*)shp);
+        rect = sym_ellipse_get_mbr((sym_ellipse_t*)shp);
     }
     else if (shptype == SYM_SHAPE_SYSTEM_LINE) {
-        return sym_system_line_get_mbr((sym_system_line_t*)shp);
+        rect = sym_system_line_get_mbr((sym_system_line_t*)shp);
     }
     else if (shptype == SYM_SHAPE_SYSTEM_FILL) {
-        return sym_system_fill_get_mbr((sym_system_fill_t*)shp);
+        rect = sym_system_fill_get_mbr((sym_system_fill_t*)shp);
     }
     else if (shptype == SYM_SHAPE_LINESTRING) {
-        return sym_linestring_get_mbr((sym_linestring_t*)shp);
+        rect = sym_linestring_get_mbr((sym_linestring_t*)shp);
     }
     else if (shptype == SYM_SHAPE_POLYGON) {
-        return sym_polygon_get_mbr((sym_polygon_t*)shp);
+        rect = sym_polygon_get_mbr((sym_polygon_t*)shp);
     }
     else if (shptype == SYM_SHAPE_REGULAR_POLYGON) {
-        return sym_regular_polygon_get_mbr((sym_regular_polygon_t*)shp);
+        rect = sym_regular_polygon_get_mbr((sym_regular_polygon_t*)shp);
     }
     else if (shptype == SYM_SHAPE_STAR) {
-        return sym_star_get_mbr((sym_star_t*)shp);
+        rect = sym_star_get_mbr((sym_star_t*)shp);
     }
 
     return rect;
@@ -296,4 +297,42 @@ double sym_shape_get_stroke_width(sym_shape_t* shp) {
     }
 
     return width;
+}
+
+
+
+void sym_shape_draw(canvas_t* canvas, sym_shape_t* shp) {
+    if (shp->type == SYM_SHAPE_ARC) {
+        sym_arc_draw(canvas, (sym_arc_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_CHORD) {
+        sym_chord_draw(canvas, (sym_chord_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_PIE) {
+        sym_pie_draw(canvas, (sym_pie_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_CIRCLE) {
+        sym_circle_draw(canvas, (sym_circle_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_ELLIPSE) {
+        sym_ellipse_draw(canvas, (sym_ellipse_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_SYSTEM_LINE) {
+        sym_system_line_draw(canvas, (sym_system_line_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_SYSTEM_FILL) {
+        sym_system_fill_draw(canvas, (sym_system_fill_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_LINESTRING) {
+        sym_linestring_draw(canvas, (sym_linestring_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_POLYGON) {
+        sym_polygon_draw(canvas, (sym_polygon_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_REGULAR_POLYGON) {
+        sym_regular_polygon_draw(canvas, (sym_regular_polygon_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_STAR) {
+        sym_star_draw(canvas, (sym_star_t*)shp);
+    }
 }

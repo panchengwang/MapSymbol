@@ -2,6 +2,8 @@
 #define __SYM_PIE_H
 
 #include "symbol.h"
+#include "canvas.h"
+
 
 DLL_EXPORT sym_pie_t* sym_pie_create();
 DLL_EXPORT void sym_pie_destroy(sym_pie_t* pie);
@@ -12,4 +14,6 @@ DLL_EXPORT char* sym_pie_serialize(const char* buf, sym_pie_t* shp);
 DLL_EXPORT char* sym_pie_deserialize(const char* buf, sym_pie_t** shp);
 sym_rect_t sym_pie_get_mbr(sym_pie_t* shp);
 double sym_pie_get_stroke_width(sym_pie_t* shp);
+
+void sym_pie_draw(canvas_t* canvas, sym_pie_t* shp);
 #endif

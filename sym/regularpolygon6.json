@@ -1,7 +1,7 @@
 {
     "offset": {
         "x": 0.0,
-        "y": 0.1
+        "y": 0.0
     },
     "xscale": 100.0,
     "yscale": 100.0,
@@ -15,7 +15,7 @@
                     "green": 100,
                     "blue": 255
                 },
-                "width": 1.0,
+                "width": 0.5,
                 "dashes": [
                     10.0,
                     0.0
@@ -34,13 +34,13 @@
                     "blue": 0
                 }
             },
-            "rotate": 45,
+            "rotate": 75,
             "center": {
                 "x": 0.0,
                 "y": 0.0
             },
-            "radius": 1.0,
-            "numedges": 3
+            "radius": 0.8,
+            "numedges": 6
         }
     ]
 }

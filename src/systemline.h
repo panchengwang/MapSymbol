@@ -3,7 +3,7 @@
 
 
 #include "symbol.h"
-
+#include "canvas.h"
 
 DLL_EXPORT sym_system_line_t* sym_system_line_create();
 DLL_EXPORT void sym_system_line_destroy(sym_system_line_t* systemline);
@@ -15,4 +15,8 @@ DLL_EXPORT char* sym_system_line_deserialize(const char* buf, sym_system_line_t*
 
 sym_rect_t sym_system_line_get_mbr(sym_system_line_t* shp);
 double sym_system_line_get_stroke_width(sym_system_line_t* shp);
+
+void sym_system_line_draw(canvas_t* canvas, sym_system_line_t* shp);
+
+
 #endif

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "allheaders.h"
-
+#include <math.h>
 
 
 sym_circle_t* sym_circle_create() {
@@ -80,7 +80,10 @@ char* sym_circle_deserialize(const char* buf, sym_circle_t** shp) {
 
 sym_rect_t sym_circle_get_mbr(sym_circle_t* shp) {
     sym_rect_t rect;
-
+    double r = shp->radius;
+    rect.minx = rect.miny = -r;
+    rect.maxx = rect.maxy = r;
+    sym_rect_translate(&rect, shp->center.x, shp->center.y);
     return rect;
 }
 
@@ -88,3 +91,21 @@ sym_rect_t sym_circle_get_mbr(sym_circle_t* shp) {
 double sym_circle_get_stroke_width(sym_circle_t* shp) {
     return shp->stroke->width;
 }
+
+
+
+void sym_circle_draw(canvas_t* canvas, sym_circle_t* shp) {
+    cairo_save(canvas->cairo);
+    cairo_translate(canvas->cairo, shp->center.x, shp->center.y);
+
+    cairo_arc(canvas->cairo, 0, 0, shp->radius, 0, 2 * M_PI);
+    cairo_close_path(canvas->cairo);
+
+    cairo_restore(canvas->cairo);
+    sym_canvas_set_fill(canvas, shp->fill);
+    cairo_fill_preserve(canvas->cairo);
+
+    sym_canvas_set_stroke(canvas, shp->stroke);
+    cairo_stroke(canvas->cairo);
+}
+

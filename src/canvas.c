@@ -14,6 +14,7 @@ canvas_t* sym_canvas_create(double width, double height, const char* format) {
     canvas->surface = NULL;
     canvas->cairo = NULL;
     canvas->dotsPerMM = 72.0 / 25.4;
+    return canvas;
 }
 
 
@@ -112,7 +113,7 @@ unsigned char* sym_canvas_save_to_stream(canvas_t* canvas, size_t* len) {
 
     cairo_surface_write_to_png_stream(canvas->surface, _write_image, &buffer);
 
-    len = buffer.len;
+    *len = buffer.len;
     return buffer.data;
 }
 
@@ -125,8 +126,8 @@ void sym_canvas_draw(canvas_t* canvas, symbol_t* sym) {
     cairo_scale(canvas->cairo, sym->xscale, sym->yscale);
     cairo_scale(canvas->cairo, canvas->dotsPerMM, -canvas->dotsPerMM);
 
-    for (size_t i = 0; i < sym->shapes; i++) {
-        sym_shape_draw(canvas, sym->shapes[i]);
+    for (size_t i = 0; i < sym->nshapes; i++) {
+        sym_shape_draw(canvas, sym->shapes[sym->nshapes - i - 1]);
     }
 
     cairo_restore(canvas->cairo);
@@ -134,3 +135,64 @@ void sym_canvas_draw(canvas_t* canvas, symbol_t* sym) {
 
 
 
+void sym_canvas_set_stroke(canvas_t* canvas, sym_stroke_t* stroke) {
+
+    cairo_set_line_width(canvas->cairo, stroke->width / canvas->xscale);
+    cairo_set_source_rgba(
+        canvas->cairo,
+        stroke->color.red / 255.0,
+        stroke->color.green / 255.0,
+        stroke->color.blue / 255.0,
+        stroke->color.alpha / 255.0
+    );
+
+    if (stroke->ndashes > 1) {
+        double* dashes = (double*)malloc(stroke->ndashes * sizeof(double));
+        for (size_t i = 0; i < stroke->ndashes; i++) {
+            dashes[i] = stroke->dashes[i] / canvas->xscale;
+        }
+        cairo_set_dash(canvas->cairo, dashes, stroke->ndashes,
+            stroke->dash_offset / canvas->xscale);
+        free(dashes);
+    }
+
+    uint8_t cap = stroke->cap;
+    if (cap == LINE_CAP_BUTT) {
+        cairo_set_line_cap(canvas->cairo, CAIRO_LINE_CAP_BUTT);
+    }
+    else if (cap == LINE_CAP_ROUND) {
+        cairo_set_line_cap(canvas->cairo, CAIRO_LINE_CAP_ROUND);
+    }
+    else if (cap == LINE_CAP_SQUARE) {
+        cairo_set_line_cap(canvas->cairo, CAIRO_LINE_CAP_SQUARE);
+    }
+
+    uint8_t join = stroke->join;
+    if (join == LINE_JOIN_BEVEL) {
+        cairo_set_line_join(canvas->cairo, CAIRO_LINE_JOIN_BEVEL);
+    }
+    else if (join == LINE_JOIN_MITER) {
+        cairo_set_line_join(canvas->cairo, CAIRO_LINE_JOIN_MITER);
+    }
+    else if (join == LINE_JOIN_ROUND) {
+        cairo_set_line_join(canvas->cairo, CAIRO_LINE_JOIN_ROUND);
+    }
+}
+
+
+void sym_canvas_set_fill(canvas_t* canvas, sym_fill_t* fill) {
+    if (fill->type == FILL_SOLID) {
+        sym_canvas_set_fill_solid(canvas, (sym_fill_solid_t*)fill);
+    }
+}
+
+
+void sym_canvas_set_fill_solid(canvas_t* canvas, sym_fill_solid_t* fill) {
+    cairo_set_source_rgba(
+        canvas->cairo,
+        fill->color.red / 255.0,
+        fill->color.green / 255.0,
+        fill->color.blue / 255.0,
+        fill->color.alpha / 255.0
+    );
+}

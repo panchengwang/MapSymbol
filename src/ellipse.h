@@ -2,6 +2,7 @@
 #define __SYM_ELLIPSE_H
 
 #include "symbol.h"
+#include "canvas.h"
 
 DLL_EXPORT sym_ellipse_t* sym_ellipse_create();
 DLL_EXPORT void sym_ellipse_destroy(sym_ellipse_t* ellipse);
@@ -13,4 +14,7 @@ DLL_EXPORT char* sym_ellipse_deserialize(const char* buf, sym_ellipse_t** shp);
 sym_rect_t sym_ellipse_get_mbr(sym_ellipse_t* shp);
 
 double sym_ellipse_get_stroke_width(sym_ellipse_t* shp);
+
+void sym_ellipse_draw(canvas_t* canvas, sym_ellipse_t* shp);
+
 #endif

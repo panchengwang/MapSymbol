@@ -3,6 +3,8 @@
 
 
 #include "symbol.h"
+#include "canvas.h"
+
 
 DLL_EXPORT sym_regular_polygon_t* sym_regular_polygon_create();
 DLL_EXPORT void sym_regular_polygon_destroy(sym_regular_polygon_t* regularpolygon);
@@ -13,4 +15,8 @@ DLL_EXPORT char* sym_regular_polygon_serialize(const char* buf, sym_regular_poly
 DLL_EXPORT char* sym_regular_polygon_deserialize(const char* buf, sym_regular_polygon_t** shp);
 sym_rect_t sym_regular_polygon_get_mbr(sym_regular_polygon_t* shp);
 double sym_regular_polygon_get_stroke_width(sym_regular_polygon_t* shp);
+
+void sym_regular_polygon_draw(canvas_t* canvas, sym_regular_polygon_t* shp);
+
+
 #endif

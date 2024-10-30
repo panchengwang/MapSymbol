@@ -60,11 +60,22 @@ char* sym_system_fill_deserialize(const char* buf, sym_system_fill_t** shp) {
 
 sym_rect_t sym_system_fill_get_mbr(sym_system_fill_t* shp) {
     sym_rect_t rect;
-
+    rect.minx = rect.miny = -1;
+    rect.maxx = rect.maxy = 1;
     return rect;
 }
 
 
 double sym_system_fill_get_stroke_width(sym_system_fill_t* shp) {
     return 0.0f;
+}
+
+
+
+
+void sym_system_fill_draw(canvas_t* canvas, sym_system_fill_t* shp) {
+
+    sym_canvas_set_fill(canvas, shp->fill);
+
+    cairo_paint(canvas->cairo);
 }

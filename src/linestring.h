@@ -2,6 +2,8 @@
 #define __SYM_LINESTRING_H
 
 #include "symbol.h"
+#include "canvas.h"
+
 
 DLL_EXPORT sym_linestring_t* sym_linestring_create();
 DLL_EXPORT void sym_linestring_destroy(sym_linestring_t* linestring);
@@ -13,4 +15,6 @@ DLL_EXPORT char* sym_linestring_deserialize(const char* buf, sym_linestring_t** 
 sym_rect_t sym_linestring_get_mbr(sym_linestring_t* shp);
 
 double sym_linestring_get_stroke_width(sym_linestring_t* shp);
+void sym_linestring_draw(canvas_t* canvas, sym_linestring_t* shp);
+
 #endif

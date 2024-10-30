@@ -2,7 +2,7 @@
 #include "helper.h"
 #include <stdio.h>
 #include "fill.h"
-
+#include "color.h"
 
 
 sym_fill_solid_t* sym_fill_solid_create() {

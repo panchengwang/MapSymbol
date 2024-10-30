@@ -99,8 +99,11 @@ char* sym_linestring_deserialize(const char* buf, sym_linestring_t** shp) {
 
 
 sym_rect_t sym_linestring_get_mbr(sym_linestring_t* shp) {
-    sym_rect_t rect;
-
+    sym_rect_t rect = sym_point_get_mbr(&(shp->points[0]));
+    for (size_t i = 0; i < shp->npoints;i++) {
+        sym_rect_t ptrect = sym_point_get_mbr(&(shp->points[i]));
+        sym_rect_extend(&rect, &ptrect);
+    }
     return rect;
 }
 
@@ -108,3 +111,25 @@ sym_rect_t sym_linestring_get_mbr(sym_linestring_t* shp) {
 double sym_linestring_get_stroke_width(sym_linestring_t* shp) {
     return shp->stroke->width;
 }
+
+
+
+
+void sym_linestring_draw(canvas_t* canvas, sym_linestring_t* shp) {
+    if (shp->npoints < 2) {
+        return;
+    }
+
+    cairo_save(canvas->cairo);
+
+    cairo_move_to(canvas->cairo, shp->points[0].x, shp->points[0].y);
+    for (size_t i = 1; i < shp->npoints; i++) {
+        cairo_line_to(canvas->cairo, shp->points[i].x, shp->points[i].y);
+    }
+
+    cairo_restore(canvas->cairo);
+
+    sym_canvas_set_stroke(canvas, shp->stroke);
+    cairo_stroke(canvas->cairo);
+}
+

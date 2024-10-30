@@ -1,0 +1,34 @@
+{
+    "offset": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "xscale": 100.0,
+    "yscale": 100.0,
+    "shapes": [
+        {
+            "type": "SYSTEMLINE",
+            "stroke": {
+                "color": {
+                    "alpha": 255,
+                    "red": 255,
+                    "green": 0,
+                    "blue": 0
+                },
+                "width": 0.3,
+                "dashes": [
+                    3.0,
+                    2,
+                    0.8,
+                    2,
+                    0.8,
+                    2
+                ],
+                "dashoffset": 0.0,
+                "cap": "butt",
+                "join": "bevel",
+                "miter": 1.0
+            }
+        }
+    ]
+}

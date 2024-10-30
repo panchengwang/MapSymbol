@@ -3,6 +3,11 @@
 #include <symbol.h>
 #include <glib.h>
 #include <stdint.h>
+#include <cairo.h>
+
+#include <math.h>
+
+
 
 int main(int argc, char** argv) {
 
@@ -36,6 +41,41 @@ int main(int argc, char** argv) {
     fprintf(stderr, "sizeof(uint8_t): %d\n", sizeof(uint8_t));
     sym2 = sym_deserialize(buf);
     fprintf(stderr, "%s\n", sym_to_json_string(sym2));
+
+    char* filename2 = g_strdup_printf("%s.png", filename);
+    sym_save_to_image_file(sym2, "png", 96 / 25.4, filename2);
+    g_free(filename2);
+
+
+    cairo_surface_t* sf = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 800, 800);
+    cairo_t* cr = cairo_create(sf);
+
+    cairo_set_source_rgba(cr, 1, 1, 1, 1);
+    cairo_paint(cr);
+
+    cairo_save(cr);
+    cairo_translate(cr, 400, 400);
+    cairo_scale(cr, 400, -400);
+
+    cairo_arc(cr, 0, 0, 0.5, 0, M_PI);
+    // cairo_line_to(cr, -0.5, 0);
+    cairo_curve_to(cr, -0.5, 0, 0, 0.65, 0.5, 0);
+    // cairo_move_to(cr, -0.5, 0);
+    cairo_close_path(cr);
+    cairo_restore(cr);
+
+    cairo_set_source_rgba(cr, 0, 0, 0, 1);
+    cairo_set_line_width(cr, 2.0);
+    cairo_stroke_preserve(cr);
+
+    cairo_set_source_rgba(cr, 1, 1, 0, 0.5);
+    cairo_fill(cr);
+
+    cairo_surface_flush(sf);
+    cairo_surface_write_to_png(sf, "a.png");
+
+    cairo_destroy(cr);
+    cairo_surface_destroy(sf);
 
     return EXIT_SUCCESS;
 }

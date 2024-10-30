@@ -59,7 +59,9 @@ char* sym_system_line_deserialize(const char* buf, sym_system_line_t** shp) {
 
 sym_rect_t sym_system_line_get_mbr(sym_system_line_t* shp) {
     sym_rect_t rect;
-
+    rect.minx = -1.0;
+    rect.maxx = 1.0;
+    rect.miny = rect.maxy = 0.0;
     return rect;
 }
 
@@ -67,3 +69,19 @@ sym_rect_t sym_system_line_get_mbr(sym_system_line_t* shp) {
 double sym_system_line_get_stroke_width(sym_system_line_t* shp) {
     return shp->stroke->width;
 }
+
+
+
+
+void sym_system_line_draw(canvas_t* canvas, sym_system_line_t* shp) {
+    cairo_t* cairo = canvas->cairo;
+
+    cairo_save(cairo);
+    cairo_move_to(cairo, -1, 0);
+    cairo_line_to(cairo, 1, 0);
+    cairo_restore(cairo);
+
+    sym_canvas_set_stroke(canvas, shp->stroke);
+    cairo_stroke(canvas->cairo);
+}
+

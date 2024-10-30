@@ -2,6 +2,7 @@
 #define __SYM_ARC_H
 
 #include "symbol.h"
+#include "canvas.h"
 
 sym_arc_t* sym_arc_create();
 void sym_arc_destroy(sym_arc_t* arc);
@@ -12,4 +13,6 @@ char* sym_arc_serialize(const char* buf, sym_arc_t* shp);
 char* sym_arc_deserialize(const char* buf, sym_arc_t** shp);
 sym_rect_t sym_arc_get_mbr(sym_arc_t* shp);
 double sym_arc_get_stroke_width(sym_arc_t* shp);
+void sym_arc_draw(canvas_t* canvas, sym_arc_t* shp);
+
 #endif

@@ -10,10 +10,10 @@
             "type": "ARC",
             "stroke": {
                 "color": {
-                    "alpha": 100,
-                    "red": 255,
-                    "green": 100,
-                    "blue": 255
+                    "alpha": 255,
+                    "red": 0,
+                    "green": 0,
+                    "blue": 0
                 },
                 "width": 1,
                 "dashoffset": 0,
@@ -26,43 +26,14 @@
                 "miter": 1.0
             },
             "center": {
-                "x": 0.0,
-                "y": 0.0
+                "x": 0.50,
+                "y": 0.50
             },
-            "rotate": 90,
-            "xradius": 0.80,
-            "yradius": 0.4,
-            "startangle": 0.0,
-            "endangle": 180.0
-        },
-        {
-            "type": "ARC",
-            "stroke": {
-                "color": {
-                    "alpha": 100,
-                    "red": 255,
-                    "green": 100,
-                    "blue": 255
-                },
-                "width": 1,
-                "dashoffset": 0,
-                "dashes": [
-                    10.0,
-                    0.0
-                ],
-                "cap": "butt",
-                "join": "bevel",
-                "miter": 1.0
-            },
-            "center": {
-                "x": 0.0,
-                "y": 0.0
-            },
-            "rotate": 90,
-            "xradius": 0.80,
-            "yradius": 0.4,
-            "startangle": 0.0,
-            "endangle": 180.0
+            "rotate": -45,
+            "xradius": 0.5,
+            "yradius": 0.5,
+            "startangle": 45,
+            "endangle": 135
         }
     ]
 }
