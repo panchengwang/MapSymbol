@@ -41,7 +41,7 @@
             "rotate": -45,
             "subpaths": [
                 {
-                    "type": "lineto",
+                    "type": "line",
                     "begin": {
                         "x": -0.5,
                         "y": -0.5
@@ -52,7 +52,7 @@
                     }
                 },
                 {
-                    "type": "circleto",
+                    "type": "circle",
                     "begin": {
                         "x": 0,
                         "y": -0.5
@@ -67,7 +67,7 @@
                     }
                 },
                 {
-                    "type": "curveto",
+                    "type": "curve",
                     "begin": {
                         "x": 0,
                         "y": 0.5

@@ -39,8 +39,8 @@
                 "x": 0.0,
                 "y": 0.0
             },
-            "radius": 0.9,
-            "numedges": 4
+            "radius": 0.8,
+            "numedges": 5
         }
     ]
 }

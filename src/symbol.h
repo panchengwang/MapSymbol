@@ -28,9 +28,9 @@
 #define SYM_SHAPE_ELLIPSE           7
 #define SYM_SHAPE_PIE               8
 #define SYM_SHAPE_CHORD             9
-#define SYM_SHAPE_PATH              10
-#define SYM_SHAPE_REGULAR_POLYGON   11
-#define SYM_SHAPE_STAR              12
+#define SYM_SHAPE_REGULAR_POLYGON   10
+#define SYM_SHAPE_STAR              11
+#define SYM_SHAPE_PATH              12
 
 
 #define LINE_CAP_BUTT       1
@@ -173,7 +173,7 @@ typedef struct {
     sym_point_t center;
     double rotate;
     double radius;
-    int32_t nedges;
+    uint32_t nedges;
 }sym_regular_polygon_t;
 
 
@@ -185,13 +185,13 @@ typedef struct {
     double rotate;
     double radius;                  // max radius
     double radius2;                 // min radius
-    int32_t nedges;
+    uint32_t nedges;
 }sym_star_t;
 
 
-#define SYM_PATH_LINE_TO            1
-#define SYM_PATH_CIRCLE_TO          2
-#define SYM_PATH_CURVE_TO           3
+#define SYM_PATH_LINE            1
+#define SYM_PATH_ARC             2
+#define SYM_PATH_CURVE           3
 
 
 typedef struct {
@@ -202,30 +202,31 @@ typedef struct {
     uint8_t type;
     sym_point_t begin;
     sym_point_t end;
-}sym_path_line_to_t;
+}sym_path_line_t;
 
 typedef struct {
     uint8_t type;
     sym_point_t begin;
     sym_point_t middle;
     sym_point_t end;
-}sym_path_circle_to_t;
+}sym_path_arc_t;
 
 typedef struct {
     uint8_t type;
     sym_point_t begin;
     sym_point_t middle;
     sym_point_t end;
-}sym_path_curve_to_t;
+}sym_path_curve_t;
 
 typedef struct {
     uint8_t type;
     sym_stroke_t* stroke;
     sym_fill_t* fill;
-    sym_point_t center;
+    sym_point_t offset;
     double rotate;
-    int32_t nsubpath;
-    sym_path_sub_path_t* subpaths;
+    uint8_t closed;
+    int32_t nsubpaths;
+    sym_path_sub_path_t** subpaths;
 }sym_path_t;
 
 
@@ -267,9 +268,10 @@ DLL_EXPORT unsigned char* sym_to_image(symbol_t* sym, const char* format, double
 DLL_EXPORT void sym_save_to_image_file(symbol_t* sym, const char* format, double dotsPerMM, const char* filename);
 DLL_EXPORT uint8_t sym_only_has_system_line(symbol_t* sym);
 
-sym_rect_t sym_get_mbr(symbol_t* sym);
+DLL_EXPORT sym_rect_t sym_get_mbr(symbol_t* sym);
 
 
 
 
 #endif
+
