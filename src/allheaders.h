@@ -22,6 +22,7 @@
 #include "fill.h"
 #include "point.h"
 #include "canvas.h"
+#include "path.h"
 
 #endif
 

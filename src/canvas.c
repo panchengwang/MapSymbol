@@ -43,6 +43,7 @@ void sym_canvas_begin(canvas_t* canvas) {
 
     if (canvas->surface) {
         canvas->cairo = cairo_create(canvas->surface);
+        cairo_set_fill_rule(canvas->cairo, CAIRO_FILL_RULE_EVEN_ODD);
     }
 }
 

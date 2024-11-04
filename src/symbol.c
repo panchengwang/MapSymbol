@@ -46,7 +46,6 @@ uint8_t sym_from_json_string(symbol_t* sym, const char* jsonstr, char** errmsg) 
     }
 
     ret = sym_from_json_object(sym, obj, errmsg);
-
     json_object_put(obj);
 
     return ret;
@@ -131,10 +130,19 @@ uint8_t sym_from_json_object(symbol_t* sym, json_object* obj, char** errmsg) {
             ret = sym_star_from_json_object(star, shpobj, errmsg);
             shp = (sym_star_t*)star;
         }
+        else if (STRING_EQUAL(typestr, "PATH")) {
+            sym_path_t* path = sym_path_create();
+            ret = sym_path_from_json_object(path, shpobj, errmsg);
+            shp = (sym_path_t*)path;
+        }
 
-        if (!shp || !ret) {
+        if (!shp) {
             *errmsg = g_strdup_printf("Invalid shape: %s", typestr);
             sym_clear_shapes(sym);
+            return FALSE;
+        }
+
+        if (!ret) {
             return FALSE;
         }
 

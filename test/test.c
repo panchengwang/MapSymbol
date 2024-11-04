@@ -18,6 +18,7 @@ int main(int argc, char** argv) {
     if (!sym_from_json_file(sym, filename, &errmsg)) {
         fprintf(stderr, "%s\n", errmsg);
         free(errmsg);
+        return EXIT_FAILURE;
     }
     char* jsonstr = sym_to_json_string(sym);
     sym_destroy(sym);
@@ -26,6 +27,7 @@ int main(int argc, char** argv) {
     if (!sym_from_json_string(sym2, jsonstr, &errmsg)) {
         fprintf(stderr, "%s\n", errmsg);
         free(errmsg);
+        return EXIT_FAILURE;
     }
     free(jsonstr);
 
@@ -50,18 +52,17 @@ int main(int argc, char** argv) {
     cairo_surface_t* sf = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 800, 800);
     cairo_t* cr = cairo_create(sf);
 
-    cairo_set_source_rgba(cr, 1, 1, 1, 1);
-    cairo_paint(cr);
+    // cairo_set_source_rgba(cr, 1, 1, 1, 1);
+    // cairo_paint(cr);
 
     cairo_save(cr);
     cairo_translate(cr, 400, 400);
     cairo_scale(cr, 400, -400);
 
-    cairo_arc(cr, 0, 0, 0.5, 0, M_PI);
-    // cairo_line_to(cr, -0.5, 0);
-    cairo_curve_to(cr, -0.5, 0, 0, 0.65, 0.5, 0);
-    // cairo_move_to(cr, -0.5, 0);
-    cairo_close_path(cr);
+    cairo_arc(cr, 0, 0, 0.95, 0, 2 * M_PI);
+    cairo_move_to(cr, 0.5, 0);
+    cairo_arc(cr, 0, 0, 0.5, 0, 2 * M_PI);
+    // cairo_close_path(cr);
     cairo_restore(cr);
 
     cairo_set_source_rgba(cr, 0, 0, 0, 1);
@@ -69,6 +70,7 @@ int main(int argc, char** argv) {
     cairo_stroke_preserve(cr);
 
     cairo_set_source_rgba(cr, 1, 1, 0, 0.5);
+    cairo_set_fill_rule(cr, CAIRO_FILL_RULE_EVEN_ODD);
     cairo_fill(cr);
 
     cairo_surface_flush(sf);

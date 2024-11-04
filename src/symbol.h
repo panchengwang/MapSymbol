@@ -189,9 +189,19 @@ typedef struct {
 }sym_star_t;
 
 
-#define SYM_PATH_LINE            1
-#define SYM_PATH_ARC             2
-#define SYM_PATH_CURVE           3
+#define SYM_PATH_LINE                   1
+#define SYM_PATH_CURVE                  2
+#define SYM_PATH_LINESTRING             3
+#define SYM_PATH_POLYGON                4
+#define SYM_PATH_ARC                    5
+#define SYM_PATH_CIRCLE                 6
+#define SYM_PATH_ELLIPSE                7
+#define SYM_PATH_PIE                    8
+#define SYM_PATH_CHORD                  9
+#define SYM_PATH_REGULAR_POLYGON        10
+#define SYM_PATH_STAR                   11
+
+
 
 
 typedef struct {
@@ -203,6 +213,19 @@ typedef struct {
     sym_point_t begin;
     sym_point_t end;
 }sym_path_line_t;
+
+typedef struct {
+    uint8_t type;
+    uint32_t npoints;
+    sym_point_t* points;
+}sym_path_linestring_t;
+
+typedef struct {
+    uint8_t type;
+    uint32_t npoints;
+    sym_point_t* points;
+}sym_path_polygon_t;
+
 
 typedef struct {
     uint8_t type;
@@ -225,7 +248,7 @@ typedef struct {
     sym_point_t offset;
     double rotate;
     uint8_t closed;
-    int32_t nsubpaths;
+    uint32_t nsubpaths;
     sym_path_sub_path_t** subpaths;
 }sym_path_t;
 

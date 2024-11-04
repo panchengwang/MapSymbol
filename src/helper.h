@@ -17,6 +17,13 @@
         }                                                                   \
     }
 
+#define JSON_GET_BOOLEAN(parent, key, val, errmsg)                          \
+    {                                                                       \
+        json_object *myobj = NULL;                                          \
+        JSON_GET_OBJ(parent,key,myobj,errmsg);                              \
+        val = json_object_get_boolean(myobj);                               \
+    }
+
 #define JSON_GET_INT(parent,key,val,errmsg)                                 \
     {                                                                       \
         json_object *myobj = NULL;                                          \
@@ -140,6 +147,8 @@
         JSON_ADD_OBJECT(parent,key,clobj);                                  \
     }
 
+#define JSON_ADD_BOOLEAN(parent,key,val)                                    \
+    JSON_ADD_OBJECT(parent,key, json_object_new_boolean(val))   
 
 
 #define STRING_EQUAL(str1, str2)                                            \

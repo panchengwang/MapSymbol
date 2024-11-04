@@ -34,6 +34,7 @@ list(APPEND HEADERS
   fill.h
   canvas.h
   rect.h 
+  path.h
 )
 
 list(APPEND SOURCES 
@@ -56,6 +57,7 @@ list(APPEND SOURCES
   fill.c
   canvas.c
   rect.c 
+  path.c
 )
 
 add_library(mapsymbol SHARED

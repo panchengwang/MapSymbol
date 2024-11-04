@@ -39,6 +39,9 @@ void sym_shape_destroy(sym_shape_t* shp) {
     else if (shp->type == SYM_SHAPE_SYSTEM_LINE) {
         sym_system_line_destroy((sym_system_line_t*)shp);
     }
+    else if (shp->type == SYM_SHAPE_PATH) {
+        sym_path_destroy((sym_path_t*)shp);
+    }
 }
 
 
@@ -92,6 +95,9 @@ json_object* sym_shape_to_json_object(sym_shape_t* shp) {
     else if (shp->type == SYM_SHAPE_STAR) {
         return sym_star_to_json_object((sym_star_t*)shp);
     }
+    else if (shp->type == SYM_SHAPE_PATH) {
+        return sym_path_to_json_object((sym_path_t*)shp);
+    }
     return NULL;
 }
 
@@ -129,6 +135,9 @@ size_t sym_shape_memory_size(sym_shape_t* shp) {
     }
     else if (shp->type == SYM_SHAPE_STAR) {
         return sym_star_memory_size((sym_star_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_PATH) {
+        return sym_path_memory_size((sym_path_t*)shp);
     }
     return 0;
 }
@@ -171,6 +180,9 @@ char* sym_shape_serialize(const char* buf, sym_shape_t* shp) {
     else if (shp->type == SYM_SHAPE_STAR) {
         p = sym_star_serialize(p, (sym_star_t*)shp);
     }
+    else if (shp->type == SYM_SHAPE_PATH) {
+        p = sym_path_serialize(p, (sym_path_t*)shp);
+    }
     return p;
 }
 
@@ -212,6 +224,9 @@ char* sym_shape_deserialize(const char* buf, sym_shape_t** shp) {
     else if (shptype == SYM_SHAPE_STAR) {
         p = sym_star_deserialize(p, (sym_star_t**)shp);
     }
+    else if (shptype == SYM_SHAPE_PATH) {
+        p = sym_path_deserialize(p, (sym_path_t**)shp);
+    }
     return p;
 }
 
@@ -252,6 +267,9 @@ sym_rect_t sym_shape_get_mbr(sym_shape_t* shp) {
     }
     else if (shptype == SYM_SHAPE_STAR) {
         rect = sym_star_get_mbr((sym_star_t*)shp);
+    }
+    else if (shptype == SYM_SHAPE_PATH) {
+        rect = sym_path_get_mbr((sym_path_t*)shp);
     }
 
     return rect;
@@ -295,6 +313,9 @@ double sym_shape_get_stroke_width(sym_shape_t* shp) {
     else if (shp->type == SYM_SHAPE_STAR) {
         width = sym_star_get_stroke_width((sym_star_t*)shp);
     }
+    else if (shp->type == SYM_SHAPE_PATH) {
+        width = sym_path_get_stroke_width((sym_path_t*)shp);
+    }
 
     return width;
 }
@@ -334,5 +355,8 @@ void sym_shape_draw(canvas_t* canvas, sym_shape_t* shp) {
     }
     else if (shp->type == SYM_SHAPE_STAR) {
         sym_star_draw(canvas, (sym_star_t*)shp);
+    }
+    else if (shp->type == SYM_SHAPE_PATH) {
+        sym_path_draw(canvas, (sym_path_t*)shp);
     }
 }

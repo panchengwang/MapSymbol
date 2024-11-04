@@ -42,3 +42,12 @@ sym_rect_t sym_point_get_mbr(sym_point_t* pt) {
     rect.miny = rect.maxy = pt->y;
     return rect;
 }
+
+
+
+json_object* sym_point_to_json_object(sym_point_t* pt) {
+    json_object* obj = json_object_new_object();
+    JSON_ADD_DOUBLE(obj, "x", pt->x);
+    JSON_ADD_DOUBLE(obj, "y", pt->y);
+    return obj;
+}
