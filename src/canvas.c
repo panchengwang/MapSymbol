@@ -29,14 +29,17 @@ void sym_canvas_set_scale(canvas_t* canvas, double xscale, double yscale) {
 
 
 void sym_canvas_begin(canvas_t* canvas) {
+
     if (strcasecmp(canvas->format, "png") == 0 ||
         strcasecmp(canvas->format, "jpg") == 0 ||
         strcasecmp(canvas->format, "jpeg") == 0
         ) {
+        // fprintf(stderr, "ok..... 1,%s,%f,%f,%f \n", canvas->format, canvas->width, canvas->height, canvas->dotsPerMM);
         canvas->surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
             ceil(canvas->width * canvas->dotsPerMM),
             ceil(canvas->height * canvas->dotsPerMM)
         );
+        // fprintf(stderr, "ok..... 2 \n");
     }
 
 
@@ -119,6 +122,8 @@ unsigned char* sym_canvas_save_to_stream(canvas_t* canvas, size_t* len) {
 }
 
 void sym_canvas_draw(canvas_t* canvas, symbol_t* sym) {
+    cairo_set_source_rgba(canvas->cairo, 1, 1, 1, 0);
+    cairo_paint(canvas->cairo);
     cairo_save(canvas->cairo);
     cairo_translate(canvas->cairo,
         ceil(canvas->width * canvas->dotsPerMM) * 0.5,

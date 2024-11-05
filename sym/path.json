@@ -38,10 +38,10 @@
                 "x": 0,
                 "y": 0
             },
-            "rotate": 45,
+            "rotate": 0,
             "subpaths": [
                 {
-                    "type": "curve",
+                    "type": "arc",
                     "begin": {
                         "x": -0.80,
                         "y": 0
@@ -56,14 +56,29 @@
                     }
                 },
                 {
-                    "type": "curve",
+                    "type": "arc",
                     "begin": {
                         "x": 0.80,
                         "y": 0
                     },
                     "middle": {
+                        "x": 0.4,
+                        "y": 0.4
+                    },
+                    "end": {
                         "x": 0,
-                        "y": 0.5
+                        "y": 0
+                    }
+                },
+                {
+                    "type": "arc",
+                    "begin": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "middle": {
+                        "x": -0.4,
+                        "y": 0.4
                     },
                     "end": {
                         "x": -0.8,

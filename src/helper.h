@@ -158,8 +158,27 @@
     memcpy(p, &(val), sizeof(val));                                         \
     p += sizeof(val);
 
+#define SERIALIZE_POINTS_TO_BUF(p, npoints, points)                         \
+    {                                                                       \
+        SERIALIZE_TO_BUF(p, npoints);                                       \
+        for (size_t i = 0; i < (npoints); i++) {                            \
+            p = sym_point_serialize(p, &(points[i]));                       \
+        }                                                                   \
+    }
+
+
+
 #define DESERIALIZE_FROM_BUF(p,val)                                         \
     memcpy(&(val), p, sizeof(val));                                         \
     p += sizeof(val);
 
+
+#define DESRIALIZE_POINTS_FROM_BUF(p, npoints, points)                      \
+    {                                                                       \
+        DESERIALIZE_FROM_BUF(p,npoints);                                    \
+        points = (sym_point_t*)malloc(npoints * sizeof(sym_point_t));       \
+        for(size_t i=0; i<npoints; i++){                                    \
+            p = sym_point_deserialize(p,&(points[i]));                      \
+        }                                                                   \
+    }
 #endif

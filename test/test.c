@@ -48,36 +48,36 @@ int main(int argc, char** argv) {
     sym_save_to_image_file(sym2, "png", 96 / 25.4, filename2);
     g_free(filename2);
 
+    sym_destroy(sym2);
+    // cairo_surface_t* sf = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 800, 800);
+    // cairo_t* cr = cairo_create(sf);
 
-    cairo_surface_t* sf = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 800, 800);
-    cairo_t* cr = cairo_create(sf);
+    // // cairo_set_source_rgba(cr, 1, 1, 1, 1);
+    // // cairo_paint(cr);
 
-    // cairo_set_source_rgba(cr, 1, 1, 1, 1);
-    // cairo_paint(cr);
+    // cairo_save(cr);
+    // cairo_translate(cr, 400, 400);
+    // cairo_scale(cr, 400, -400);
 
-    cairo_save(cr);
-    cairo_translate(cr, 400, 400);
-    cairo_scale(cr, 400, -400);
+    // cairo_arc(cr, 0, 0, 0.95, 0, 2 * M_PI);
+    // cairo_move_to(cr, 0.5, 0);
+    // cairo_arc(cr, 0, 0, 0.5, 0, 2 * M_PI);
+    // // cairo_close_path(cr);
+    // cairo_restore(cr);
 
-    cairo_arc(cr, 0, 0, 0.95, 0, 2 * M_PI);
-    cairo_move_to(cr, 0.5, 0);
-    cairo_arc(cr, 0, 0, 0.5, 0, 2 * M_PI);
-    // cairo_close_path(cr);
-    cairo_restore(cr);
+    // cairo_set_source_rgba(cr, 0, 0, 0, 1);
+    // cairo_set_line_width(cr, 2.0);
+    // cairo_stroke_preserve(cr);
 
-    cairo_set_source_rgba(cr, 0, 0, 0, 1);
-    cairo_set_line_width(cr, 2.0);
-    cairo_stroke_preserve(cr);
+    // cairo_set_source_rgba(cr, 1, 1, 0, 0.5);
+    // cairo_set_fill_rule(cr, CAIRO_FILL_RULE_EVEN_ODD);
+    // cairo_fill(cr);
 
-    cairo_set_source_rgba(cr, 1, 1, 0, 0.5);
-    cairo_set_fill_rule(cr, CAIRO_FILL_RULE_EVEN_ODD);
-    cairo_fill(cr);
+    // cairo_surface_flush(sf);
+    // cairo_surface_write_to_png(sf, "a.png");
 
-    cairo_surface_flush(sf);
-    cairo_surface_write_to_png(sf, "a.png");
-
-    cairo_destroy(cr);
-    cairo_surface_destroy(sf);
+    // cairo_destroy(cr);
+    // cairo_surface_destroy(sf);
 
     return EXIT_SUCCESS;
 }

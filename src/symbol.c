@@ -51,6 +51,7 @@ uint8_t sym_from_json_string(symbol_t* sym, const char* jsonstr, char** errmsg) 
     return ret;
 }
 
+
 uint8_t sym_from_json_object(symbol_t* sym, json_object* obj, char** errmsg) {
     sym_point_t offset;
     double xscale, yscale;
@@ -273,7 +274,7 @@ uint8_t sym_only_has_system_line(symbol_t* sym) {
 }
 
 sym_rect_t sym_get_mbr(symbol_t* sym) {
-    sym_rect_t rect;
+    sym_rect_t rect = { 0,0,0,0 };
     if (sym->nshapes == 0) {
         return rect;
     }
@@ -322,11 +323,15 @@ unsigned char* sym_to_image(symbol_t* sym, const char* format, double dotsPerMM,
 
     unsigned char* buf;
     // size_t len;
+
     sym_canvas_begin(canvas);
+
     sym_canvas_draw(canvas, sym);
     sym_canvas_end(canvas);
     buf = sym_canvas_save_to_stream(canvas, len);
     sym_canvas_destroy(canvas);
+
+
     return buf;
 }
 

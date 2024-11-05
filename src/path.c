@@ -9,7 +9,7 @@ sym_path_t* sym_path_create() {
     path->type = SYM_SHAPE_LINESTRING;
     path->stroke = NULL;
     path->fill = NULL;
-    path->closed = TRUE;
+    // path->closed = TRUE;
     path->nsubpaths = 0;
     path->subpaths = NULL;
     return path;
@@ -19,6 +19,7 @@ sym_path_t* sym_path_create() {
 
 void sym_path_destroy(sym_path_t* path) {
     sym_stroke_destroy(path->stroke);
+    sym_fill_destroy(path->fill);
     if (path->nsubpaths > 0) {
         for (size_t i = 0; i < path->nsubpaths; i++) {
             sym_path_sub_path_destroy(path->subpaths[i]);
@@ -38,7 +39,7 @@ json_object* sym_path_to_json_object(sym_path_t* path) {
     JSON_ADD_OBJECT(obj, "fill", sym_fill_to_json_object(path->fill));
     JSON_ADD_POINT(obj, "offset", path->offset);
     JSON_ADD_DOUBLE(obj, "rotate", path->rotate);
-    JSON_ADD_BOOLEAN(obj, "closed", path->closed);
+    // JSON_ADD_BOOLEAN(obj, "closed", path->closed);
 
     json_object* subpatharr = json_object_new_array();
     for (size_t i = 0; i < path->nsubpaths;i++) {
@@ -71,7 +72,7 @@ uint8_t sym_path_from_json_object(sym_path_t* path, json_object* obj, char** err
     JSON_GET_FILL(obj, "fill", path->fill, errmsg);
     JSON_GET_POINT(obj, "offset", path->offset, errmsg);
     JSON_GET_DOUBLE(obj, "rotate", path->rotate, errmsg);
-    JSON_GET_BOOLEAN(obj, "closed", path->closed, errmsg);
+    // JSON_GET_BOOLEAN(obj, "closed", path->closed, errmsg);
 
     json_object* subpatharr = json_object_object_get(obj, "subpaths");
     path->nsubpaths = json_object_array_length(subpatharr);
@@ -165,7 +166,8 @@ size_t sym_path_curve_memory_size(sym_path_curve_t* subpath) {
     size_t len = 0;
     len += sizeof(subpath->type);
     len += sym_point_memory_size(&(subpath->begin));
-    len += sym_point_memory_size(&(subpath->middle));
+    len += sym_point_memory_size(&(subpath->control1));
+    len += sym_point_memory_size(&(subpath->control2));
     len += sym_point_memory_size(&(subpath->end));
     return len;
 }
@@ -205,7 +207,7 @@ char* sym_path_serialize(const char* buf, sym_path_t* path) {
     p = sym_fill_serialize(p, path->fill);
     p = sym_point_serialize(p, &(path->offset));
     SERIALIZE_TO_BUF(p, path->rotate);
-    SERIALIZE_TO_BUF(p, path->closed);
+    // SERIALIZE_TO_BUF(p, path->closed);
     SERIALIZE_TO_BUF(p, path->nsubpaths);
     for (size_t i = 0; i < path->nsubpaths; i++) {
         p = sym_path_sub_path_serialize(p, path->subpaths[i]);
@@ -238,10 +240,10 @@ char* sym_path_deserialize(const char* buf, sym_path_t** path) {
     p = sym_fill_deserialize(p, &(mypath->fill));
     p = sym_point_deserialize(p, &(mypath->offset));
     DESERIALIZE_FROM_BUF(p, mypath->rotate);
-    DESERIALIZE_FROM_BUF(p, mypath->closed);
+    // DESERIALIZE_FROM_BUF(p, mypath->closed);
     DESERIALIZE_FROM_BUF(p, mypath->nsubpaths);
 
-    mypath->subpaths = (sym_path_sub_path_t*)malloc(mypath->nsubpaths * sizeof(sym_path_sub_path_t));
+    mypath->subpaths = (sym_path_sub_path_t**)malloc(mypath->nsubpaths * sizeof(sym_path_sub_path_t*));
     for (size_t i = 0; i < mypath->nsubpaths; i++) {
 
         p = sym_path_sub_path_deserialize(p, &(mypath->subpaths[i]));
@@ -302,11 +304,17 @@ sym_rect_t sym_path_line_get_mbr(sym_path_line_t* subpath) {
 
 sym_rect_t sym_path_arc_get_mbr(sym_path_arc_t* subpath) {
     sym_rect_t rect, other;
-    rect = sym_point_get_mbr(&(subpath->begin));
-    other = sym_point_get_mbr(&(subpath->middle));
-    sym_rect_extend(&rect, &other);
-    other = sym_point_get_mbr(&(subpath->end));
-    sym_rect_extend(&rect, &other);
+
+    double radius;
+    sym_point_t center = sym_calculate_circle_by_3_points(subpath->begin, subpath->middle, subpath->end, &radius);
+    rect = sym_point_get_mbr(&center);
+    sym_rect_expand(&rect, radius);
+
+    // rect = sym_point_get_mbr(&(subpath->begin));
+    // other = sym_point_get_mbr(&(subpath->middle));
+    // sym_rect_extend(&rect, &other);
+    // other = sym_point_get_mbr(&(subpath->end));
+    // sym_rect_extend(&rect, &other);
 
     return rect;
 }
@@ -315,7 +323,9 @@ sym_rect_t sym_path_arc_get_mbr(sym_path_arc_t* subpath) {
 sym_rect_t sym_path_curve_get_mbr(sym_path_curve_t* subpath) {
     sym_rect_t rect, other;
     rect = sym_point_get_mbr(&(subpath->begin));
-    other = sym_point_get_mbr(&(subpath->middle));
+    other = sym_point_get_mbr(&(subpath->control1));
+    sym_rect_extend(&rect, &other);
+    other = sym_point_get_mbr(&(subpath->control2));
     sym_rect_extend(&rect, &other);
     other = sym_point_get_mbr(&(subpath->end));
     sym_rect_extend(&rect, &other);
@@ -356,6 +366,80 @@ double sym_path_get_stroke_width(sym_path_t* path) {
 }
 
 
+void sym_path_sub_path_draw(canvas_t* canvas, sym_path_sub_path_t* subpath) {
+    if (subpath->type == SYM_PATH_LINE) {
+        sym_path_line_draw(canvas, (sym_path_line_t*)subpath);
+    }
+    else if (subpath->type == SYM_PATH_ARC) {
+        sym_path_arc_draw(canvas, (sym_path_arc_t*)subpath);
+    }
+    else if (subpath->type == SYM_PATH_CURVE) {
+        sym_path_curve_draw(canvas, (sym_path_curve_t*)subpath);
+    }
+    else if (subpath->type == SYM_PATH_LINESTRING) {
+        sym_path_linestring_draw(canvas, (sym_path_linestring_t*)subpath);
+    }
+    else if (subpath->type == SYM_PATH_POLYGON) {
+        sym_path_polygon_draw(canvas, (sym_path_polygon_t*)subpath);
+    }
+}
+
+
+void sym_path_line_draw(canvas_t* canvas, sym_path_line_t* subpath) {
+    cairo_move_to(canvas->cairo, subpath->begin.x, subpath->begin.y);
+    cairo_line_to(canvas->cairo, subpath->end.x, subpath->end.y);
+}
+
+
+void sym_path_linestring_draw(canvas_t* canvas, sym_path_linestring_t* subpath) {
+
+}
+
+
+void sym_path_polygon_draw(canvas_t* canvas, sym_path_polygon_t* subpath) {
+
+}
+
+
+void sym_path_arc_draw(canvas_t* canvas, sym_path_arc_t* subpath) {
+    double radius = 0.0f;
+    sym_point_t center = sym_calculate_circle_by_3_points(subpath->begin, subpath->middle, subpath->end, &radius);
+    if (radius < 0.0f) {
+        return;
+    }
+
+    double angle1, angle2, angle3;
+    angle1 = sym_point_angle_between_horizontal(subpath->begin, center);
+    // angle2 = sym_point_angle_between_horizontal(subpath->middle, center);
+    angle3 = sym_point_angle_between_horizontal(subpath->end, center);
+
+    uint8_t clockwise = sym_points_is_clockwise(subpath->begin, subpath->middle, subpath->end);
+
+    if (clockwise) {
+        cairo_move_to(canvas->cairo, subpath->begin.x, subpath->begin.y);
+        cairo_arc_negative(canvas->cairo, center.x, center.y, radius, angle1, angle3);
+    }
+    else {
+        cairo_move_to(canvas->cairo, subpath->begin.x, subpath->begin.y);
+        cairo_arc(canvas->cairo, center.x, center.y, radius, angle1, angle3);
+    }
+
+
+}
+
+
+void sym_path_curve_draw(canvas_t* canvas, sym_path_curve_t* subpath) {
+    sym_path_curve_t* curve = (sym_path_curve_t*)subpath;
+    cairo_move_to(canvas->cairo, curve->begin.x, curve->begin.y);
+    cairo_curve_to(canvas->cairo,
+        curve->control1.x, curve->control1.y,
+        curve->control2.x, curve->control2.y,
+        curve->end.x, curve->end.y
+    );
+}
+
+
+
 
 void sym_path_draw(canvas_t* canvas, sym_path_t* shp) {
     cairo_save(canvas->cairo);
@@ -363,24 +447,7 @@ void sym_path_draw(canvas_t* canvas, sym_path_t* shp) {
     cairo_rotate(canvas->cairo, shp->rotate / 180.0 * M_PI);
 
     for (size_t i = 0; i < shp->nsubpaths; i++) {
-        sym_path_sub_path_t* subpath = shp->subpaths[i];
-        if (subpath->type == SYM_PATH_LINE) {
-            sym_path_line_t* line = (sym_path_line_t*)subpath;
-            cairo_move_to(canvas->cairo, line->begin.x, line->begin.y);
-            cairo_line_to(canvas->cairo, line->end.x, line->end.y);
-        }
-        else if (subpath->type == SYM_PATH_ARC) {
-
-        }
-        else if (subpath->type == SYM_PATH_CURVE) {
-            sym_path_curve_t* curve = (sym_path_curve_t*)subpath;
-            cairo_move_to(canvas->cairo, curve->begin.x, curve->begin.y);
-            cairo_curve_to(canvas->cairo,
-                curve->begin.x, curve->begin.y,
-                curve->middle.x, curve->middle.y,
-                curve->end.x, curve->end.y
-            );
-        }
+        sym_path_sub_path_draw(canvas, shp->subpaths[i]);
     }
 
     // if (shp->closed) {
@@ -401,6 +468,7 @@ void sym_path_draw(canvas_t* canvas, sym_path_t* shp) {
 
 
 void sym_path_sub_path_destroy(sym_path_sub_path_t* subpath) {
+    // fprintf(stderr, "sym_path_sub_path_destroy\n");
     if (subpath->type == SYM_PATH_LINE) {
         free((sym_path_line_t*)subpath);
     }
@@ -477,7 +545,8 @@ uint8_t sym_path_curve_from_json_object(sym_path_curve_t* subpath, json_object* 
 
     subpath->type = SYM_PATH_CURVE;
     JSON_GET_POINT(obj, "begin", subpath->begin, errmsg);
-    JSON_GET_POINT(obj, "middle", subpath->middle, errmsg);
+    JSON_GET_POINT(obj, "control1", subpath->control1, errmsg);
+    JSON_GET_POINT(obj, "control2", subpath->control2, errmsg);
     JSON_GET_POINT(obj, "end", subpath->end, errmsg);
     return ret;
 }
@@ -538,7 +607,8 @@ json_object* sym_path_curve_to_json_object(sym_path_curve_t* subpath) {
     json_object* obj = json_object_new_object();
     JSON_ADD_STRING(obj, "type", "curve");
     JSON_ADD_POINT(obj, "begin", subpath->begin);
-    JSON_ADD_POINT(obj, "middle", subpath->middle);
+    JSON_ADD_POINT(obj, "control1", subpath->control1);
+    JSON_ADD_POINT(obj, "control2", subpath->control2);
     JSON_ADD_POINT(obj, "end", subpath->end);
     return obj;
 }
@@ -595,10 +665,28 @@ char* sym_path_curve_serialize(const char* buf, sym_path_curve_t* subpath) {
     char* p = (char*)buf;
     SERIALIZE_TO_BUF(p, subpath->type);
     p = sym_point_serialize(p, &(subpath->begin));
-    p = sym_point_serialize(p, &(subpath->middle));
+    p = sym_point_serialize(p, &(subpath->control1));
+    p = sym_point_serialize(p, &(subpath->control2));
     p = sym_point_serialize(p, &(subpath->end));
     return p;
 }
+
+
+char* sym_path_linestring_serialize(const char* buf, sym_path_linestring_t* subpath) {
+    char* p = (char*)buf;
+    SERIALIZE_TO_BUF(p, subpath->type);
+    SERIALIZE_POINTS_TO_BUF(p, subpath->npoints, subpath->points);
+    return p;
+}
+
+
+char* sym_path_polygon_serialize(const char* buf, sym_path_polygon_t* subpath) {
+    char* p = (char*)buf;
+    SERIALIZE_TO_BUF(p, subpath->type);
+    SERIALIZE_POINTS_TO_BUF(p, subpath->npoints, subpath->points);
+    return p;
+}
+
 
 
 
@@ -628,8 +716,94 @@ char* sym_path_curve_deserialize(const char* buf, sym_path_curve_t** subpath) {
     *subpath = sym_path_curve_create();
     DESERIALIZE_FROM_BUF(p, (*subpath)->type);
     p = sym_point_deserialize(p, &((*subpath)->begin));
-    p = sym_point_deserialize(p, &((*subpath)->middle));
+    p = sym_point_deserialize(p, &((*subpath)->control1));
+    p = sym_point_deserialize(p, &((*subpath)->control2));
     p = sym_point_deserialize(p, &((*subpath)->end));
     return p;
 }
 
+char* sym_path_linestring_deserialize(const char* buf, sym_path_linestring_t** subpath) {
+    char* p = (char*)buf;
+    *subpath = sym_path_linestring_create();
+    DESERIALIZE_FROM_BUF(p, (*subpath)->type);
+    DESRIALIZE_POINTS_FROM_BUF(p, (*subpath)->npoints, (*subpath)->points);
+    return p;
+}
+
+
+char* sym_path_polygon_deserialize(const char* buf, sym_path_polygon_t** subpath) {
+    char* p = (char*)buf;
+    *subpath = sym_path_linestring_create();
+    DESERIALIZE_FROM_BUF(p, (*subpath)->type);
+    DESRIALIZE_POINTS_FROM_BUF(p, (*subpath)->npoints, (*subpath)->points);
+    return p;
+}
+
+
+
+
+
+
+sym_point_t  sym_calculate_circle_by_3_points(
+    sym_point_t begin,
+    sym_point_t middle,
+    sym_point_t end,
+    double* radius
+) {
+    sym_point_t center = { 0,0 };
+    double x1 = begin.x, x2 = middle.x, x3 = end.x;
+    double y1 = begin.y, y2 = middle.y, y3 = end.y;
+    double a = x1 - x2;
+    double b = y1 - y2;
+    double c = x1 - x3;
+    double d = y1 - y3;
+    double e = ((x1 * x1 - x2 * x2) + (y1 * y1 - y2 * y2)) * 0.5;
+    double f = ((x1 * x1 - x3 * x3) + (y1 * y1 - y3 * y3)) * 0.5;
+    double det = b * c - a * d;
+    if (fabs(det) < 1e-10) {
+        *radius = -1;
+        return center;
+    }
+
+    double x0 = -(d * e - b * f) / det;
+    double y0 = -(a * f - c * e) / det;
+    *radius = hypot(x1 - x0, y1 - y0);
+    center.x = x0;
+    center.y = y0;
+    return center;
+}
+
+
+
+double sym_point_angle_between_horizontal(sym_point_t pt, sym_point_t center) {
+    double x = pt.x - center.x;
+    double y = pt.y - center.y;
+    double angle = acos((pt.x - center.x) / hypot(pt.x - center.x, pt.y - center.y));
+    if (y < 0) {
+        angle = 2 * M_PI - angle;
+    }
+    return angle;
+}
+
+
+double sym_area_of_3_points(sym_point_t begin, sym_point_t middle, sym_point_t end) {
+    sym_point_t points[4];
+    points[0] = begin;
+    points[1] = middle;
+    points[2] = end;
+    points[3] = begin;
+
+    double area = 0.0;
+    for (size_t i = 0; i < 3; i++) {
+        area += (points[i].y + points[i + 1].y) * (points[i].x - points[i + 1].x) * 0.5;
+    }
+    return area;
+
+}
+
+uint8_t sym_points_is_clockwise(sym_point_t begin, sym_point_t middle, sym_point_t end) {
+    if (sym_area_of_3_points(begin, middle, end) > 0) {
+        return FALSE;
+    }
+    return TRUE;
+}

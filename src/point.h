@@ -8,7 +8,13 @@ DLL_EXPORT size_t sym_point_memory_size(sym_point_t* pt);
 DLL_EXPORT char* sym_point_serialize(const char* buf, sym_point_t* pt);
 DLL_EXPORT char* sym_point_deserialize(const char* buf, sym_point_t* pt);
 json_object* sym_point_to_json_object(sym_point_t* pt);
-
 sym_rect_t sym_point_get_mbr(sym_point_t* pt);
+
+
+
+
+
+
+
 #endif
 

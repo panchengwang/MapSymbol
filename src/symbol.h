@@ -237,7 +237,7 @@ typedef struct {
 typedef struct {
     uint8_t type;
     sym_point_t begin;
-    sym_point_t middle;
+    sym_point_t control1, control2;
     sym_point_t end;
 }sym_path_curve_t;
 
@@ -247,7 +247,7 @@ typedef struct {
     sym_fill_t* fill;
     sym_point_t offset;
     double rotate;
-    uint8_t closed;
+    // uint8_t closed;
     uint32_t nsubpaths;
     sym_path_sub_path_t** subpaths;
 }sym_path_t;

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "point.h"
 #include "rect.h"
-
+#include <math.h>
 
 
 sym_point_t* sym_point_init(sym_point_t* pt) {
@@ -51,3 +51,8 @@ json_object* sym_point_to_json_object(sym_point_t* pt) {
     JSON_ADD_DOUBLE(obj, "y", pt->y);
     return obj;
 }
+
+
+
+
+

@@ -69,4 +69,27 @@ char* sym_path_curve_deserialize(const char* buf, sym_path_curve_t** subpath);
 char* sym_path_linestring_deserialize(const char* buf, sym_path_linestring_t** subpath);
 char* sym_path_polygon_deserialize(const char* buf, sym_path_polygon_t** subpath);
 
+
+void sym_path_sub_path_draw(canvas_t* canvas, sym_path_sub_path_t* subpath);
+void sym_path_line_draw(canvas_t* canvas, sym_path_line_t* subpath);
+void sym_path_linestring_draw(canvas_t* canvas, sym_path_linestring_t* subpath);
+void sym_path_polygon_draw(canvas_t* canvas, sym_path_polygon_t* subpath);
+void sym_path_arc_draw(canvas_t* canvas, sym_path_arc_t* subpath);
+void sym_path_curve_draw(canvas_t* canvas, sym_path_curve_t* subpath);
+
+
+
+
+// 3 points determine circle
+sym_point_t  sym_calculate_circle_by_3_points(
+    sym_point_t begin,
+    sym_point_t middle,
+    sym_point_t end,
+    double* radius
+);
+
+double sym_point_angle_between_horizontal(sym_point_t pt, sym_point_t center);
+
+double sym_area_of_3_points(sym_point_t begin, sym_point_t middle, sym_point_t end);
+uint8_t sym_points_is_clockwise(sym_point_t begin, sym_point_t middle, sym_point_t end);
 #endif
