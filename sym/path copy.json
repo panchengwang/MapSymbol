@@ -1,0 +1,251 @@
+{
+    "offset": {
+        "x": 0.2,
+        "y": 0
+    },
+    "xscale": 50.0,
+    "yscale": 50.0,
+    "size": 50,
+    "shapes": [
+        {
+            "type": "path",
+            "stroke": {
+                "color": {
+                    "alpha": 255,
+                    "red": 0,
+                    "green": 0,
+                    "blue": 0
+                },
+                "width": 1,
+                "dashoffset": 0,
+                "dashes": [
+                    10.0,
+                    0.0
+                ],
+                "cap": "butt",
+                "join": "bevel",
+                "miter": 1.0
+            },
+            "fill": {
+                "type": "solid",
+                "color": {
+                    "alpha": 127,
+                    "red": 255,
+                    "green": 255,
+                    "blue": 0
+                }
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            },
+            "rotate": 0,
+            "subpaths": [
+                {
+                    "type": "arc3points",
+                    "begin": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "middle": {
+                        "x": 0.4,
+                        "y": 0.9
+                    },
+                    "end": {
+                        "x": 0.8,
+                        "y": 0
+                    }
+                },
+                {
+                    "type": "arc3points",
+                    "begin": {
+                        "x": 0.8,
+                        "y": 0
+                    },
+                    "middle": {
+                        "x": 0.6,
+                        "y": 0.2
+                    },
+                    "end": {
+                        "x": 0.4,
+                        "y": 0
+                    }
+                },
+                {
+                    "type": "arc3points",
+                    "begin": {
+                        "x": 0.4,
+                        "y": 0
+                    },
+                    "middle": {
+                        "x": 0.2,
+                        "y": 0.2
+                    },
+                    "end": {
+                        "x": 0,
+                        "y": 0
+                    }
+                },
+                {
+                    "type": "circle",
+                    "center": {
+                        "x": -0.5,
+                        "y": -0.5
+                    },
+                    "radius": 0.4
+                },
+                {
+                    "type": "circle",
+                    "center": {
+                        "x": -0.5,
+                        "y": -0.5
+                    },
+                    "radius": 0.25
+                }
+            ],
+            "closed": true
+        },
+        {
+            "type": "path",
+            "stroke": {
+                "color": {
+                    "alpha": 255,
+                    "red": 0,
+                    "green": 0,
+                    "blue": 0
+                },
+                "width": 1,
+                "dashoffset": 0,
+                "dashes": [
+                    10.0,
+                    0.0
+                ],
+                "cap": "butt",
+                "join": "bevel",
+                "miter": 1.0
+            },
+            "fill": {
+                "type": "solid",
+                "color": {
+                    "alpha": 127,
+                    "red": 255,
+                    "green": 255,
+                    "blue": 0
+                }
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            },
+            "rotate": 0,
+            "subpaths": [
+                {
+                    "type": "regularpolygon",
+                    "center": {
+                        "x": 0.5,
+                        "y": -0.5
+                    },
+                    "radius": 0.25,
+                    "rotate": 0,
+                    "numedges": 5
+                }
+            ],
+            "closed": true
+        },
+        {
+            "type": "path",
+            "stroke": {
+                "color": {
+                    "alpha": 255,
+                    "red": 0,
+                    "green": 0,
+                    "blue": 0
+                },
+                "width": 1,
+                "dashoffset": 0,
+                "dashes": [
+                    10.0,
+                    0.0
+                ],
+                "cap": "butt",
+                "join": "bevel",
+                "miter": 1.0
+            },
+            "fill": {
+                "type": "solid",
+                "color": {
+                    "alpha": 127,
+                    "red": 255,
+                    "green": 255,
+                    "blue": 0
+                }
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            },
+            "rotate": 0,
+            "subpaths": [
+                {
+                    "type": "ellipse",
+                    "center": {
+                        "x": -0.5,
+                        "y": 0.5
+                    },
+                    "xradius": 0.25,
+                    "yradius": 0.12,
+                    "rotate": 0
+                }
+            ],
+            "closed": true
+        },
+        {
+            "type": "path",
+            "stroke": {
+                "color": {
+                    "alpha": 255,
+                    "red": 0,
+                    "green": 0,
+                    "blue": 0
+                },
+                "width": 1,
+                "dashoffset": 0,
+                "dashes": [
+                    10.0,
+                    0.0
+                ],
+                "cap": "butt",
+                "join": "bevel",
+                "miter": 1.0
+            },
+            "fill": {
+                "type": "solid",
+                "color": {
+                    "alpha": 127,
+                    "red": 255,
+                    "green": 255,
+                    "blue": 0
+                }
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            },
+            "rotate": 0,
+            "subpaths": [
+                {
+                    "type": "star",
+                    "center": {
+                        "x": 0.5,
+                        "y": -0.5
+                    },
+                    "outerradius": 0.25,
+                    "innerradius": 0.12,
+                    "rotate": 0,
+                    "numedges": 5
+                }
+            ],
+            "closed": true
+        }
+    ]
+}

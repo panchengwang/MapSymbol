@@ -1,63 +1,66 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(mapsymbol LANGUAGES C)
+project(mapsymbol LANGUAGES CXX)
 
-# set(CMAKE_CXX_STANDARD 17)
-# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_compile_options(-Wno-incompatible-pointer-types -Wextra -Wpedantic -Wno-unused-result)
+# add_compile_options( -Wextra -Wpedantic -Wno-unused-result)
 
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(JSON_C REQUIRED json-c)
 pkg_check_modules(CAIRO REQUIRED cairo)
-pkg_check_modules(GLIB2 REQUIRED glib-2.0)
+
 
 list(APPEND HEADERS 
-  helper.h
-  symbol.h
-  shape.h
-  arc.h 
-  chord.h 
-  pie.h 
-  ellipse.h 
-  circle.h 
-  linestring.h 
-  polygon.h 
-  regularpolygon.h 
-  star.h 
-  color.h 
-  stroke.h 
-  point.h 
-  systemline.h 
-  systemfill.h 
-  fill.h
-  canvas.h
-  rect.h 
-  path.h
+  DLLExport.h
+  JsonHelper.h
+  SSymbol.h
+  SColor.h
+  SShape.h
+  SPoint.h 
+  SRect.h 
+  SFill.h
+  SSolidFill.h
+  SStroke.h
+  SSystemLine.h
+  SSystemFill.h
+  SSubPath.h
+  SCircle.h
+  SArc3Points.h
+  SRegularPolygon.h
+  SArc.h
+  SPie.h
+  SEllipse.h
+  SChord.h
+  SStar.h
+  SPath.h
+  SCanvas.h
 )
 
 list(APPEND SOURCES 
-  symbol.c
-  shape.c
-  arc.c 
-  chord.c 
-  pie.c 
-  ellipse.c 
-  circle.c 
-  linestring.c 
-  polygon.c 
-  regularpolygon.c 
-  star.c 
-  color.c 
-  stroke.c 
-  point.c 
-  systemline.c 
-  systemfill.c 
-  fill.c
-  canvas.c
-  rect.c 
-  path.c
+  SSymbol.cpp
+  SColor.cpp
+  SShape.cpp
+  SPoint.cpp 
+  SRect.cpp 
+  SFill.cpp
+  SSolidFill.cpp
+  SStroke.cpp
+  SSystemLine.cpp
+  SSystemFill.cpp
+  SSubPath.cpp
+  SCircle.cpp
+  SArc3Points.cpp
+  SRegularPolygon.cpp
+  SArc.cpp
+  SPie.cpp
+  SEllipse.cpp
+  SChord.cpp
+  SStar.cpp
+  SPath.cpp
+  SCanvas.cpp
 )
 
 add_library(mapsymbol SHARED
@@ -90,6 +93,10 @@ install(TARGETS mapsymbol
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-install(FILES symbol.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mapsymbol
+add_custom_command(TARGET mapsymbol POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:mapsymbol> ${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:mapsymbol>
 )
+
+# install(FILES symbol.h
+#   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mapsymbol
+# )

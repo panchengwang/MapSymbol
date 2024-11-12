@@ -1,44 +1,62 @@
 {
     "offset": {
-        "x": 0.0,
-        "y": 0.1
+        "x": 0.2,
+        "y": 0
     },
-    "xscale": 10.0,
-    "yscale": 10.0,
+    "xscale": 50.0,
+    "yscale": 50.0,
+    "size": 50,
     "shapes": [
         {
-            "type": "CIRCLE",
+            "type": "path",
             "stroke": {
                 "color": {
-                    "alpha": 200,
+                    "alpha": 255,
                     "red": 255,
                     "green": 0,
                     "blue": 0
                 },
-                "width": 0.3,
+                "width": 0.0001,
+                "dashoffset": 0,
                 "dashes": [
-                    10.0,
-                    0.0
+                    1.0,
+                    0
                 ],
-                "dashoffset": 0.0,
                 "cap": "butt",
-                "join": "bevel",
-                "miter": 1.0
+                "join": "miter",
+                "miter": 10.0
             },
             "fill": {
-                "type": "SOLID",
+                "type": "solid",
                 "color": {
-                    "alpha": 100,
+                    "alpha": 255,
                     "red": 255,
-                    "green": 255,
+                    "green": 0,
                     "blue": 0
                 }
             },
-            "center": {
-                "x": 0.0,
-                "y": 0.0
-            },
-            "radius": 0.9
+            "subpaths": [
+                {
+                    "type": "circle",
+                    "center": {
+                        "x": -0,
+                        "y": -0
+                    },
+                    "radius": 0.8
+                },
+                {
+                    "type": "star",
+                    "center": {
+                        "x": -0,
+                        "y": -0
+                    },
+                    "outerradius": 0.79,
+                    "innerradius": 0.3,
+                    "rotate": 0,
+                    "numedges": 5
+                }
+            ],
+            "closed": true
         }
     ]
 }
