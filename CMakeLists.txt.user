@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 13.0.1, 2024-11-11T09:48:54. -->
+<!-- Written by QtCreator 13.0.1, 2024-11-15T11:05:35. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -110,7 +110,7 @@
 -DCMAKE_PREFIX_PATH:PATH=%{Qt:QT_INSTALL_PREFIX}
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\MapSymbol\build\Desktop_Qt_static_MinGW_w64_UCRT64_MSYS2_qt5_sta-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\MapSymbol\build_qtcreator</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -410,7 +410,7 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes">
-     <value type="QString">PATH=D:\msys64\ucrt64\bin;D:\msys64\usr\local\pgsql\bin;D:\msys64\usr\local\pgsql\lib;D:\msys64\ucrt64\bin;D:\msys64\usr\local\bin;D:\msys64\usr\bin;D:\msys64\usr\bin;C:\Windows\System32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;D:\msys64\usr\bin\site_perl;D:\msys64\usr\bin\vendor_perl;D:\msys64\usr\bin\core_perl;E:\MapSymbol\build\Desktop_Qt_static_MinGW_w64_UCRT64_MSYS2_qt5_sta-Debug\bin</value>
+     <value type="QString">PATH=E:\MapSymbol\build_qtcreator\bin;D:\msys64\ucrt64\bin;D:\msys64\usr\local\pgsql\bin;D:\msys64\usr\local\pgsql\lib;D:\msys64\ucrt64\bin;D:\msys64\usr\local\bin;D:\msys64\usr\bin;D:\msys64\usr\bin;C:\Windows\System32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;D:\msys64\usr\bin\site_perl;D:\msys64\usr\bin\vendor_perl;D:\msys64\usr\bin\core_perl</value>
     </valuelist>
     <value type="bool" key="PE.EnvironmentAspect.PrintOnRun">false</value>
     <value type="QString" key="PerfRecordArgsId">-e cpu-cycles --call-graph &quot;dwarf,4096&quot; -F 250</value>
@@ -418,11 +418,12 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.symbol2image</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">symbol2image</value>
     <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">true</value>
-    <value type="QString" key="RunConfiguration.Arguments">E:\MapSymbol\sym\path.json</value>
+    <value type="QString" key="RunConfiguration.Arguments">E:\MapSymbol\data\1.json</value>
+    <value type="bool" key="RunConfiguration.Arguments.multi">true</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">E:/MapSymbol/build/Desktop_Qt_static_MinGW_w64_UCRT64_MSYS2_qt5_sta-Debug/test/symbol2image</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">E:/MapSymbol/build_qtcreator/test/symbol2image</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">2</value>
   </valuemap>

@@ -1,0 +1,63 @@
+{
+    "offset": {
+        "x": 0,
+        "y": 0
+    },
+    "size": 100,
+    "shapes": [
+        {
+            "type": "path",
+            "stroke": {
+                "color": {
+                    "alpha": 255,
+                    "red": 0,
+                    "green": 0,
+                    "blue": 255
+                },
+                "width": 0.5,
+                "dashoffset": 0,
+                "dashes": [
+                    1.0,
+                    0
+                ],
+                "cap": "butt",
+                "join": "miter",
+                "miter": 10.0
+            },
+            "fill": {
+                "type": "solid",
+                "color": {
+                    "alpha": 127,
+                    "red": 255,
+                    "green": 0,
+                    "blue": 0
+                }
+            },
+            "subpaths": [
+                {
+                    "type": "circle",
+                    "center": {
+                        "x": -0,
+                        "y": -0
+                    },
+                    "radius": 0.8
+                },
+                {
+                    "type": "text",
+                    "text": "王盼成",
+                    "fontfamily": "SimSun",
+                    "fontsize": 0.2,
+                    "anchor": {
+                        "x": 0.0,
+                        "y": 0
+                    },
+                    "weight": "bold",
+                    "slant": "normal",
+                    "horizontalalign": "center",
+                    "verticalalign": "middle",
+                    "rotate": 45
+                }
+            ]
+        }
+    ]
+}
