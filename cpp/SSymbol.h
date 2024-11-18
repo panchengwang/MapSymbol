@@ -48,6 +48,8 @@ public:
     SSymbol* clone();
     SSymbol* clone(size_t shpIdx);
 
+    std::string toWKB();
+    void fromWKB(const std::string& wkb);
 
 protected:
     std::string readAllContent(const char* filename);

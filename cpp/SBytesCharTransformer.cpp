@@ -1,6 +1,8 @@
 #include "SBytesCharTransformer.h"
 #include <iostream>
 #include <sstream>
+#include <string.h>
+// #include <cstring>
 
 
 const uint8_t HEX2CHAR[256] =  {

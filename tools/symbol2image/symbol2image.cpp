@@ -8,65 +8,56 @@
 
 
 void saveToFile(const std::string& filename, unsigned char* buf, size_t len);
+std::string readAllContent(const char* filename);
+
+
 
 int main(int argc, char** argv) {
 
     const char* filename = argv[1];
 
-    SSymbol symbol;
-    if (!symbol.fromJsonFile(filename)) {
-        std::cout << symbol.errorMessage() << std::endl;
+
+    std::string jsonstr = readAllContent(filename);
+    std::cout << "The source json string : " << std::endl;
+    std::cout << jsonstr << std::endl;
+
+    std::cout << "Test map symbol parser......." << std::endl;
+    SSymbol sym1;
+    if(!sym1.fromJsonString(jsonstr.c_str())){
+        std::cout << sym1.errorMessage() << std::endl;
+        return EXIT_FAILURE;
     }
-    else {
-        // std::string jsonstr = symbol.toJsonString(true);
-        // if (!symbol.fromJsonString(jsonstr.c_str())) {
-        //     std::cout << symbol.errorMessage() << std::endl;
-        // }
-        // else {
-        //     std::cout << symbol.toJsonString(true) << std::endl;
-        //     symbol.toImage(std::string(std::string(filename) + ".png").c_str());
-        // }
-        size_t len=0;
-        unsigned char* buf = symbol.serialize(len);
-        SBytesCharTransformer trans;
+    std::cout << " parse json string success ....." << std::endl;
+    std::string jsonstr2 = sym1.toJsonString(true);
+    std::cout << jsonstr2 << std::endl;
+    std::cout << " encode to json string success " << std::endl;
 
-        size_t hexsize;
-
-        uint8_t *hexbytes;
-        hexbytes = trans.bytesToHexBytes(buf,len,hexsize);
-        for(size_t i=0; i<hexsize; i++){
-            std::cout << hexbytes[i] ;
-        }
-        std::cout << std::endl;
-        bool ok;
-        uint8_t* bytes = trans.bytesFromHexBytes(hexbytes, hexsize, ok);
-        SSymbol sym3;
-        sym3.deserialize((unsigned char*)bytes);
-        std::cout << sym3.toJsonString() << std::endl;
-        delete [] hexbytes;
-
-        symbol.deserialize(buf);
-        delete[] buf;
-
-        for(size_t i=0; i<sym3.nShapes(); i++){
-            // unsigned char* buf;
-            // size_t len;
-            // buf = symbol.shapeToImage(i,"png",72/25.4,len);
-            // // std::string myfilename;
-            std::stringstream strout;
-            strout << filename << i << ".png";
-            // saveToFile(strout.str(),buf,len);
-            // delete [] buf;
-            SSymbol *mysym = sym3.clone(i);
-            mysym->toImage(strout.str().c_str());
-            delete mysym;
-        }
-        sym3.toImage(std::string(std::string(filename) + ".png").c_str());
+    std::cout << "Test serialize and deserialize ......" << std::endl;
+    size_t len=0;
+    uint8_t* serializeddata =  sym1.serialize(len);
+    std::cout << "Serialize to memory will occupy " << len << " bytes" << std::endl;
+    SSymbol sym2;
+    sym2.deserialize(serializeddata);
+    delete [] serializeddata;
+    std::cout << "Deserialize success .... " << std::endl;
+    std::cout << "The result is : " << std::endl;
+    std::cout << sym2.toJsonString(true) << std::endl;
 
 
-    }
+    std::cout << "Test wkb encoder and decoder ...." << std::endl;
+    std::cout << "The WKB(hex string) of the symbol is : " << std::endl;
+    std::string hexstr = sym2.toWKB();
+    std::cout << hexstr << std::endl;
+
+    SSymbol sym3;
+    sym3.fromWKB(hexstr);
+    std::cout << " decode from wkb: " << std::endl;
+    std::cout << sym3.toJsonString() << std::endl;
 
 
+    std::cout << "Test symbol to image: " << std::endl;
+    uint8_t* img = sym3.toImage("jpg",144/25.4,len);
+    saveToFile(std::string(filename) + ".jpg" , img,len);
     return EXIT_SUCCESS;
 }
 
@@ -80,4 +71,26 @@ void saveToFile(const std::string& filename, unsigned char* buf, size_t len){
     }
     fwrite(buf, 1, len, fd);
     fclose(fd);
+}
+
+
+
+std::string readAllContent(const char* filename)
+{
+    FILE* fd = fopen(filename, "rb");
+    if (!fd) {
+        return std::string();
+    }
+    fseek(fd, 0, SEEK_END);
+    std::size_t len = ftell(fd);
+
+    char* buf = new char[len + 1];
+    buf[len] = '\0';
+
+    fseek(fd, 0, SEEK_SET);
+    fread(buf, 1, len, fd);
+    fclose(fd);
+    std::string data = buf;
+    delete[] buf;
+    return data;
 }

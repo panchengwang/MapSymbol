@@ -1,5 +1,6 @@
 #include "symbol.h"
 #include <SSymbol.h>
+#include <string.h>
 
 HSYMBOL symbol_from_json_string(const char* jsonstr, uint8_t* ok){
 

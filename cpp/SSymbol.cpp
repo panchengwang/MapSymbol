@@ -13,7 +13,7 @@
 #include "SSystemLine.h"
 #include "SSolidFill.h"
 #include "SPath.h"
-
+#include "SBytesCharTransformer.h"
 
 
 
@@ -349,5 +349,30 @@ SSymbol* SSymbol::clone(size_t shpIdx)
     sym->_offset = _offset;
     sym->_shapes.push_back(_shapes[shpIdx]->clone());
     return sym;
+}
+
+std::string SSymbol::toWKB()
+{
+    SBytesCharTransformer transformer;
+    uint8_t* serialdata;
+    size_t len;
+    serialdata = serialize(len);
+
+    std::string wkt = transformer.bytesToHexString(serialdata, len);
+    delete [] serialdata;
+    return wkt;
+}
+
+void SSymbol::fromWKB(const std::string& wkb)
+{
+    SBytesCharTransformer transformer;
+    bool ok;
+    uint8_t* buf = transformer.bytesFromHexBytes((uint8_t*)wkb.c_str(),wkb.size(),ok);
+    if(!ok){
+        return;
+    }
+
+    deserialize(buf);
+    delete [] buf;
 }
 
