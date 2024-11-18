@@ -48,4 +48,17 @@ void SPie::draw(SCanvas& canvas) {
     cairo_restore(cairo);
 }
 
+SSubPath* SPie::clone()
+{
+    SPie *pie = new SPie();
+    pie->_type = _type;
+    pie->_center = _center;
+    pie->_rotate = _rotate;
+    pie->_xradius = _xradius;
+    pie->_yradius = _yradius;
+    pie->_startAngle = _startAngle;
+    pie->_endAngle = _endAngle;
+    return pie;
+}
+
 

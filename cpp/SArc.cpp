@@ -99,3 +99,16 @@ unsigned char* SArc::deserialize(unsigned char* data) {
     return p;
 }
 
+SSubPath* SArc::clone()
+{
+    SArc *arc = new SArc();
+    arc->_type = _type;
+    arc->_center = _center;
+    arc->_xradius = _xradius;
+    arc->_yradius = _yradius;
+    arc->_rotate = _rotate;
+    arc->_startAngle = _startAngle;
+    arc->_endAngle = _endAngle;
+    return arc;
+}
+

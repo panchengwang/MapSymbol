@@ -168,3 +168,13 @@ unsigned char* SArc3Points::deserialize(unsigned char* data) {
     p = _end.deserialize(p);
     return p;
 }
+
+SSubPath* SArc3Points::clone()
+{
+    SArc3Points *arc3pts = new SArc3Points();
+    arc3pts->_type = _type;
+    arc3pts->_begin = _begin;
+    arc3pts->_middle = _middle;
+    arc3pts->_end = _end;
+    return arc3pts;
+}

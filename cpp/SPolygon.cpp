@@ -48,3 +48,11 @@ void SPolygon::draw(SCanvas& canvas) {
 
     cairo_restore(cairo);
 }
+
+SSubPath* SPolygon::clone()
+{
+    SPolygon *pg = new SPolygon();
+    pg->_type = _type;
+    pg->_points = _points;
+    return pg;
+}

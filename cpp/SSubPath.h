@@ -33,6 +33,7 @@ public:
     virtual void draw(SCanvas& canvas) = 0;
     virtual unsigned char* serialize(unsigned char* data) = 0;
     virtual unsigned char* deserialize(unsigned char* data) = 0;
+    virtual SSubPath* clone() = 0;
 protected:
     uint8_t _type;
 };

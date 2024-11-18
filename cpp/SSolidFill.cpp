@@ -66,3 +66,11 @@ unsigned char* SSolidFill::deserialize(unsigned char* data) {
     p = _color.deserialize(p);
     return p;
 }
+
+SFill* SSolidFill::clone()
+{
+    SSolidFill *fill= new SSolidFill();
+    fill->_type = _type;
+    fill->_color = _color;
+    return fill;
+}

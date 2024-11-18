@@ -17,7 +17,7 @@ public:
     json_object* toJsonObject();
     void draw(SCanvas& canvas);
 
-
+    SSubPath* clone();
 };
 
 #endif // SLineString_H

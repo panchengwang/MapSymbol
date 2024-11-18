@@ -197,6 +197,29 @@ bool SSymbol::toImage(const char* filename, const char* format)
     return true;
 }
 
+unsigned char* SSymbol::shapeToImage(size_t idx, const char* format, double width, double height, double dotsPerMM, size_t& len)
+{
+    SCanvas canvas(width,height, format);
+    canvas.setDotsPerMM(dotsPerMM);
+    canvas.setScale(_size, _size);
+    canvas.begin();
+    canvas.drawShape(*this,idx);
+    canvas.end();
+
+    unsigned char* data = canvas.imageData(len);
+    return data;
+}
+
+unsigned char* SSymbol::shapeToImage(size_t idx, const char* format, double dotsPerMM, size_t& len)
+{
+    SRect rect = getMBR();
+    if (onlySystemLines()) {
+        rect.expand(getMaxStrokeWidth());
+    }
+
+    return shapeToImage(idx, format, rect.width(), rect.height(), dotsPerMM, len);
+}
+
 
 SRect SSymbol::getMBR() {
     SRect rect;
@@ -305,5 +328,26 @@ void SSymbol::deserialize(unsigned char* data) {
         p = shp->deserialize(p);
         _shapes.push_back(shp);
     }
+}
+
+SSymbol* SSymbol::clone()
+{
+    SSymbol *sym = new SSymbol();
+    sym->_size = _size;
+    sym->_offset = _offset;
+    for(size_t i=0; i<_shapes.size(); i++){
+        sym->_shapes.push_back(_shapes[i]->clone());
+    }
+
+    return sym;
+}
+
+SSymbol* SSymbol::clone(size_t shpIdx)
+{
+    SSymbol *sym = new SSymbol();
+    sym->_size = _size;
+    sym->_offset = _offset;
+    sym->_shapes.push_back(_shapes[shpIdx]->clone());
+    return sym;
 }
 

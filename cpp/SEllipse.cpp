@@ -87,3 +87,14 @@ unsigned char* SEllipse::deserialize(unsigned char* data) {
     DESERIALIZE(p, _rotate);
     return p;
 }
+
+SSubPath* SEllipse::clone()
+{
+    SEllipse *ellipse = new SEllipse();
+    ellipse->_type = _type;
+    ellipse->_center = _center;
+    ellipse->_xradius = _xradius;
+    ellipse->_yradius = _yradius;
+    ellipse->_rotate = _rotate;
+    return ellipse;
+}

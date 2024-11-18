@@ -104,3 +104,13 @@ unsigned char* SSystemLine::deserialize(unsigned char* data) {
     p = _stroke->deserialize(p);
     return p;
 }
+
+SShape* SSystemLine::clone()
+{
+    SSystemLine *sym = new SSystemLine();
+    sym->_type = _type;
+    if(_stroke){
+        sym->_stroke = _stroke->clone();
+    }
+    return sym;
+}

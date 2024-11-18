@@ -139,6 +139,29 @@ void SCanvas::draw(const SSymbol& symbol)
 
 }
 
+
+void SCanvas::drawShape(const SSymbol& symbol, size_t shpIdx)
+{
+
+    if(shpIdx >= symbol.nShapes()){
+        return;
+    }
+    cairo_translate(_cairo,
+        ceil(_width * _dotsPerMM) * 0.5,
+        ceil(_height * _dotsPerMM) * 0.5
+    );
+    setScale(symbol.size(), symbol.size());
+    cairo_scale(_cairo, symbol.size(), symbol.size());
+    cairo_scale(_cairo, _dotsPerMM, -_dotsPerMM);
+    cairo_translate(_cairo, symbol.offset().x(), symbol.offset().y());
+    cairo_save(_cairo);
+    SShape* shp = symbol.getShape(shpIdx);
+    shp->draw(*this);
+    cairo_restore(_cairo);
+
+}
+
+
 typedef struct
 {
     unsigned char* data;

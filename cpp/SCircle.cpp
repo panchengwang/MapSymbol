@@ -83,3 +83,12 @@ unsigned char* SCircle::deserialize(unsigned char* data) {
     return p;
 }
 
+SSubPath* SCircle::clone()
+{
+    SCircle *circle = new SCircle();
+    circle->_type = _type;
+    circle->_center = _center;
+    circle->_radius = _radius;
+    return circle;
+}
+

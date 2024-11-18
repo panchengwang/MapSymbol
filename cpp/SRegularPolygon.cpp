@@ -102,3 +102,13 @@ unsigned char* SRegularPolygon::deserialize(unsigned char* data) {
     return p;
 }
 
+SSubPath* SRegularPolygon::clone()
+{
+    SRegularPolygon *rpg = new SRegularPolygon();
+    rpg->_center = _center;
+    rpg->_radius = _radius;
+    rpg->_rotate = _rotate;
+    rpg->_numEdges = _numEdges;
+    return rpg;
+}
+

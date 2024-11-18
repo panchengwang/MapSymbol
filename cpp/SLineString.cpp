@@ -113,3 +113,11 @@ unsigned char* SLineString::deserialize(unsigned char* data) {
     }
     return p;
 }
+
+SSubPath* SLineString::clone()
+{
+    SLineString *ls = new SLineString();
+    ls->_type = _type;
+    ls->_points = _points;
+    return ls;
+}

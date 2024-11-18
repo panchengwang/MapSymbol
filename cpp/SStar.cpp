@@ -111,3 +111,14 @@ unsigned char* SStar::deserialize(unsigned char* data) {
     DESERIALIZE(p, _numEdges);
     return p;
 }
+
+SSubPath* SStar::clone()
+{
+    SStar *star = new SStar();
+    star->_center = _center;
+    star->_outerRadius = _outerRadius;
+    star->_innerRadius = _innerRadius;
+    star->_rotate = _rotate;
+    star->_numEdges = _numEdges;
+    return star;
+}

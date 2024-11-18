@@ -12,6 +12,8 @@ public:
     bool fromJsonObject(json_object* obj, std::string& errorMessage);
     json_object* toJsonObject();
     void draw(SCanvas& canvas);
+
+    SSubPath* clone();
 };
 
 #endif // SPIE_H

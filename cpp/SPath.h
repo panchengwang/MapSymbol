@@ -24,6 +24,7 @@ public:
     size_t memSize();
     unsigned char* serialize(unsigned char* data);
     unsigned char* deserialize(unsigned char* data);
+    SShape* clone();
 protected:
     bool fromJsonObjectInternal(json_object* obj, std::string& errorMessage);
 protected:

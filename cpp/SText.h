@@ -42,7 +42,7 @@ public:
 
     unsigned char* serialize(unsigned char* data);
     unsigned char* deserialize(unsigned char* data);
-
+    SSubPath* clone();
 protected:
     std::string _text;
     std::string _fontFamily;

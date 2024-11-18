@@ -24,6 +24,8 @@ public:
     virtual size_t memSize() = 0;
     virtual unsigned char* serialize(unsigned char* data) = 0;
     virtual unsigned char* deserialize(unsigned char* data) = 0;
+
+    virtual SFill* clone() = 0;
 public:
     uint8_t  _type;
 

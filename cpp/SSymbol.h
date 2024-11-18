@@ -28,20 +28,26 @@ public:
     unsigned char* toImage(const char* format, double width, double height,  double dotsPerMM, size_t& len);
     bool toImage(const char* filename, const char* format = "png");
 
+    unsigned char* shapeToImage(size_t shpIdx, const char* format, double width, double height,  double dotsPerMM, size_t& len);
+    unsigned char* shapeToImage(size_t shpIdx, const char* format, double dotsPerMM, size_t& len);
+
     SRect getMBR();
 
     bool onlySystemLines();
     double size() const;
 
     size_t nShapes() const;
-    SShape* getShape(size_t idx) const;
+    SShape* getShape(size_t shpIdx) const;
     double getMaxStrokeWidth();
     const SPoint& offset() const;
     size_t memSize();
 
-
     unsigned char* serialize(size_t& len);
     void deserialize(unsigned char* data);
+
+    SSymbol* clone();
+    SSymbol* clone(size_t shpIdx);
+
 
 protected:
     std::string readAllContent(const char* filename);

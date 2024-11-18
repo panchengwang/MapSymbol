@@ -265,3 +265,16 @@ unsigned char* SStroke::deserialize(unsigned char* data) {
     }
     return p;
 }
+
+SStroke* SStroke::clone()
+{
+    SStroke *stroke = new SStroke();
+    stroke->_cap = _cap;
+    stroke->_join = _join;
+    stroke->_dashOffset = _dashOffset;
+    stroke->_color = _color;
+    stroke->_miter = _miter;
+    stroke->_width = _width;
+    stroke->_dashes = _dashes;
+    return stroke;
+}

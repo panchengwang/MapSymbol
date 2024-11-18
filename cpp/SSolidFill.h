@@ -18,6 +18,7 @@ public:
     size_t memSize();
     unsigned char* serialize(unsigned char* data);
     unsigned char* deserialize(unsigned char* data);
+    SFill* clone();
 protected:
     SColor  _color;
 

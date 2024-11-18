@@ -19,6 +19,7 @@ public:
     size_t memSize();
     unsigned char* serialize(unsigned char* data);
     unsigned char* deserialize(unsigned char* data);
+    SSubPath* clone();
 protected:
     SPoint  _center;
     double  _xradius;

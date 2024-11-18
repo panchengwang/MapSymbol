@@ -40,6 +40,7 @@ public:
     bool saveToFile(const char* filename);
     const std::string& errorMessage() const;
 
+    void drawShape(const SSymbol& symbol, size_t shpIdx);
 protected:
     double _width, _height;
     double _xscale, _yscale;

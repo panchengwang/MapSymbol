@@ -110,3 +110,16 @@ unsigned char* SSystemFill::deserialize(unsigned char* data) {
     p = _fill->deserialize(p);
     return p;
 }
+
+
+SShape* SSystemFill::clone()
+{
+    SSystemFill *sym = new SSystemFill();
+    sym->_type = _type;
+    if(_fill){
+        sym->_fill = _fill->clone();
+    }
+    return sym;
+}
+
+

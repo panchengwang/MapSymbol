@@ -281,3 +281,24 @@ unsigned char* SPath::deserialize(unsigned char* data) {
     }
     return p;
 }
+
+
+
+SShape* SPath::clone(){
+    SPath *path = new SPath();
+    path->_type = _type;
+    if(_stroke){
+        path->_stroke = _stroke->clone();
+    }else{
+        path->_stroke = NULL;
+    }
+    if(_fill){
+        path->_fill = _fill->clone();
+    }else{
+        path->_fill = NULL;
+    }
+    for(size_t i=0; i<_subPaths.size(); i++){
+        path->_subPaths.push_back(_subPaths[i]->clone());
+    }
+    return path;
+}

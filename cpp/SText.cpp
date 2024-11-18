@@ -263,3 +263,18 @@ unsigned char* SText::deserialize(unsigned char* data) {
     return p;
 }
 
+SSubPath* SText::clone()
+{
+    SText* text = new SText();
+    text->_text = _text;
+    text->_fontFamily = _fontFamily;
+    text->_fontSize = _fontSize;
+    text->_horizontalAlign = _horizontalAlign;
+    text->_vertialAlign = _vertialAlign;
+    text->_anchor = _anchor;
+    text->_weight = _weight;
+    text->_slant = _slant;
+    text->_rotate = _rotate;
+    return text;
+}
+

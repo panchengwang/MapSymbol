@@ -44,3 +44,16 @@ void SChord::draw(SCanvas& canvas) {
     cairo_close_path(cairo);
     cairo_restore(cairo);
 }
+
+SSubPath* SChord::clone()
+{
+    SChord *chord = new SChord();
+    chord->_type = _type;
+    chord->_center = _center;
+    chord->_rotate = _rotate;
+    chord->_xradius = _xradius;
+    chord->_yradius = _yradius;
+    chord->_startAngle = _startAngle;
+    chord->_endAngle = _endAngle;
+    return chord;
+}

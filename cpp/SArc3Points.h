@@ -17,6 +17,8 @@ public:
     size_t memSize();
     unsigned char* serialize(unsigned char* data);
     unsigned char* deserialize(unsigned char* data);
+    SSubPath* clone();
+
 protected:
     bool  calculateCircleParameters(SPoint& center, double& radius);
     double angleBetweenHorizontal(const SPoint& pt, const SPoint& center);

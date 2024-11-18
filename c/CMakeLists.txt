@@ -51,6 +51,6 @@ add_custom_command(TARGET mapsymbol_c POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:mapsymbol_c> ${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:mapsymbol_c>
 )
 
-# install(FILES symbol.h
-#   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mapsymbol
-# )
+install(FILES ${HEADERS}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mapsymbol_c
+)

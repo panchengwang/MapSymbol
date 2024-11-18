@@ -41,6 +41,7 @@ list(APPEND HEADERS
   SLineString.h
   SPolygon.h
   SText.h
+  SBytesCharTransformer.h
 )
 
 list(APPEND SOURCES 
@@ -69,6 +70,7 @@ list(APPEND SOURCES
   SLineString.cpp
   SPolygon.cpp
   SText.cpp
+  SBytesCharTransformer.cpp
 )
 
 add_library(mapsymbol SHARED
@@ -105,6 +107,6 @@ add_custom_command(TARGET mapsymbol POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:mapsymbol> ${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:mapsymbol>
 )
 
-# install(FILES symbol.h
-#   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mapsymbol
-# )
+install(FILES ${HEADERS}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mapsymbol
+)
