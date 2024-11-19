@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 13.0.1, 2024-11-18T15:29:10. -->
+<!-- Written by QtCreator 13.0.1, 2024-11-19T14:28:32. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -418,7 +418,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.symbol2image</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">symbol2image</value>
     <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">true</value>
-    <value type="QString" key="RunConfiguration.Arguments">E:\MapSymbol\data\star.json</value>
+    <value type="QString" key="RunConfiguration.Arguments">E:\MapSymbol\data\1.json</value>
     <value type="bool" key="RunConfiguration.Arguments.multi">true</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>

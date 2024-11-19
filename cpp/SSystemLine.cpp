@@ -65,11 +65,11 @@ void SSystemLine::draw(SCanvas& canvas) {
     cairo_move_to(cairo, -1, 0);
     cairo_line_to(cairo, 1, 0);
 
-    cairo_restore(cairo);
+
 
     canvas.setStroke(_stroke);
     cairo_stroke(cairo);
-
+    cairo_restore(cairo);
 }
 
 

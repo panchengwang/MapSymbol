@@ -21,6 +21,8 @@ bool SArc3Points::fromJsonObject(json_object* obj, std::string& errorMessage)
 {
     _type = SSubPath::ARC_3_POINTS;
 
+    JSON_GET_DOUBLE(obj, "rotate",_rotate,errorMessage);
+    JSON_GET_POINT(obj, "offset", _offset, errorMessage);
     JSON_GET_POINT(obj, "begin", _begin, errorMessage);
     JSON_GET_POINT(obj, "middle", _middle, errorMessage);
     JSON_GET_POINT(obj, "end", _end, errorMessage);
@@ -38,6 +40,8 @@ json_object* SArc3Points::toJsonObject()
 {
     json_object* obj = json_object_new_object();
     JSON_ADD_STRING(obj, "type", "arc3points");
+    JSON_ADD_DOUBLE(obj, "rotate", _rotate);
+    JSON_ADD_POINT(obj, "offset", _offset);
     JSON_ADD_POINT(obj, "begin", _begin);
     JSON_ADD_POINT(obj, "middle", _middle);
     JSON_ADD_POINT(obj, "end", _end);
@@ -125,7 +129,8 @@ void SArc3Points::draw(SCanvas& canvas) {
     bool clockwise = isClockwise(_begin, _middle, _end);
 
     cairo_save(cairo);
-
+    cairo_translate(cairo, _offset.x(),_offset.y());
+    cairo_rotate(cairo,_rotate * M_PI/180.0);
     if (clockwise) {
         cairo_move_to(cairo, _begin.x(), _begin.y());
         cairo_arc_negative(cairo, center.x(), center.y(), radius, angle1, angle3);
@@ -143,6 +148,8 @@ void SArc3Points::draw(SCanvas& canvas) {
 size_t SArc3Points::memSize() {
     size_t len = 0;
     len += sizeof(_type);
+    len += sizeof(_rotate);
+    len += _offset.memSize();
     len += _begin.memSize();
     len += _middle.memSize();
     len += _end.memSize();
@@ -154,6 +161,8 @@ size_t SArc3Points::memSize() {
 unsigned char* SArc3Points::serialize(unsigned char* data) {
     unsigned char* p = data;
     SERIALIZE(p, _type);
+    SERIALIZE(p, _rotate);
+    p = _offset.serialize(p);
     p = _begin.serialize(p);
     p = _middle.serialize(p);
     p = _end.serialize(p);
@@ -163,6 +172,8 @@ unsigned char* SArc3Points::serialize(unsigned char* data) {
 unsigned char* SArc3Points::deserialize(unsigned char* data) {
     unsigned char* p = data;
     DESERIALIZE(p, _type);
+    DESERIALIZE(p, _rotate);
+    p = _offset.deserialize(p);
     p = _begin.deserialize(p);
     p = _middle.deserialize(p);
     p = _end.deserialize(p);
@@ -173,6 +184,8 @@ SSubPath* SArc3Points::clone()
 {
     SArc3Points *arc3pts = new SArc3Points();
     arc3pts->_type = _type;
+    arc3pts->_rotate = _rotate;
+    arc3pts->_offset = _offset;
     arc3pts->_begin = _begin;
     arc3pts->_middle = _middle;
     arc3pts->_end = _end;

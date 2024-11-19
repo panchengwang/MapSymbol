@@ -6,7 +6,7 @@
 #include <math.h>
 #include "JsonHelper.h"
 #include "SerializeHelper.h"
-
+#include <iostream>
 
 
 SText::SText() {
@@ -156,6 +156,7 @@ json_object* SText::toJsonObject() {
     }
     JSON_ADD_STRING(obj, "slant", str.c_str());
     JSON_ADD_DOUBLE(obj, "rotate", _rotate);
+
     return obj;
 }
 
@@ -168,6 +169,7 @@ json_object* SText::toJsonObject() {
 
 void SText::draw(SCanvas& canvas) {
     cairo_t* cairo = canvas.cairo();
+
     cairo_save(cairo);
 
     cairo_font_slant_t fontslant = CAIRO_FONT_SLANT_NORMAL;
@@ -260,6 +262,7 @@ unsigned char* SText::deserialize(unsigned char* data) {
     DESERIALIZE(p, _weight);
     DESERIALIZE(p, _slant);
     DESERIALIZE(p, _rotate);
+
     return p;
 }
 
@@ -275,6 +278,7 @@ SSubPath* SText::clone()
     text->_weight = _weight;
     text->_slant = _slant;
     text->_rotate = _rotate;
+
     return text;
 }
 

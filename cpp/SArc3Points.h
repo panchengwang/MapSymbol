@@ -25,8 +25,8 @@ protected:
     double areaOf3Points(const SPoint& begin, const SPoint& middle, const SPoint& end);
     bool isClockwise(const SPoint& begin, const SPoint& middle, const SPoint& end);
 protected:
-    SPoint _begin, _middle, _end;
-
+    SPoint _begin, _middle, _end,_offset;
+    double _rotate;
 };
 
 #endif // SARC_H

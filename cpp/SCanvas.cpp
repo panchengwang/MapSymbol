@@ -161,6 +161,16 @@ void SCanvas::drawShape(const SSymbol& symbol, size_t shpIdx)
 
 }
 
+SColor SCanvas::defaultColor() const
+{
+    return _defaultColor;
+}
+
+void SCanvas::setDefaultColor(const SColor& color)
+{
+    _defaultColor = color;
+}
+
 
 typedef struct
 {
@@ -235,6 +245,7 @@ cairo_t* SCanvas::cairo() {
 
 void SCanvas::setStroke(SStroke* stroke) {
     stroke->setTo(*this);
+    std::cout << stroke->color().toString() << std::endl;
     // cairo_set_line_width(_cairo, stroke->width() / _xscale * _dotsPerMM);
     // if (stroke->cap() == SStroke::CAP_BUTT) {
     //     cairo_set_line_cap(_cairo, CAIRO_LINE_CAP_BUTT);
@@ -271,4 +282,5 @@ void SCanvas::setStroke(SStroke* stroke) {
 
 void SCanvas::setFill(SFill* fill) {
     fill->setTo(*this);
+
 }

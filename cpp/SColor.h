@@ -25,6 +25,9 @@ public:
     size_t memSize();
     unsigned char* serialize(unsigned char* data);
     unsigned char* deserialize(unsigned char* data);
+
+    std::string toString() ;
+
 protected:
     uint8_t _alpha;
     uint8_t _red;

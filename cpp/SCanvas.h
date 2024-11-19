@@ -8,6 +8,7 @@
 
 class SCanvas
 {
+    friend class SStroke;
 public:
     SCanvas(double width, double height, const std::string& format);
     virtual ~SCanvas();
@@ -41,6 +42,10 @@ public:
     const std::string& errorMessage() const;
 
     void drawShape(const SSymbol& symbol, size_t shpIdx);
+
+    SColor defaultColor() const;
+    void setDefaultColor(const SColor& color);
+
 protected:
     double _width, _height;
     double _xscale, _yscale;
@@ -50,6 +55,7 @@ protected:
     cairo_surface_t* _surface;
     cairo_t* _cairo;
 
+    SColor _defaultColor;
     std::string _errorMessage;
 };
 

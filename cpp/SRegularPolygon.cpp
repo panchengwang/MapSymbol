@@ -62,6 +62,7 @@ void SRegularPolygon::draw(SCanvas& canvas) {
     for (size_t i = 0; i < _numEdges; i++) {
         cairo_line_to(cairo, _radius * cos(i * step), _radius * sin(i * step));
     }
+    cairo_line_to(cairo, _radius, 0);
     cairo_close_path(cairo);
 
     cairo_restore(cairo);

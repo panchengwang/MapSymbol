@@ -174,19 +174,18 @@ SRect SPath::getMBR() {
 
 void SPath::draw(SCanvas& canvas) {
     cairo_t* cairo = canvas.cairo();
+    canvas.setDefaultColor(_stroke->color());
     cairo_save(cairo);
 
     for (size_t i = 0; i < _subPaths.size(); i++) {
         _subPaths[i]->draw(canvas);
     }
 
-    cairo_restore(cairo);
-
     canvas.setFill(_fill);
     cairo_fill_preserve(cairo);
-    canvas.setStroke(_stroke);
     cairo_stroke(cairo);
-
+    canvas.setStroke(_stroke);
+    cairo_restore(cairo);
 }
 
 

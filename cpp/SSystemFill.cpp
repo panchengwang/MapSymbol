@@ -71,12 +71,10 @@ SRect SSystemFill::getMBR() {
 
 void SSystemFill::draw(SCanvas& canvas) {
     cairo_t* cairo = canvas.cairo();
-    // cairo_save(cairo);
-    // cairo_restore(cairo);
-
+    cairo_save(cairo);
     canvas.setFill(_fill);
     cairo_paint(cairo);
-
+    cairo_restore(cairo);
 }
 
 

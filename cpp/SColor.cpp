@@ -1,7 +1,7 @@
 #include "SColor.h"
 #include "JsonHelper.h"
 #include "SerializeHelper.h"
-
+#include <sstream>
 
 
 SColor::SColor()
@@ -89,5 +89,12 @@ unsigned char* SColor::deserialize(unsigned char* data) {
     DESERIALIZE(p, _green);
     DESERIALIZE(p, _blue);
     return p;
+}
+
+std::string SColor::toString()
+{
+    std::stringstream outstr;
+    outstr << "Color(red: " << (int)_red << ", green: " << (int)_green << ", blue: " << (int)_blue << ", alpha: " << (int)_alpha << ")" ;
+    return outstr.str();
 }
 

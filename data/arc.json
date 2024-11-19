@@ -14,7 +14,7 @@
                     "green": 0,
                     "blue": 0
                 },
-                "width": 0.1,
+                "width": 0.3,
                 "dashoffset": 0,
                 "dashes": [
                     1.0,
@@ -27,8 +27,8 @@
             "fill": {
                 "type": "solid",
                 "color": {
-                    "alpha": 127,
-                    "red": 255,
+                    "alpha": 0,
+                    "red": 0,
                     "green": 0,
                     "blue": 0
                 }
@@ -43,18 +43,6 @@
                     "xradius": 0.8,
                     "yradius": 0.4,
                     "rotate": 0,
-                    "startangle": 0,
-                    "endangle": 180
-                },
-                {
-                    "type": "arc",
-                    "center": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "xradius": 0.8,
-                    "yradius": 0.4,
-                    "rotate": 90,
                     "startangle": 0,
                     "endangle": 180
                 }

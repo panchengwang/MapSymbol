@@ -1,22 +1,20 @@
 {
     "offset": {
-        "x": 0.2,
+        "x": 0,
         "y": 0
     },
-    "xscale": 50.0,
-    "yscale": 50.0,
-    "size": 50,
+    "size": 5,
     "shapes": [
         {
             "type": "path",
             "stroke": {
                 "color": {
                     "alpha": 255,
-                    "red": 0,
-                    "green": 0,
-                    "blue": 0
+                    "red": 127,
+                    "green": 127,
+                    "blue": 127
                 },
-                "width": 0.1,
+                "width": 0.2,
                 "dashoffset": 0,
                 "dashes": [
                     1.0,
@@ -31,84 +29,50 @@
                 "color": {
                     "alpha": 127,
                     "red": 255,
-                    "green": 0,
+                    "green": 255,
                     "blue": 0
                 }
             },
             "subpaths": [
                 {
                     "type": "arc3points",
+                    "offset": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "rotate": -135,
                     "begin": {
-                        "x": -0.5,
+                        "x": -0.8,
                         "y": 0
                     },
                     "middle": {
                         "x": 0,
-                        "y": 0.5
+                        "y": 0.8
                     },
                     "end": {
-                        "x": 0.5,
+                        "x": 0.8,
                         "y": 0
                     }
                 },
                 {
                     "type": "arc3points",
+                    "offset": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "rotate": -135,
                     "begin": {
-                        "x": 0.5,
+                        "x": -0.8,
                         "y": 0
                     },
                     "middle": {
                         "x": 0,
-                        "y": 0.25
+                        "y": 0.2
                     },
                     "end": {
-                        "x": -0.5,
+                        "x": 0.8,
                         "y": 0
                     }
-                },
-                {
-                    "type": "arc3points",
-                    "begin": {
-                        "x": -0.5,
-                        "y": 0
-                    },
-                    "middle": {
-                        "x": 0,
-                        "y": -0.5
-                    },
-                    "end": {
-                        "x": 0.5,
-                        "y": 0
-                    }
-                },
-                {
-                    "type": "arc3points",
-                    "begin": {
-                        "x": 0.5,
-                        "y": 0
-                    },
-                    "middle": {
-                        "x": 0,
-                        "y": -0.25
-                    },
-                    "end": {
-                        "x": -0.5,
-                        "y": 0
-                    }
-                },
-                {
-                    "type": "text",
-                    "text": "1",
-                    "fontfamily": "SimSun",
-                    "fontsize": 0.25,
-                    "anchor": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "weight": "bold",
-                    "slant": "normal",
-                    "horizontalalign": "center",
-                    "verticalalign": "middle"
                 }
             ]
         }
