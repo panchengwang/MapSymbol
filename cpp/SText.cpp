@@ -20,6 +20,7 @@ SText::SText() {
     _weight = SText::WEIGHT_NORMAL;
     _slant = SText::SLANT_NORMAL;
     _rotate = 0.0f;
+    _ispath = true;
 }
 
 
@@ -101,6 +102,7 @@ bool SText::fromJsonObject(json_object* obj, std::string& errorMessage) {
     }
 
     JSON_GET_DOUBLE(obj,"rotate",_rotate, errorMessage);
+    JSON_GET_BOOL(obj, "ispath",_ispath, errorMessage);
 
     return true;
 }
@@ -156,7 +158,7 @@ json_object* SText::toJsonObject() {
     }
     JSON_ADD_STRING(obj, "slant", str.c_str());
     JSON_ADD_DOUBLE(obj, "rotate", _rotate);
-
+    JSON_ADD_BOOL(obj, "ispath", _ispath);
     return obj;
 }
 
@@ -205,7 +207,15 @@ void SText::draw(SCanvas& canvas) {
 
     cairo_scale(cairo, 1, -1);
     cairo_move_to(cairo, 0, 0);
-    cairo_text_path(cairo, _text.c_str());
+    if(_ispath){
+        cairo_text_path(cairo, _text.c_str());
+    }else{
+        cairo_save(cairo);
+        SColor color = canvas.defaultColor();
+        cairo_set_source_rgba(cairo, color.red()/255.0, color.green()/255.0, color.blue()/255.0,color.alpha()/255.0);
+        cairo_show_text(cairo,_text.c_str());
+        cairo_restore(cairo);
+    }
     cairo_restore(cairo);
 
 }
@@ -225,6 +235,7 @@ size_t SText::memSize() {
     len += sizeof(_weight);
     len += sizeof(_slant);
     len += sizeof(_rotate);
+    len += sizeof(_ispath);
     return len;
 }
 
@@ -244,7 +255,7 @@ unsigned char* SText::serialize(unsigned char* data) {
     SERIALIZE(p, _weight);
     SERIALIZE(p, _slant);
     SERIALIZE(p, _rotate);
-
+    SERIALIZE(p, _ispath);
     return p;
 }
 
@@ -262,7 +273,7 @@ unsigned char* SText::deserialize(unsigned char* data) {
     DESERIALIZE(p, _weight);
     DESERIALIZE(p, _slant);
     DESERIALIZE(p, _rotate);
-
+    DESERIALIZE(p, _ispath);
     return p;
 }
 
@@ -278,7 +289,7 @@ SSubPath* SText::clone()
     text->_weight = _weight;
     text->_slant = _slant;
     text->_rotate = _rotate;
-
+    text->_ispath = _ispath;
     return text;
 }
 

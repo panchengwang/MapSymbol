@@ -25,7 +25,7 @@ public:
     const std::string& errorMessage() const;
 
     unsigned char* toImage(const char* format, double dotsPerMM, size_t& len);
-    unsigned char* toImage(const char* format, double width, double height,  double dotsPerMM, size_t& len);
+    unsigned char* toImage(const char* format, double size,  double dotsPerMM, size_t& len);
     bool toImage(const char* filename, const char* format = "png");
 
     unsigned char* shapeToImage(size_t shpIdx, const char* format, double width, double height,  double dotsPerMM, size_t& len);

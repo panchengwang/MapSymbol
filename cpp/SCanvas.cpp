@@ -171,6 +171,16 @@ void SCanvas::setDefaultColor(const SColor& color)
     _defaultColor = color;
 }
 
+double SCanvas::width() const
+{
+    return _width;
+}
+
+void SCanvas::setHeight(double newHeight)
+{
+    _height = newHeight;
+}
+
 
 typedef struct
 {
@@ -245,7 +255,7 @@ cairo_t* SCanvas::cairo() {
 
 void SCanvas::setStroke(SStroke* stroke) {
     stroke->setTo(*this);
-    std::cout << stroke->color().toString() << std::endl;
+    // std::cout << stroke->color().toString() << std::endl;
     // cairo_set_line_width(_cairo, stroke->width() / _xscale * _dotsPerMM);
     // if (stroke->cap() == SStroke::CAP_BUTT) {
     //     cairo_set_line_cap(_cairo, CAIRO_LINE_CAP_BUTT);

@@ -88,7 +88,6 @@ double SStroke::miter() const
 void SStroke::setTo(SCanvas& canvas) {
     cairo_t* cairo = canvas.cairo();
 
-    // cairo_set_line_width(cairo, width() / canvas.xScale() * canvas.dotsPerMM());
     cairo_set_line_width(cairo, width() / canvas.xScale());
     if (_cap == SStroke::CAP_BUTT) {
         cairo_set_line_cap(cairo, CAIRO_LINE_CAP_BUTT);

@@ -94,7 +94,7 @@ unsigned char* SColor::deserialize(unsigned char* data) {
 std::string SColor::toString()
 {
     std::stringstream outstr;
-    outstr << "Color(red: " << (int)_red << ", green: " << (int)_green << ", blue: " << (int)_blue << ", alpha: " << (int)_alpha << ")" ;
+    // outstr << "Color(red: " << (int)_red << ", green: " << (int)_green << ", blue: " << (int)_blue << ", alpha: " << (int)_alpha << ")" ;
     return outstr.str();
 }
 

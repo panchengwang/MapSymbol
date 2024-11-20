@@ -27,7 +27,7 @@
             "fill": {
                 "type": "solid",
                 "color": {
-                    "alpha": 127,
+                    "alpha": 255,
                     "red": 255,
                     "green": 255,
                     "blue": 0
@@ -66,8 +66,8 @@
             "fill": {
                 "type": "solid",
                 "color": {
-                    "alpha": 127,
-                    "red": 0,
+                    "alpha": 255,
+                    "red": 255,
                     "green": 0,
                     "blue": 0
                 }

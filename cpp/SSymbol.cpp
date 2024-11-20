@@ -155,23 +155,12 @@ unsigned char* SSymbol::toImage(const char* format, double dotsPerMM, size_t& le
     SRect rect = getMBR();
     if (onlySystemLines()) {
         rect.expand(getMaxStrokeWidth());
+    }else{
+        rect.ensureSymmetry();
     }
 
-    return toImage(format, rect.width(), rect.height(), dotsPerMM, len);
-    // SCanvas canvas(rect.width(), rect.height(), format);
-    // canvas.setDotsPerMM(dotsPerMM);
-    // canvas.setScale(_size, _size);
-    // canvas.begin();
-    // canvas.draw(*this);
-    // canvas.end();
 
-    // unsigned char* data = canvas.imageData(len);
-    // return data;
-}
-
-unsigned char* SSymbol::toImage(const char* format, double width, double height, double dotsPerMM, size_t& len)
-{
-    SCanvas canvas(width,height, format);
+    SCanvas canvas(rect.width(), rect.height(), format);
     canvas.setDotsPerMM(dotsPerMM);
     canvas.setScale(_size, _size);
     canvas.begin();
@@ -180,6 +169,24 @@ unsigned char* SSymbol::toImage(const char* format, double width, double height,
 
     unsigned char* data = canvas.imageData(len);
     return data;
+}
+
+unsigned char* SSymbol::toImage(const char* format, double size, double dotsPerMM, size_t& len)
+{
+    SSymbol *sym = clone();
+    sym->_size = size;
+    unsigned char* data = sym->toImage(format,dotsPerMM,len);
+    delete sym;
+    return data;
+    // SCanvas canvas(width,height, format);
+    // canvas.setDotsPerMM(dotsPerMM);
+    // canvas.setScale(_size, _size);
+    // canvas.begin();
+    // canvas.draw(*this);
+    // canvas.end();
+
+    // unsigned char* data = canvas.imageData(len);
+    // return data;
 }
 
 bool SSymbol::toImage(const char* filename, const char* format)

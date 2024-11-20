@@ -46,6 +46,10 @@ public:
     SColor defaultColor() const;
     void setDefaultColor(const SColor& color);
 
+    double width() const;
+
+    void setHeight(double newHeight);
+
 protected:
     double _width, _height;
     double _xscale, _yscale;

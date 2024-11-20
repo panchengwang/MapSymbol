@@ -24,7 +24,7 @@ DLL_EXPORT unsigned char* symbol_serialize(HSYMBOL hsym, size_t* len);
 DLL_EXPORT HSYMBOL symbol_deserialize(unsigned char* data);
 
 DLL_EXPORT unsigned char* symbol_to_image(HSYMBOL hsym, const char* format, double dotsPerMM, size_t* len);
-unsigned char* symbol_to_image_with_width_height(HSYMBOL hsym, const char* format, double width, double height, double dotsPerMM, size_t* len);
+unsigned char* symbol_to_image_with_size(HSYMBOL hsym, const char* format, double size, double dotsPerMM, size_t* len);
 DLL_EXPORT unsigned char* symbol_shape_to_image(HSYMBOL hsym, size_t shpidx, const char* format, double width, double height, double dotsPerMM, size_t* len);
 DLL_EXPORT size_t symbol_nshapes(HSYMBOL hsym);
 DLL_EXPORT HSYMBOL symbol_get_shape(HSYMBOL hsym, size_t shpidx);

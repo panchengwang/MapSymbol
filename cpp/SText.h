@@ -53,7 +53,7 @@ protected:
     uint8_t _weight;
     uint8_t _slant;
     double _rotate;
-
+    uint8_t _ispath;
 };
 
 #endif
