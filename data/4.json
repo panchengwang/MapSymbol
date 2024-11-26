@@ -3,9 +3,7 @@
         "x": 0,
         "y": 0
     },
-    "xscale": 150.0,
-    "yscale": 150.0,
-    "size": 10,
+    "size": 5,
     "shapes": [
         {
             "type": "path",
@@ -57,7 +55,7 @@
                     "slant": "normal",
                     "horizontalalign": "center",
                     "verticalalign": "middle",
-                    "rotate": 45
+                    "rotate": 0
                 }
             ]
         }

@@ -6,9 +6,11 @@
 #include "SStroke.h"
 #include "SFill.h"
 
+
 class SCanvas
 {
     friend class SStroke;
+    friend class SSymbol;
 public:
     SCanvas(double width, double height, const std::string& format);
     virtual ~SCanvas();
@@ -47,13 +49,25 @@ public:
     void setDefaultColor(const SColor& color);
 
     double width() const;
-
     void setHeight(double newHeight);
+
+    double dotsWidth() const;
+    double dotsHeight() const;
+
+    cairo_format_t cairoFomrat() const;
+
+    double height() const;
+
+    uint32_t stride();
+protected:
+    cairo_surface_t* detachCairoSurface();
 
 protected:
     double _width, _height;
     double _xscale, _yscale;
     double _dotsPerMM;
+    double _dotsWidth;
+    double _dotsHeight;
     std::string _format;
 
     cairo_surface_t* _surface;
@@ -61,6 +75,8 @@ protected:
 
     SColor _defaultColor;
     std::string _errorMessage;
+
+    cairo_format_t  _cairoFormat;
 };
 
 #endif // SCANVAS_H

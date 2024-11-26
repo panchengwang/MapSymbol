@@ -9,6 +9,8 @@
 #include "SPoint.h"
 #include "SShape.h"
 #include "SRect.h"
+#include "SImage.h"
+#include <cairo.h>
 
 class DLL_EXPORT SSymbol
 {
@@ -24,12 +26,18 @@ public:
     bool fromJsonFile(const char* filename);
     const std::string& errorMessage() const;
 
-    unsigned char* toImage(const char* format, double dotsPerMM, size_t& len);
-    unsigned char* toImage(const char* format, double size,  double dotsPerMM, size_t& len);
-    bool toImage(const char* filename, const char* format = "png");
+    SImage* toImage(const char* format, double dotsPerMM);
+    SImage* toImage(const char* format, double size, double dotsPerMM);
 
-    unsigned char* shapeToImage(size_t shpIdx, const char* format, double width, double height,  double dotsPerMM, size_t& len);
-    unsigned char* shapeToImage(size_t shpIdx, const char* format, double dotsPerMM, size_t& len);
+    cairo_surface_t* toImageSurface(const char* format, double dotsPerMM);
+    cairo_surface_t* toImageSurface(const char* format, double size, double dotsPerMM);
+
+    unsigned char* toRawImage(const char* format, double dotsPerMM, size_t& len);
+    unsigned char* toRawImage(const char* format, double size, double dotsPerMM, size_t& len);
+    bool toRawImage(const char* filename, const char* format = "png");
+
+    unsigned char* shapeToRawImage(size_t shpIdx, const char* format, double width, double height, double dotsPerMM, size_t& len);
+    unsigned char* shapeToRawImage(size_t shpIdx, const char* format, double dotsPerMM, size_t& len);
 
     SRect getMBR();
 

@@ -18,6 +18,8 @@ SCanvas::SCanvas(double width, double height, const std::string& format)
     _xscale = 1.0;
     _yscale = 1.0;
     _dotsPerMM = 72 / 25.4;
+
+    _cairoFormat = CAIRO_FORMAT_ARGB32;
 }
 
 SCanvas::~SCanvas()
@@ -41,17 +43,19 @@ void SCanvas::begin()
 {
     clear();
     if (_format == "png" || _format == "jpg" || _format == "jpeg") {
+        _dotsWidth = ceil(_width * _dotsPerMM);
+        _dotsHeight = ceil(_height * _dotsPerMM);
+        _cairoFormat = CAIRO_FORMAT_ARGB32;
         _surface = cairo_image_surface_create(
-            CAIRO_FORMAT_ARGB32,
-            ceil(_width * _dotsPerMM),
-            ceil(_height * _dotsPerMM)
+            _cairoFormat,
+            _dotsWidth,
+            _dotsHeight
         );
     }
 
     if (_surface) {
         _cairo = cairo_create(_surface);
         cairo_set_fill_rule(_cairo, CAIRO_FILL_RULE_EVEN_ODD);
-
     }
 }
 
@@ -91,8 +95,8 @@ void SCanvas::draw(const SSymbol& symbol)
 {
 
     cairo_translate(_cairo,
-        ceil(_width * _dotsPerMM) * 0.5,
-        ceil(_height * _dotsPerMM) * 0.5
+        _dotsWidth * 0.5,
+        _dotsHeight * 0.5
     );
     setScale(symbol.size(), symbol.size());
     cairo_scale(_cairo, symbol.size(), symbol.size());
@@ -123,8 +127,8 @@ void SCanvas::draw(const SSymbol& symbol)
     // cairo_scale(_cairo, 1, -1);
     // cairo_select_font_face(_cairo, "Microsoft YaHei", CAIRO_FONT_SLANT_NORMAL,
     //     CAIRO_FONT_WEIGHT_NORMAL);
-    // cairo_text_path(_cairo, "王盼成");
-    // std::cout << "len: " << strlen("王盼成") << std::endl;
+    // cairo_text_path(_cairo, "王");
+    // std::cout << "len: " << strlen("王") << std::endl;
     // cairo_set_source_rgba(_cairo, 0.5, 0.5, 1, 1);
     // cairo_fill_preserve(_cairo);
     // cairo_set_source_rgba(_cairo, 1, 0, 1, 1);
@@ -143,7 +147,7 @@ void SCanvas::draw(const SSymbol& symbol)
 void SCanvas::drawShape(const SSymbol& symbol, size_t shpIdx)
 {
 
-    if(shpIdx >= symbol.nShapes()){
+    if (shpIdx >= symbol.nShapes()) {
         return;
     }
     cairo_translate(_cairo,
@@ -294,3 +298,42 @@ void SCanvas::setFill(SFill* fill) {
     fill->setTo(*this);
 
 }
+
+
+
+double SCanvas::dotsWidth() const {
+    return _dotsWidth;
+}
+
+double SCanvas::dotsHeight() const {
+    return _dotsHeight;
+}
+
+
+
+cairo_format_t SCanvas::cairoFomrat() const {
+    return _cairoFormat;
+}
+
+
+cairo_surface_t* SCanvas::detachCairoSurface() {
+    if (_cairo) {
+        cairo_destroy(_cairo);
+        _cairo = NULL;
+    }
+
+    cairo_surface_t* sf = _surface;
+    _surface = NULL;
+    return sf;
+}
+
+double SCanvas::height() const
+{
+   return _height;
+}
+
+uint32_t SCanvas::stride()
+{
+    return cairo_format_stride_for_width (_cairoFormat, _dotsWidth);
+}
+

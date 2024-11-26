@@ -42,6 +42,8 @@ list(APPEND HEADERS
   SPolygon.h
   SText.h
   SBytesCharTransformer.h
+  SImage.h
+  SurfaceHelper.h
 )
 
 list(APPEND SOURCES 
@@ -71,6 +73,8 @@ list(APPEND SOURCES
   SPolygon.cpp
   SText.cpp
   SBytesCharTransformer.cpp
+  SImage.cpp
+  SurfaceHelper.cpp
 )
 
 add_library(mapsymbol SHARED

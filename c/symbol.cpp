@@ -38,21 +38,21 @@ HSYMBOL symbol_deserialize(unsigned char* data){
 
 unsigned char* symbol_to_image(HSYMBOL hsym, const char* format, double dotsPerMM, size_t* len){
     SSymbol *sym = (SSymbol*)hsym;
-    unsigned char* data = sym->toImage(format,dotsPerMM,*len);
+    unsigned char* data = sym->toRawImage(format,dotsPerMM,*len);
     return data;
 }
 
 
 unsigned char* symbol_to_image_with_size(HSYMBOL hsym, const char* format, double size, double dotsPerMM, size_t* len){
     SSymbol *sym = (SSymbol*)hsym;
-    unsigned char* data = sym->toImage(format,size,dotsPerMM,*len);
+    unsigned char* data = sym->toRawImage(format,size,dotsPerMM,*len);
     return data;
 }
 
 unsigned char* symbol_shape_to_image(HSYMBOL hsym, size_t shpidx, const char* format, double width, double height, double dotsPerMM, size_t* len)
 {
     SSymbol *sym = (SSymbol*)hsym;
-    unsigned char* data = sym->shapeToImage(shpidx,format,width,height,dotsPerMM,*len);
+    unsigned char* data = sym->shapeToRawImage(shpidx,format,width,height,dotsPerMM,*len);
     return data;
 }
 

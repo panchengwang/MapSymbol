@@ -55,8 +55,8 @@ int main(int argc, char** argv) {
 
 
     std::cout << "Test symbol to image: " << std::endl;
-    // uint8_t* img = sym3.toImage("jpg",150,150,144/25.4,len);
-    uint8_t* img = sym3.toImage("jpg",5,144/25.4,len);
+    // uint8_t* img = sym3.toRawImage("jpg",150,150,144/25.4,len);
+    uint8_t* img = sym3.toRawImage("jpg",5,144/25.4,len);
     saveToFile(std::string(filename) + ".jpg" , img,len);
     return EXIT_SUCCESS;
 }

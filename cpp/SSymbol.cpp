@@ -150,12 +150,89 @@ const std::string& SSymbol::errorMessage() const
     return _errorMessage;
 }
 
-unsigned char* SSymbol::toImage(const char* format, double dotsPerMM, size_t& len)
+SImage* SSymbol::toImage(const char* format, double dotsPerMM)
 {
     SRect rect = getMBR();
     if (onlySystemLines()) {
         rect.expand(getMaxStrokeWidth());
-    }else{
+    }
+    else {
+        rect.ensureSymmetry();
+    }
+
+
+    SCanvas canvas(rect.width(), rect.height(), format);
+    canvas.setDotsPerMM(dotsPerMM);
+    canvas.setScale(_size, _size);
+    canvas.begin();
+    canvas.draw(*this);
+    canvas.end();
+
+    SImage *img = new SImage();
+    img->setWidth(canvas.width());
+    img->setHeight(canvas.height());
+    img->setDotsPerMM(dotsPerMM);
+    img->setFormat(format);
+    if(img->format() == "png"){
+        img->setStride(canvas.stride());
+    }
+
+    size_t len;
+    unsigned char* data = canvas.imageData(len);
+    img->setData(data, len);
+    free(data);
+
+
+
+    // std::cout << canvas.dotsWidth() << "," << canvas.stride() << std::endl;
+    return img;
+}
+
+SImage* SSymbol::toImage(const char* format, double size, double dotsPerMM)
+{
+    SSymbol* sym = clone();
+    sym->_size = size;
+    SImage *img = sym->toImage(format, dotsPerMM);
+    delete sym;
+    return img;
+}
+
+cairo_surface_t* SSymbol::toImageSurface(const char* format, double dotsPerMM) {
+    SRect rect = getMBR();
+    if (onlySystemLines()) {
+        rect.expand(getMaxStrokeWidth());
+    }
+    else {
+        rect.ensureSymmetry();
+    }
+
+
+    SCanvas canvas(rect.width(), rect.height(), format);
+    canvas.setDotsPerMM(dotsPerMM);
+    canvas.setScale(_size, _size);
+    canvas.begin();
+    canvas.draw(*this);
+    canvas.end();
+
+    return canvas.detachCairoSurface();
+}
+
+
+cairo_surface_t* SSymbol::toImageSurface(const char* format, double size, double dotsPerMM) {
+    SSymbol* sym = clone();
+    sym->_size = size;
+    cairo_surface_t* sf = sym->toImageSurface(format, dotsPerMM);
+    delete sym;
+    return sf;
+}
+
+unsigned char* SSymbol::toRawImage(const char* format, double dotsPerMM, size_t& len)
+{
+    SRect rect = getMBR();
+    if (onlySystemLines()) {
+        rect.expand(getMaxStrokeWidth());
+    }
+    else {
         rect.ensureSymmetry();
     }
 
@@ -171,11 +248,11 @@ unsigned char* SSymbol::toImage(const char* format, double dotsPerMM, size_t& le
     return data;
 }
 
-unsigned char* SSymbol::toImage(const char* format, double size, double dotsPerMM, size_t& len)
+unsigned char* SSymbol::toRawImage(const char* format, double size, double dotsPerMM, size_t& len)
 {
-    SSymbol *sym = clone();
+    SSymbol* sym = clone();
     sym->_size = size;
-    unsigned char* data = sym->toImage(format,dotsPerMM,len);
+    unsigned char* data = sym->toRawImage(format, dotsPerMM, len);
     delete sym;
     return data;
     // SCanvas canvas(width,height, format);
@@ -189,10 +266,10 @@ unsigned char* SSymbol::toImage(const char* format, double size, double dotsPerM
     // return data;
 }
 
-bool SSymbol::toImage(const char* filename, const char* format)
+bool SSymbol::toRawImage(const char* filename, const char* format)
 {
     size_t len;
-    unsigned char* buf = toImage(format, 72 / 25.4, len);
+    unsigned char* buf = toRawImage(format, 72 / 25.4, len);
 
     FILE* fd = fopen(filename, "wb");
     if (!fd) {
@@ -204,27 +281,27 @@ bool SSymbol::toImage(const char* filename, const char* format)
     return true;
 }
 
-unsigned char* SSymbol::shapeToImage(size_t idx, const char* format, double width, double height, double dotsPerMM, size_t& len)
+unsigned char* SSymbol::shapeToRawImage(size_t idx, const char* format, double width, double height, double dotsPerMM, size_t& len)
 {
-    SCanvas canvas(width,height, format);
+    SCanvas canvas(width, height, format);
     canvas.setDotsPerMM(dotsPerMM);
     canvas.setScale(_size, _size);
     canvas.begin();
-    canvas.drawShape(*this,idx);
+    canvas.drawShape(*this, idx);
     canvas.end();
 
     unsigned char* data = canvas.imageData(len);
     return data;
 }
 
-unsigned char* SSymbol::shapeToImage(size_t idx, const char* format, double dotsPerMM, size_t& len)
+unsigned char* SSymbol::shapeToRawImage(size_t idx, const char* format, double dotsPerMM, size_t& len)
 {
     SRect rect = getMBR();
     if (onlySystemLines()) {
         rect.expand(getMaxStrokeWidth());
     }
 
-    return shapeToImage(idx, format, rect.width(), rect.height(), dotsPerMM, len);
+    return shapeToRawImage(idx, format, rect.width(), rect.height(), dotsPerMM, len);
 }
 
 
@@ -339,10 +416,10 @@ void SSymbol::deserialize(unsigned char* data) {
 
 SSymbol* SSymbol::clone()
 {
-    SSymbol *sym = new SSymbol();
+    SSymbol* sym = new SSymbol();
     sym->_size = _size;
     sym->_offset = _offset;
-    for(size_t i=0; i<_shapes.size(); i++){
+    for (size_t i = 0; i < _shapes.size(); i++) {
         sym->_shapes.push_back(_shapes[i]->clone());
     }
 
@@ -351,7 +428,7 @@ SSymbol* SSymbol::clone()
 
 SSymbol* SSymbol::clone(size_t shpIdx)
 {
-    SSymbol *sym = new SSymbol();
+    SSymbol* sym = new SSymbol();
     sym->_size = _size;
     sym->_offset = _offset;
     sym->_shapes.push_back(_shapes[shpIdx]->clone());
@@ -366,7 +443,7 @@ std::string SSymbol::toWKB()
     serialdata = serialize(len);
 
     std::string wkt = transformer.bytesToHexString(serialdata, len);
-    delete [] serialdata;
+    delete[] serialdata;
     return wkt;
 }
 
@@ -374,12 +451,12 @@ void SSymbol::fromWKB(const std::string& wkb)
 {
     SBytesCharTransformer transformer;
     bool ok;
-    uint8_t* buf = transformer.bytesFromHexBytes((uint8_t*)wkb.c_str(),wkb.size(),ok);
-    if(!ok){
+    uint8_t* buf = transformer.bytesFromHexBytes((uint8_t*)wkb.c_str(), wkb.size(), ok);
+    if (!ok) {
         return;
     }
 
     deserialize(buf);
-    delete [] buf;
+    delete[] buf;
 }
 
