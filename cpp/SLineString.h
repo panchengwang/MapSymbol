@@ -4,10 +4,10 @@
 #include "SSubPath.h"
 #include <vector>
 #include "SPoint.h"
+#include "DLLExport.h"
 
 
-
-class SLineString : public SSubPath
+class DLL_EXPORT SLineString : public SSubPath
 {
 public:
     SLineString();

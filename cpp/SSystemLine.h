@@ -4,8 +4,10 @@
 
 #include "SShape.h"
 #include "SStroke.h"
+#include "DLLExport.h"
 
-class SSystemLine : public SShape {
+
+class DLL_EXPORT SSystemLine : public SShape {
 public:
     SSystemLine();
     virtual ~SSystemLine();
@@ -22,6 +24,8 @@ public:
     unsigned char* deserialize(unsigned char* data);
 
     SShape* clone();
+    SStroke* stroke() const;
+
 protected:
     SStroke* _stroke;
 };

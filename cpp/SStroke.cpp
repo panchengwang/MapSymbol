@@ -192,15 +192,53 @@ bool SStroke::fromJsonObjectInternal(json_object* obj, std::string& errorMessage
     return true;
 }
 
+const std::vector<double>& SStroke::dashes() const
+{
+    return _dashes;
+}
+
+double SStroke::dashOffset() const
+{
+    return _dashOffset;
+}
+
 uint8_t SStroke::join() const
 {
     return _join;
+}
+
+cairo_line_join_t SStroke::cairoJoin() const
+{
+    cairo_line_join_t linejoin = CAIRO_LINE_JOIN_BEVEL;
+    if(_join == JOIN_BEVEL){
+        linejoin = CAIRO_LINE_JOIN_BEVEL;
+    }else if(_join == JOIN_MITER){
+        linejoin = CAIRO_LINE_JOIN_MITER;
+    }else if(_join == JOIN_ROUND){
+        linejoin = CAIRO_LINE_JOIN_ROUND;
+    }
+    return linejoin;
 }
 
 uint8_t SStroke::cap() const
 {
     return _cap;
 }
+
+cairo_line_cap_t SStroke::cairoCap() const
+{
+    cairo_line_cap_t linecap = CAIRO_LINE_CAP_BUTT;
+    if(_cap == CAP_BUTT){
+        linecap = CAIRO_LINE_CAP_BUTT;
+    }else if(_cap == CAP_ROUND){
+        linecap = CAIRO_LINE_CAP_ROUND;
+    }else if(_cap == CAP_SQUARE){
+        linecap = CAIRO_LINE_CAP_SQUARE;
+    }
+    return linecap;
+}
+
+
 
 SColor SStroke::color() const
 {

@@ -5,9 +5,9 @@
 #include "SSymbol.h"
 #include "SStroke.h"
 #include "SFill.h"
+#include "DLLExport.h"
 
-
-class SCanvas
+class DLL_EXPORT SCanvas
 {
     friend class SStroke;
     friend class SSymbol;

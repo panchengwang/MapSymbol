@@ -4,10 +4,11 @@
 #include "SSubPath.h"
 #include <string>
 #include "SPoint.h"
+#include "DLLExport.h"
 
 class SCanvas;
 
-class SArc : public SSubPath
+class DLL_EXPORT SArc : public SSubPath
 {
 public:
     SArc();

@@ -4,8 +4,9 @@
 #include "SSubPath.h"
 #include <string>
 #include "SPoint.h"
+#include "DLLExport.h"
 
-class SStar : public SSubPath
+class DLL_EXPORT SStar : public SSubPath
 {
 public:
     SStar();

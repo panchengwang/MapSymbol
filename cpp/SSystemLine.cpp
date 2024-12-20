@@ -114,3 +114,8 @@ SShape* SSystemLine::clone()
     }
     return sym;
 }
+
+SStroke* SSystemLine::stroke() const
+{
+    return _stroke;
+}

@@ -4,10 +4,10 @@
 #include "SSubPath.h"
 #include <vector>
 #include "SLineString.h"
+#include "DLLExport.h"
 
 
-
-class SPolygon : public SLineString
+class DLL_EXPORT SPolygon : public SLineString
 {
 public:
     SPolygon();

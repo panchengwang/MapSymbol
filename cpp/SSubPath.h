@@ -3,9 +3,11 @@
 
 #include <json.h>
 #include <string>
+#include "DLLExport.h"
+
 
 class SCanvas;
-class SSubPath
+class DLL_EXPORT SSubPath
 {
 public:
     enum {

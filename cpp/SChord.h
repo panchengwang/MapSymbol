@@ -2,8 +2,11 @@
 #define __SYM_SCHORD_H
 
 #include "SArc.h"
+#include "DLLExport.h"
 
-class SChord : public SArc
+
+
+class DLL_EXPORT SChord : public SArc
 {
 public:
     SChord();

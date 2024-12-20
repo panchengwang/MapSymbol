@@ -2,8 +2,10 @@
 #define __SYM_SPIE_H
 
 #include "SArc.h"
+#include "DLLExport.h"
 
-class SPie : public SArc
+
+class DLL_EXPORT SPie : public SArc
 {
 public:
     SPie();

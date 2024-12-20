@@ -11,7 +11,7 @@ public:
     SurfaceHelper();
 
     static cairo_surface_t* createFromPngRawData(unsigned char* data, size_t len);
-
+    static unsigned char* pngRawDataFromSurface(cairo_surface_t* surface, size_t& len);
 };
 
 #endif // SURFACEHELPER_H

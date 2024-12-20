@@ -4,10 +4,10 @@
 #include <stdint.h>
 #include <json.h>
 #include <string>
+#include "DLLExport.h"
 
 
-
-class SColor
+class DLL_EXPORT SColor
 {
 public:
     SColor();

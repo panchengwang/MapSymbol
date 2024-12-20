@@ -4,9 +4,9 @@
 #include <json.h>
 #include <string>
 #include "SRect.h"
+#include "DLLExport.h"
 
-
-class SPoint {
+class DLL_EXPORT SPoint {
 public:
     SPoint();
     SPoint(double x, double y);

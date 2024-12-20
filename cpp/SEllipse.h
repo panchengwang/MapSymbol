@@ -4,9 +4,9 @@
 #include "SSubPath.h"
 #include <string>
 #include "SPoint.h"
+#include "DLLExport.h"
 
-
-class SEllipse : public SSubPath
+class DLL_EXPORT SEllipse : public SSubPath
 {
 public:
     SEllipse();

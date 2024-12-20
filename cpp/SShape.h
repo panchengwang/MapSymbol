@@ -4,9 +4,11 @@
 #include <json.h>
 #include <string>
 #include "SRect.h"
+#include "DLLExport.h"
+
 
 class SCanvas;
-class SShape
+class DLL_EXPORT SShape
 {
 public:
     enum {
@@ -24,7 +26,7 @@ public:
     virtual SRect getMBR() = 0;
     virtual double getMaxStrokeWidth();
     virtual size_t memSize() = 0;
-    uint8_t type() const;
+    virtual uint8_t type() const;
 
     virtual void draw(SCanvas& canvas);
     virtual unsigned char* serialize(unsigned char* data) = 0;

@@ -3,10 +3,10 @@
 
 
 #include "SFill.h"
-
+#include "DLLExport.h"
 #include "SShape.h"
 
-class SSystemFill : public SShape {
+class DLL_EXPORT SSystemFill : public SShape {
 public:
     SSystemFill();
     virtual ~SSystemFill();

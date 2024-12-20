@@ -3,9 +3,11 @@
 
 #include "SFill.h"
 #include "SColor.h"
+#include "DLLExport.h"
+
 
 class SCanvas;
-class SSolidFill : public SFill
+class DLL_EXPORT SSolidFill : public SFill
 {
 public:
     SSolidFill();

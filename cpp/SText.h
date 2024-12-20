@@ -6,10 +6,10 @@
 #include <string>
 #include "SPoint.h"
 #include "SSubPath.h"
+#include "DLLExport.h"
 
 
-
-class SText : public SSubPath {
+class DLL_EXPORT SText : public SSubPath {
 public:
     enum {
         HORIZONTAL_ALIGN_LEFT = 1,

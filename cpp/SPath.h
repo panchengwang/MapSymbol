@@ -8,10 +8,12 @@
 #include "SSubPath.h"
 #include <vector>
 #include "SRect.h"
+#include "DLLExport.h"
+
 
 class SCanvas;
 
-class SPath : public SShape {
+class DLL_EXPORT SPath : public SShape {
 public:
     SPath();
     virtual ~SPath();

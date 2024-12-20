@@ -4,9 +4,9 @@
 #include "SSubPath.h"
 #include <string>
 #include "SPoint.h"
+#include "DLLExport.h"
 
-
-class SCircle : public SSubPath
+class DLL_EXPORT SCircle : public SSubPath
 {
 public:
     SCircle();

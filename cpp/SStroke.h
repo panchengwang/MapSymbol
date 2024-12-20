@@ -7,10 +7,12 @@
 #include <string>
 #include "SColor.h"
 #include <vector>
+#include "DLLExport.h"
+#include <cairo.h>
 
 class SCanvas;
 
-class SStroke {
+class DLL_EXPORT SStroke {
 public:
     enum {
         CAP_BUTT = 1,
@@ -34,7 +36,9 @@ public:
     double width() const;
     SColor color() const;
     uint8_t cap() const;
+    cairo_line_cap_t cairoCap() const;
     uint8_t join() const;
+    cairo_line_join_t cairoJoin() const;
     double miter() const;
 
     void setTo(SCanvas& canvas);
@@ -44,6 +48,10 @@ public:
     unsigned char* deserialize(unsigned char* data);
 
     SStroke* clone();
+    double dashOffset() const;
+
+    const std::vector<double>& dashes() const;
+
 protected:
     bool fromJsonObjectInternal(json_object* obj, std::string& errorMessage);
 protected:

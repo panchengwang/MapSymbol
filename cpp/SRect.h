@@ -2,8 +2,10 @@
 #define __SYM_SRECT_H
 
 #include <string>
+#include "DLLExport.h"
 
-class SRect {
+
+class DLL_EXPORT SRect {
 public:
     SRect();
     SRect(double minx, double miny, double maxx, double maxy);

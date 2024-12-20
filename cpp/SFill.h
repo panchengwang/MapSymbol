@@ -4,10 +4,12 @@
 #include <string>
 #include <json.h>
 #include <stdint.h>
+#include "DLLExport.h"
+
 
 class SCanvas;
 
-class SFill {
+class DLL_EXPORT SFill {
 public:
     enum {
         SOLID

@@ -4,8 +4,10 @@
 #include "SSubPath.h"
 #include <string>
 #include "SPoint.h"
+#include "DLLExport.h"
 
-class SRegularPolygon : public SSubPath
+
+class DLL_EXPORT SRegularPolygon : public SSubPath
 {
 public:
     SRegularPolygon();

@@ -4,9 +4,9 @@
 #include "SSubPath.h"
 #include <string>
 #include "SPoint.h"
+#include "DLLExport.h"
 
-
-class SArc3Points : public SSubPath
+class DLL_EXPORT SArc3Points : public SSubPath
 {
 public:
     SArc3Points();
