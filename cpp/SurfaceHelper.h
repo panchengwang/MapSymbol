@@ -4,6 +4,7 @@
 #include "DLLExport.h"
 #include <cairo.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 class DLL_EXPORT SurfaceHelper
 {

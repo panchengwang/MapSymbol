@@ -80,25 +80,27 @@ list(APPEND SOURCES
 add_library(mapsymbol SHARED
   ${HEADERS}
   ${SOURCES}
-
 )
 
+message(STATUS json-c ${JSON_C_LIBRARIES})
+
+target_link_directories(mapsymbol PUBLIC
+  ${JSON_C_LIBRARY_DIRS}
+  ${CAIRO_LIBRARY_DIRS}
+)
 target_link_libraries(mapsymbol 
   ${JSON_C_LIBRARIES}
   ${CAIRO_LIBRARIES}
-  ${GLIB2_LIBRARIES}
 )
 target_compile_definitions(mapsymbol PRIVATE AS_LIBRARY)
 target_include_directories(mapsymbol PUBLIC 
   ${JSON_C_INCLUDE_DIRS}
   ${CAIRO_INCLUDE_DIRS}
-  ${GLIB2_INCLUDE_DIRS}
 )
 
 target_compile_options(mapsymbol PUBLIC 
   ${JSON_C_CFLAGS_OTHER}
   ${CAIRO_CFLAGS_OTHER}
-  ${GLIB2_CFLAGS_OTHER}
   )
 
 include(GNUInstallDirs)
